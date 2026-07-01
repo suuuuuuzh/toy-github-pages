@@ -1,4 +1,4 @@
-// 根据 data.js 中的 reportInfo / expenseItems / tpiaoFiles 渲染整个页面。
+// 根据 data.js 中的 reportInfo / expenseItems / tpiaoList 渲染整个页面。
 // 不需要修改这个文件，只需要维护 data.js 里的数据即可。
 
 const fmt = (n) =>
@@ -12,7 +12,10 @@ function voucherBadge(type) {
 
 function voucherDetail(item) {
   if (item.voucherType === "invoice") return item.invoiceFile ? item.invoiceFile.split("/").pop() : "-";
-  if (item.voucherType === "tpiao") return item.tpiaoId || "-";
+  if (item.voucherType === "tpiao") {
+    const ids = item.tpiaoIds || [];
+    return ids.length ? ids.join("、") : "-";
+  }
   return "-";
 }
 
@@ -24,7 +27,9 @@ function voucherAction(item) {
     return '<a class="btn disabled">发票未上传</a>';
   }
   if (item.voucherType === "tpiao") {
-    return `<a class="btn" href="#tpiao-${item.tpiaoId}">查看T票 ${item.tpiaoId}</a>`;
+    const ids = item.tpiaoIds || [];
+    if (!ids.length) return '<span class="muted">未关联替票</span>';
+    return ids.map((id) => `<a class="btn" href="#tpiao-${id}">查看${id}</a>`).join(" ");
   }
   return '<span class="muted">-</span>';
 }
@@ -52,60 +57,67 @@ function renderExpenseTable() {
 }
 
 function renderTpiaoTable() {
-  const groups = {};
-  expenseItems
-    .filter((i) => i.voucherType === "tpiao" && i.tpiaoId)
-    .forEach((i) => {
-      if (!groups[i.tpiaoId]) groups[i.tpiaoId] = [];
-      groups[i.tpiaoId].push(i);
-    });
-
-  const ids = Object.keys(groups).sort();
+  const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
   const tbody = document.getElementById("tpiao-tbody");
   const emptyHint = document.getElementById("tpiao-empty");
 
-  if (ids.length === 0) {
+  if (list.length === 0) {
     tbody.innerHTML = "";
     emptyHint.style.display = "block";
     return;
   }
   emptyHint.style.display = "none";
 
-  tbody.innerHTML = ids
-    .map((tid) => {
-      const items = groups[tid];
-      const sum = items.reduce((s, i) => s + Number(i.amount || 0), 0);
-      const file = typeof tpiaoFiles !== "undefined" ? tpiaoFiles[tid] : "";
-      const action = file
-        ? `<a class="btn" href="${file}" download target="_blank" rel="noopener">下载凭证</a>`
+  tbody.innerHTML = list
+    .map((ticket) => {
+      const usedBy = expenseItems.filter(
+        (i) => i.voucherType === "tpiao" && (i.tpiaoIds || []).includes(ticket.id)
+      );
+      const relatedIds = usedBy.map((i) => "#" + i.id).join("、") || "-";
+      const relatedDesc =
+        usedBy
+          .map((i) => i.category + (i.description ? "（" + i.description + "）" : ""))
+          .join("；") || "-";
+      const action = ticket.file
+        ? `<a class="btn" href="${ticket.file}" download target="_blank" rel="noopener">下载凭证</a>`
         : '<span class="muted">无扫描件</span>';
       return `
-      <tr id="tpiao-${tid}">
-        <td>${tid}</td>
-        <td>${items.map((i) => "#" + i.id).join("、")}</td>
-        <td>${items.map((i) => i.category + (i.description ? "（" + i.description + "）" : "")).join("；")}</td>
-        <td class="amount-cell">${fmt(sum)}</td>
+      <tr id="tpiao-${ticket.id}">
+        <td>${ticket.id}</td>
+        <td>${relatedIds}</td>
+        <td>${relatedDesc}</td>
+        <td class="amount-cell">${fmt(ticket.amount)}</td>
         <td>${action}</td>
       </tr>`;
     })
     .join("");
+
+  const faceTotal = list.reduce((s, t) => s + Number(t.amount || 0), 0);
+  const foot = document.getElementById("tpiao-total-cell");
+  if (foot) foot.textContent = fmt(faceTotal) + " 元";
 }
 
 function renderSummaryCards() {
   const invoiceItems = expenseItems.filter((i) => i.voucherType === "invoice");
   const tpiaoItems = expenseItems.filter((i) => i.voucherType === "tpiao");
   const noneItems = expenseItems.filter((i) => i.voucherType === "none");
+  const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
 
   const total = expenseItems.reduce((s, i) => s + Number(i.amount || 0), 0);
   const invoiceTotal = invoiceItems.reduce((s, i) => s + Number(i.amount || 0), 0);
-  const tpiaoTotal = tpiaoItems.reduce((s, i) => s + Number(i.amount || 0), 0);
+  const tpiaoBusinessTotal = tpiaoItems.reduce((s, i) => s + Number(i.amount || 0), 0);
+  const tpiaoFaceTotal = list.reduce((s, t) => s + Number(t.amount || 0), 0);
   const noneTotal = noneItems.reduce((s, i) => s + Number(i.amount || 0), 0);
-  const tpiaoCount = new Set(tpiaoItems.map((i) => i.tpiaoId)).size;
 
   const cards = [
     { cls: "total", label: "报销总金额", value: fmt(total) + " 元", sub: `共 ${expenseItems.length} 笔` },
     { cls: "invoice", label: "发票金额", value: fmt(invoiceTotal) + " 元", sub: `共 ${invoiceItems.length} 张发票` },
-    { cls: "tpiao", label: "T票金额", value: fmt(tpiaoTotal) + " 元", sub: `共 ${tpiaoCount} 张T票 / ${tpiaoItems.length} 笔` },
+    {
+      cls: "tpiao",
+      label: "T票覆盖金额",
+      value: fmt(tpiaoBusinessTotal) + " 元",
+      sub: `共 ${list.length} 张替票，面值合计 ${fmt(tpiaoFaceTotal)} 元 / ${tpiaoItems.length} 笔业务`,
+    },
   ];
   if (noneItems.length > 0) {
     cards.push({ cls: "none", label: "无凭证金额（待补充）", value: fmt(noneTotal) + " 元", sub: `共 ${noneItems.length} 笔` });
