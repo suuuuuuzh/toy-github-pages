@@ -1,8 +1,13 @@
-// 根据 data.js 中的 reportInfo / expenseItems / tpiaoList 渲染整个页面。
+// 根据 data.js 中的 reportInfo / categoryOptions / expenseItems / tpiaoList 渲染整个页面。
 // 不需要修改这个文件，只需要维护 data.js 里的数据即可。
 
 const fmt = (n) =>
   Number(n || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+function findTpiao(id) {
+  const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
+  return list.find((t) => t.id === id);
+}
 
 function voucherBadge(type) {
   if (type === "invoice") return '<span class="badge badge-invoice">发票</span>';
@@ -10,7 +15,22 @@ function voucherBadge(type) {
   return '<span class="badge badge-none">无凭证</span>';
 }
 
-function voucherDetail(item) {
+// 发票类型/发票内容：正式发票直接显示 invoiceCategory；走替票的显示每张替票自己的
+// 发票内容，并按惯例加上"抵票-"前缀（例如"抵票-酒"）。
+function voucherCategoryLabel(item) {
+  if (item.voucherType === "invoice") return item.invoiceCategory || "-";
+  if (item.voucherType === "tpiao") {
+    const ids = item.tpiaoIds || [];
+    const labels = ids.map((id) => {
+      const t = findTpiao(id);
+      return t && t.invoiceCategory ? "抵票-" + t.invoiceCategory : "抵票-" + id;
+    });
+    return labels.length ? labels.join("、") : "-";
+  }
+  return "-";
+}
+
+function voucherRefDetail(item) {
   if (item.voucherType === "invoice") return item.invoiceFile ? item.invoiceFile.split("/").pop() : "-";
   if (item.voucherType === "tpiao") {
     const ids = item.tpiaoIds || [];
@@ -46,7 +66,8 @@ function renderExpenseTable() {
         <td>${item.date || "-"}</td>
         <td class="amount-cell">${fmt(item.amount)}</td>
         <td>${voucherBadge(item.voucherType)}</td>
-        <td>${voucherDetail(item)}</td>
+        <td>${voucherCategoryLabel(item)}</td>
+        <td>${voucherRefDetail(item)}</td>
         <td>${voucherAction(item)}</td>
       </tr>`
     )
@@ -54,6 +75,47 @@ function renderExpenseTable() {
 
   const total = expenseItems.reduce((sum, i) => sum + Number(i.amount || 0), 0);
   document.getElementById("total-amount-cell").textContent = fmt(total) + " 元";
+}
+
+function renderCategoryTable() {
+  const options = typeof categoryOptions !== "undefined" ? categoryOptions : [];
+  const seen = new Set();
+  const orderedCategories = [];
+  options.forEach((c) => {
+    if (!seen.has(c)) {
+      seen.add(c);
+      orderedCategories.push(c);
+    }
+  });
+  expenseItems.forEach((i) => {
+    if (!seen.has(i.category)) {
+      seen.add(i.category);
+      orderedCategories.push(i.category);
+    }
+  });
+
+  const rows = orderedCategories
+    .map((cat) => {
+      const items = expenseItems.filter((i) => i.category === cat);
+      if (items.length === 0) return null;
+      const sum = items.reduce((s, i) => s + Number(i.amount || 0), 0);
+      return { cat, count: items.length, sum };
+    })
+    .filter(Boolean);
+
+  document.getElementById("category-tbody").innerHTML = rows
+    .map(
+      (r) => `
+      <tr>
+        <td>${r.cat}</td>
+        <td>${r.count}</td>
+        <td class="amount-cell">${fmt(r.sum)}</td>
+      </tr>`
+    )
+    .join("");
+
+  const total = rows.reduce((s, r) => s + r.sum, 0);
+  document.getElementById("category-total-cell").textContent = fmt(total) + " 元";
 }
 
 function renderTpiaoTable() {
@@ -78,12 +140,14 @@ function renderTpiaoTable() {
         usedBy
           .map((i) => i.category + (i.description ? "（" + i.description + "）" : ""))
           .join("；") || "-";
+      const invoiceLabel = ticket.invoiceCategory ? "抵票-" + ticket.invoiceCategory : "-";
       const action = ticket.file
         ? `<a class="btn" href="${ticket.file}" download target="_blank" rel="noopener">下载凭证</a>`
         : '<span class="muted">无扫描件</span>';
       return `
       <tr id="tpiao-${ticket.id}">
         <td>${ticket.id}</td>
+        <td>${invoiceLabel}</td>
         <td>${relatedIds}</td>
         <td>${relatedDesc}</td>
         <td class="amount-cell">${fmt(ticket.amount)}</td>
@@ -147,4 +211,5 @@ function renderHeader() {
 renderHeader();
 renderSummaryCards();
 renderExpenseTable();
+renderCategoryTable();
 renderTpiaoTable();
