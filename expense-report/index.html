@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>报销单</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 id="report-title">报销单</h1>
+      <div class="meta">
+        <span>报销人：<b id="submitter"></b></span>
+        <span>部门：<b id="department"></b></span>
+        <span>报销周期：<b id="period"></b></span>
+        <span>填报日期：<b id="report-date"></b></span>
+      </div>
+    </header>
+
+    <section class="summary-cards" id="summary-cards"></section>
+
+    <section>
+      <h2>报销明细</h2>
+      <table id="expense-table">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>类目</th>
+            <th>说明</th>
+            <th>日期</th>
+            <th>金额（元）</th>
+            <th>凭证类型</th>
+            <th>凭证详情</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="expense-tbody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">合计</td>
+            <td class="amount-cell" id="total-amount-cell"></td>
+            <td colspan="3"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <section>
+      <h2>T票汇总</h2>
+      <p class="muted" style="margin-top:-6px;font-size:13px;">没有正式发票、走 T 票报销的项目按 T 票编号归集，方便财务核对每张 T 票对应的金额和明细。</p>
+      <table id="tpiao-table">
+        <thead>
+          <tr>
+            <th>T票编号</th>
+            <th>关联序号</th>
+            <th>涉及项目</th>
+            <th>合计金额（元）</th>
+            <th>凭证</th>
+          </tr>
+        </thead>
+        <tbody id="tpiao-tbody"></tbody>
+      </table>
+      <p class="empty-hint" id="tpiao-empty" style="display: none">本次报销无 T 票项目。</p>
+    </section>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
