@@ -11,7 +11,7 @@ function findTpiao(id) {
 
 function voucherBadge(type) {
   if (type === "invoice") return '<span class="badge badge-invoice">发票</span>';
-  if (type === "tpiao") return '<span class="badge badge-tpiao">T票</span>';
+  if (type === "tpiao") return '<span class="badge badge-tpiao">替票</span>';
   return '<span class="badge badge-none">无凭证</span>';
 }
 
@@ -178,7 +178,7 @@ function renderSummaryCards() {
     { cls: "invoice", label: "发票金额", value: fmt(invoiceTotal) + " 元", sub: `共 ${invoiceItems.length} 张发票` },
     {
       cls: "tpiao",
-      label: "T票覆盖金额",
+      label: "替票覆盖金额",
       value: fmt(tpiaoBusinessTotal) + " 元",
       sub: `共 ${list.length} 张替票，面值合计 ${fmt(tpiaoFaceTotal)} 元 / ${tpiaoItems.length} 笔业务`,
     },
