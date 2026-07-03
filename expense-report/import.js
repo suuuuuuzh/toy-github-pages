@@ -11,10 +11,10 @@ const state = {
 function parseAmount(v) {
   if (v === null || v === undefined) return null;
   if (typeof v === 'number') return v;
-  const s = String(v).replace(/[,，¥￥\s]/g, '');
-  if (s === '') return null;
-  const n = parseFloat(s);
-  return isNaN(n) ? null : n;
+  const s = String(v).replace(/[,，¥￥元\s]/g, '');
+  // 必须整个是数字才算金额，避免把"2026-06-22"这种日期误读成 2026
+  if (!/^-?\d+(\.\d+)?$/.test(s)) return null;
+  return parseFloat(s);
 }
 
 function normalizeDate(v) {
@@ -60,6 +60,28 @@ function parseReportInfoFromRows(rows) {
   return info;
 }
 
+// 根据"费用摘要 + 发票内容"里的关键词，自动把一笔费用归到公司模板的类目里。
+// 规则从上到下依次尝试，先命中先得；都没命中就归"其他"。
+const CATEGORY_RULES = [
+  { category: '业务招待费', keywords: ['招待', '宴请'] },
+  { category: '差旅-交通', keywords: ['机票', '航班', '航空', '高铁', '火车', '动车', '船票'] },
+  { category: '交通费', keywords: ['打车', '出租', '网约车', '滴滴', '地铁', '公交', '客运', '车票', '接送'] },
+  { category: '住宿费', keywords: ['住宿', '酒店', '宾馆', '民宿', '房费', '客房'] },
+  { category: '汽车费用', keywords: ['停车', '油费', '油票', '加油', '过路', '过桥', '高速', '洗车', 'ETC', '租车'] },
+  { category: '快递费', keywords: ['快递', '邮寄', '顺丰', '运费', '寄件'] },
+  { category: '办公用品', keywords: ['办公', '文具', '耗材', '打印', '墨盒', '硒鼓', '纸张'] },
+  { category: '餐费', keywords: ['餐', '午饭', '晚饭', '早饭', '外卖', '咖啡', '茶歇', '酒水', '饮'] },
+];
+
+function guessCategory(text) {
+  const s = (text || '').toString();
+  if (!s.trim()) return null;
+  for (const rule of CATEGORY_RULES) {
+    if (rule.keywords.some((kw) => s.includes(kw))) return rule.category;
+  }
+  return null;
+}
+
 // 解析一个 sheet：找到"发票内容/发票金额"表头行，表头下一行是费用类目列名，
 // 之后每一行是一笔费用，把结果累加进 ctx.items / ctx.tickets。
 function parseSheet(rows, ctx) {
@@ -67,7 +89,8 @@ function parseSheet(rows, ctx) {
   let invoiceContentCol = -1;
   for (let r = 0; r < Math.min(rows.length, 12); r++) {
     const col = findCellCol(rows[r], '发票内容');
-    if (col !== -1) {
+    // 模板的表头行同时有"费用明细"和"发票内容"，只认"发票内容"会把简单表格误当成模板
+    if (col !== -1 && findCellCol(rows[r], '明细') !== -1) {
       headerRowIdx = r;
       invoiceContentCol = col;
       break;
@@ -118,6 +141,16 @@ function parseSheet(rows, ctx) {
     const invoiceAmount = parseAmount(row[invoiceAmountCol]);
     if (category === '' && amount === null && !invoiceContentRaw && invoiceAmount === null) continue;
 
+    // Excel 里没按类目分列填的行，根据摘要 + 发票内容的关键词自动归类
+    let categoryGuessed = false;
+    if (!category) {
+      const guessed = guessCategory(summaryVal + ' ' + invoiceContentRaw);
+      if (guessed) {
+        category = guessed;
+        categoryGuessed = true;
+      }
+    }
+
     const item = {
       id: ctx.nextItemId++,
       category: category || '其他',
@@ -130,6 +163,99 @@ function parseSheet(rows, ctx) {
       tpiaoIds: [],
       remark: '',
       _matchAmount: null,
+      _categoryGuessed: categoryGuessed || !category,
+    };
+
+    if (!invoiceContentRaw) {
+      item.voucherType = 'none';
+    } else if (invoiceContentRaw.startsWith('抵票')) {
+      const ticketCategory = invoiceContentRaw.replace(/^抵票[-－]?/, '').trim();
+      const ticketId = 'T' + String(ctx.nextTicketNum++).padStart(3, '0');
+      const ticketAmount = invoiceAmount != null ? invoiceAmount : item.amount;
+      ctx.tickets.push({
+        id: ticketId,
+        amount: ticketAmount,
+        invoiceCategory: ticketCategory,
+        file: '',
+        note: '',
+        _matchAmount: ticketAmount,
+      });
+      item.voucherType = 'tpiao';
+      item.tpiaoIds = [ticketId];
+    } else {
+      item.voucherType = 'invoice';
+      item.invoiceCategory = invoiceContentRaw;
+      item._matchAmount = invoiceAmount != null ? invoiceAmount : item.amount;
+    }
+
+    ctx.items.push(item);
+    addedCount++;
+  }
+  return addedCount;
+}
+
+// 备用解析：处理没有按类目分列的简单表格（表头只要有"金额"，加上"摘要/说明/内容/项目"
+// 任意一个即可，"日期""发票内容""发票金额"可选）。每一笔的类目全部靠关键词自动划分。
+function parseSimpleSheet(rows, ctx) {
+  let headerRowIdx = -1;
+  let amountCol = -1;
+  let descCol = -1;
+  for (let r = 0; r < Math.min(rows.length, 12); r++) {
+    const row = rows[r] || [];
+    let a = -1;
+    let d = -1;
+    for (let c = 0; c < row.length; c++) {
+      const v = typeof row[c] === 'string' ? row[c].replace(/\s/g, '') : '';
+      if (!v) continue;
+      if (a === -1 && v.includes('金额') && !v.includes('发票金额')) a = c;
+      if (d === -1 && ['摘要', '说明', '内容', '项目', '描述'].some((k) => v.includes(k)) && !v.includes('发票')) d = c;
+    }
+    if (a !== -1 && d !== -1) {
+      headerRowIdx = r;
+      amountCol = a;
+      descCol = d;
+      break;
+    }
+  }
+  if (headerRowIdx === -1) return 0;
+
+  const headerRow = rows[headerRowIdx] || [];
+  const dateCol = findCellCol(headerRow, '日期');
+  const invoiceContentCol = findCellCol(headerRow, '发票内容');
+  let invoiceAmountCol = findCellCol(headerRow, '发票金额');
+  if (invoiceAmountCol === -1 && invoiceContentCol !== -1) invoiceAmountCol = invoiceContentCol + 1;
+
+  let addedCount = 0;
+  for (let r = headerRowIdx + 1; r < rows.length; r++) {
+    const row = rows[r] || [];
+    const rowText = row.map((v) => (v == null ? '' : String(v))).join('');
+    if (!rowText.trim()) continue;
+    if (rowText.includes('合计')) continue;
+
+    const summaryVal = row[descCol] != null ? String(row[descCol]).trim() : '';
+    const amount = parseAmount(row[amountCol]);
+    if (!summaryVal && amount === null) continue;
+
+    const dateVal = dateCol !== -1 ? normalizeDate(row[dateCol]) : '';
+    const invoiceContentRaw =
+      invoiceContentCol !== -1 && row[invoiceContentCol] != null ? String(row[invoiceContentCol]).trim() : '';
+    const invoiceAmount = invoiceAmountCol !== -1 ? parseAmount(row[invoiceAmountCol]) : null;
+
+    const guessed = guessCategory(summaryVal + ' ' + invoiceContentRaw);
+
+    const item = {
+      id: ctx.nextItemId++,
+      category: guessed || '其他',
+      description: summaryVal,
+      date: dateVal,
+      amount: amount != null ? amount : invoiceAmount != null ? invoiceAmount : 0,
+      voucherType: 'none',
+      invoiceFile: '',
+      invoiceCategory: '',
+      tpiaoIds: [],
+      remark: '',
+      _matchAmount: null,
+      _categoryGuessed: true,
     };
 
     if (!invoiceContentRaw) {
@@ -320,7 +446,7 @@ function renderPreview() {
 
     tr.innerHTML = `
       <td>${item.id}</td>
-      <td>${item.category}</td>
+      <td class="category-cell"></td>
       <td>${item.description || '-'}</td>
       <td>${item.date || '-'}</td>
       <td class="amount-cell">${fmt(item.amount)}</td>
@@ -328,6 +454,27 @@ function renderPreview() {
       <td>${invoiceTypeLabel}</td>
       <td class="match-cell"></td>
     `;
+
+    // 类目列做成下拉框：自动划分的会标出来（琥珀色边框），不对可以随手改
+    const categoryCell = tr.querySelector('.category-cell');
+    const catSelect = document.createElement('select');
+    const opts = typeof categoryOptions !== 'undefined' ? categoryOptions.slice() : [];
+    if (!opts.includes(item.category)) opts.push(item.category);
+    opts.forEach((c) => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      catSelect.appendChild(opt);
+    });
+    catSelect.value = item.category;
+    categoryCell.classList.toggle('guessed-category', !!item._categoryGuessed);
+    catSelect.addEventListener('change', () => {
+      item.category = catSelect.value;
+      item._categoryGuessed = false;
+      categoryCell.classList.remove('guessed-category');
+      document.getElementById('output-textarea').value = generateOutputText();
+    });
+    categoryCell.appendChild(catSelect);
 
     const matchCell = tr.querySelector('.match-cell');
     if (matchObj) {
@@ -384,7 +531,8 @@ document.getElementById('excel-input').addEventListener('change', async (e) => {
       state.reportInfo.period = state.reportInfo.period || info.period;
       state.reportInfo.reportDate = state.reportInfo.reportDate || info.reportDate;
 
-      const added = parseSheet(rows, ctx);
+      let added = parseSheet(rows, ctx);
+      if (added === 0) added = parseSimpleSheet(rows, ctx); // 不是公司模板结构就试简单表格
       if (added > 0) parsedSheetCount++;
     });
 

@@ -44,6 +44,11 @@ input[type="file"] {
   border-color: var(--color-none);
 }
 
+#preview-table td.guessed-category select {
+  border-color: var(--color-tpiao);
+  background: #fffbeb;
+}
+
 #preview-table td.auto-match select {
   border-color: var(--color-invoice);
 }
