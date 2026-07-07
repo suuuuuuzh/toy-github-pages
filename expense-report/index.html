@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>报销单</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>报销单</h1>
+      <div class="meta">
+        <span>报销人：<b>水素</b></span>
+        <span>周期：<b>2026年5-6月</b></span>
+      </div>
+    </header>
+
+    <section class="summary-cards">
+      <a class="card total" href="kanjing.html" style="text-decoration:none;color:inherit;display:block">
+        <div class="label">报销单 A · 堪景（贵州+山东）</div>
+        <div class="value">2026年5月</div>
+        <div class="sub">94 笔 · 合计约 ¥31,939.88 · 点击查看 →</div>
+      </a>
+      <a class="card invoice" href="shanghai.html" style="text-decoration:none;color:inherit;display:block">
+        <div class="label">报销单 B · 上海+杭州</div>
+        <div class="value">2026年6月</div>
+        <div class="sub">97 笔 · 合计 ¥18,582.74 · 点击查看 →</div>
+      </a>
+    </section>
+
+    <section>
+      <p class="muted" style="font-size:13px;">
+        两份报销单按微信流水第 100 行的 summary 分割：5 月贵州/山东堪景一份，6 月上海/杭州一份。
+        发票放在 <code>invoices/kanjing/</code> 和 <code>invoices/shanghai/</code> 两个文件夹，页面里每笔右侧可下载对应发票。
+        另可用 <a href="import.html">从 Excel 导入</a> 工具重新生成数据。
+      </p>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>从 Excel 导入报销单</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="import.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>从 Excel 导入报销单</h1>
+      <div class="meta">
+        <span>上传报销 Excel，自动生成 <code>data.js</code>；全部在你自己的浏览器里处理，不会上传到任何服务器</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>第 1 步：上传报销 Excel</h2>
+      <p class="muted" style="margin-top:-6px;font-size:13px;">
+        支持两种表格结构：① 公司模板（日期 / 费用摘要 / 费用明细按类目分列 / 发票内容 / 发票金额）；
+        ② 简单表格（表头有"金额"和"摘要/说明"即可，"日期""发票内容"可选）——没按类目分列的行会根据
+        摘要和发票内容的关键词<b>自动划分类目</b>（交通费 / 差旅-交通 / 住宿费 / 餐费 / 汽车费用 / 快递费 /
+        办公用品 / 业务招待费 / 其他），自动划分的在预览里是琥珀色下拉框，不对可以直接改。
+        一个 Excel 里有多个 sheet（比如每次出差一个 sheet）也没关系，会全部一起解析。
+      </p>
+      <input type="file" id="excel-input" accept=".xlsx,.xls" />
+      <span id="excel-status" class="muted" style="margin-left:8px;font-size:13px;"></span>
+    </section>
+
+    <section>
+      <h2>第 2 步：选择这批发票文件（可多选）</h2>
+      <p class="muted" style="margin-top:-6px;font-size:13px;">
+        只会读取文件名（尝试从文件名里识别金额，比如"...141.00元.pdf"），不会读取文件内容，也不会上传。
+        金额能唯一对应上的会自动选好，金额重复或没找到的下面可以手动选。
+      </p>
+      <input type="file" id="invoice-input" multiple accept=".pdf,.ofd,.jpg,.jpeg,.png" />
+      <span id="invoice-status" class="muted" style="margin-left:8px;font-size:13px;"></span>
+    </section>
+
+    <section>
+      <h2>预览 &amp; 匹配</h2>
+      <div id="preview-empty" class="empty-hint">先完成第 1 步上传 Excel。</div>
+      <div id="preview-wrap" style="display:none;overflow-x:auto;">
+        <table id="preview-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>类目</th>
+              <th>说明</th>
+              <th>日期</th>
+              <th>金额（元）</th>
+              <th>凭证类型</th>
+              <th>发票类型</th>
+              <th>匹配到的文件</th>
+            </tr>
+          </thead>
+          <tbody id="preview-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="output-section" style="display:none;">
+      <h2>第 3 步：生成的 data.js</h2>
+      <p class="muted" style="margin-top:-6px;font-size:13px;">
+        核对上面的预览没问题后，复制或下载下面的内容替换 <code>expense-report/data.js</code>；
+        再把第 2 步选中匹配上的发票文件（文件名不用改）放进 <code>expense-report/invoices/</code> 文件夹，提交推送。
+      </p>
+      <div class="button-row">
+        <button id="copy-btn" class="btn" type="button">复制到剪贴板</button>
+        <button id="download-btn" class="btn" type="button">下载 data.js</button>
+        <span id="copy-status" class="muted" style="font-size:13px;"></span>
+      </div>
+      <textarea id="output-textarea" readonly spellcheck="false"></textarea>
+    </section>
+
+    <p class="muted" style="font-size:13px;"><a href="index.html">&larr; 返回报销单页面</a></p>
+  </div>
+
+  <script src="lib/xlsx.full.min.js"></script>
+  <script src="data.js"></script>
+  <script src="import.js"></script>
+</body>
+</html>
