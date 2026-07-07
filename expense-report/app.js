@@ -1,8 +1,46 @@
 // 根据 data.js 中的 reportInfo / categoryOptions / expenseItems / tpiaoList 渲染整个页面。
-// 不需要修改这个文件，只需要维护 data.js 里的数据即可。
+// 明细表由本文件动态生成，支持：筛选视图（全部 / 有发票 / 无发票 / 替票）、
+// 每笔可编辑备注（存在浏览器本地），以及把带备注的数据导出成新的 data.js。
 
 const fmt = (n) =>
   Number(n || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const esc = (s) =>
+  String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// ---- 备注本地存储：按报销单标题分开存，改了会记住，刷新不丢 ----
+const REMARK_KEY = "expense-remarks:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+
+function loadRemarkOverrides() {
+  try {
+    return JSON.parse(localStorage.getItem(REMARK_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+function saveRemarkOverride(id, text) {
+  const map = loadRemarkOverrides();
+  if (text) map[id] = text;
+  else delete map[id];
+  localStorage.setItem(REMARK_KEY, JSON.stringify(map));
+}
+// 把本地备注覆盖到 data.js 的初始值上
+(function applyRemarkOverrides() {
+  const map = loadRemarkOverrides();
+  expenseItems.forEach((it) => {
+    if (Object.prototype.hasOwnProperty.call(map, it.id)) it.remark = map[it.id];
+  });
+})();
+
+let currentFilter = "all"; // all | invoice | none | tpiao
+
+function matchFilter(item) {
+  if (currentFilter === "all") return true;
+  if (currentFilter === "invoice") return item.voucherType === "invoice";
+  if (currentFilter === "none") return item.voucherType === "none";
+  if (currentFilter === "tpiao") return item.voucherType === "tpiao";
+  return true;
+}
 
 function findTpiao(id) {
   const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
@@ -15,26 +53,24 @@ function voucherBadge(type) {
   return '<span class="badge badge-none">无凭证</span>';
 }
 
-// 发票类型/发票内容：正式发票直接显示 invoiceCategory；走替票的显示每张替票自己的
-// 发票内容，并按惯例加上"抵票-"前缀（例如"抵票-酒"）。
 function voucherCategoryLabel(item) {
-  if (item.voucherType === "invoice") return item.invoiceCategory || "-";
+  if (item.voucherType === "invoice") return esc(item.invoiceCategory || "-");
   if (item.voucherType === "tpiao") {
     const ids = item.tpiaoIds || [];
     const labels = ids.map((id) => {
       const t = findTpiao(id);
       return t && t.invoiceCategory ? "抵票-" + t.invoiceCategory : "抵票-" + id;
     });
-    return labels.length ? labels.join("、") : "-";
+    return labels.length ? esc(labels.join("、")) : "-";
   }
   return "-";
 }
 
 function voucherRefDetail(item) {
-  if (item.voucherType === "invoice") return item.invoiceFile ? item.invoiceFile.split("/").pop() : "-";
+  if (item.voucherType === "invoice") return item.invoiceFile ? esc(item.invoiceFile.split("/").pop()) : "-";
   if (item.voucherType === "tpiao") {
     const ids = item.tpiaoIds || [];
-    return ids.length ? ids.join("、") : "-";
+    return ids.length ? esc(ids.join("、")) : "-";
   }
   return "-";
 }
@@ -42,39 +78,110 @@ function voucherRefDetail(item) {
 function voucherAction(item) {
   if (item.voucherType === "invoice") {
     if (item.invoiceFile) {
-      return `<a class="btn" href="${item.invoiceFile}" download target="_blank" rel="noopener">下载发票</a>`;
+      return `<a class="btn" href="${esc(item.invoiceFile)}" download target="_blank" rel="noopener">下载发票</a>`;
     }
     return '<a class="btn disabled">发票未上传</a>';
   }
   if (item.voucherType === "tpiao") {
     const ids = item.tpiaoIds || [];
     if (!ids.length) return '<span class="muted">未关联替票</span>';
-    return ids.map((id) => `<a class="btn" href="#tpiao-${id}">查看${id}</a>`).join(" ");
+    return ids.map((id) => `<a class="btn" href="#tpiao-${esc(id)}">查看${esc(id)}</a>`).join(" ");
   }
   return '<span class="muted">-</span>';
 }
 
-function renderExpenseTable() {
-  const tbody = document.getElementById("expense-tbody");
-  tbody.innerHTML = expenseItems
+function renderFilterBar() {
+  const counts = {
+    all: expenseItems.length,
+    invoice: expenseItems.filter((i) => i.voucherType === "invoice").length,
+    none: expenseItems.filter((i) => i.voucherType === "none").length,
+    tpiao: expenseItems.filter((i) => i.voucherType === "tpiao").length,
+  };
+  const defs = [
+    { key: "all", label: "全部" },
+    { key: "invoice", label: "有发票" },
+    { key: "none", label: "无发票" },
+  ];
+  if (counts.tpiao > 0) defs.push({ key: "tpiao", label: "替票" });
+
+  const bar = document.getElementById("filter-bar");
+  if (!bar) return;
+  bar.innerHTML = defs
     .map(
-      (item) => `
+      (d) =>
+        `<button class="filter-btn${currentFilter === d.key ? " active" : ""}" data-filter="${d.key}">${d.label} <span class="cnt">${counts[d.key]}</span></button>`
+    )
+    .join("");
+  bar.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentFilter = btn.getAttribute("data-filter");
+      renderFilterBar();
+      renderExpenseTable();
+    });
+  });
+}
+
+function renderExpenseTable() {
+  const table = document.getElementById("expense-table");
+  const rows = expenseItems.filter(matchFilter);
+
+  const head = `
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>类目</th>
+        <th>说明</th>
+        <th>备注（谁的票 / 早中晚饭 / 用途）</th>
+        <th>日期</th>
+        <th>金额（元）</th>
+        <th>凭证类型</th>
+        <th>发票类型</th>
+        <th>凭证详情</th>
+        <th>操作</th>
+      </tr>
+    </thead>`;
+
+  const body =
+    "<tbody>" +
+    rows
+      .map(
+        (item) => `
       <tr class="${item.voucherType === "none" ? "row-none" : ""}">
         <td>${item.id}</td>
-        <td>${item.category}</td>
-        <td>${item.description || "-"}</td>
-        <td>${item.date || "-"}</td>
+        <td>${esc(item.category)}</td>
+        <td>${esc(item.description || "-")}</td>
+        <td class="remark-cell"><input class="remark-input" data-id="${item.id}" value="${esc(item.remark || "")}" placeholder="加备注…" /></td>
+        <td>${esc(item.date || "-")}</td>
         <td class="amount-cell">${fmt(item.amount)}</td>
         <td>${voucherBadge(item.voucherType)}</td>
         <td>${voucherCategoryLabel(item)}</td>
         <td>${voucherRefDetail(item)}</td>
         <td>${voucherAction(item)}</td>
       </tr>`
-    )
-    .join("");
+      )
+      .join("") +
+    "</tbody>";
 
-  const total = expenseItems.reduce((sum, i) => sum + Number(i.amount || 0), 0);
-  document.getElementById("total-amount-cell").textContent = fmt(total) + " 元";
+  const shownTotal = rows.reduce((sum, i) => sum + Number(i.amount || 0), 0);
+  const foot = `
+    <tfoot>
+      <tr>
+        <td colspan="5">${currentFilter === "all" ? "合计" : "当前视图合计"}（${rows.length} 笔）</td>
+        <td class="amount-cell">${fmt(shownTotal)} 元</td>
+        <td colspan="4"></td>
+      </tr>
+    </tfoot>`;
+
+  table.innerHTML = head + body + foot;
+
+  table.querySelectorAll(".remark-input").forEach((inp) => {
+    inp.addEventListener("change", () => {
+      const id = Number(inp.getAttribute("data-id"));
+      const item = expenseItems.find((i) => i.id === id);
+      if (item) item.remark = inp.value.trim();
+      saveRemarkOverride(id, inp.value.trim());
+    });
+  });
 }
 
 function renderCategoryTable() {
@@ -107,7 +214,7 @@ function renderCategoryTable() {
     .map(
       (r) => `
       <tr>
-        <td>${r.cat}</td>
+        <td>${esc(r.cat)}</td>
         <td>${r.count}</td>
         <td class="amount-cell">${fmt(r.sum)}</td>
       </tr>`
@@ -122,13 +229,14 @@ function renderTpiaoTable() {
   const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
   const tbody = document.getElementById("tpiao-tbody");
   const emptyHint = document.getElementById("tpiao-empty");
+  if (!tbody) return;
 
   if (list.length === 0) {
     tbody.innerHTML = "";
-    emptyHint.style.display = "block";
+    if (emptyHint) emptyHint.style.display = "block";
     return;
   }
-  emptyHint.style.display = "none";
+  if (emptyHint) emptyHint.style.display = "none";
 
   tbody.innerHTML = list
     .map((ticket) => {
@@ -137,19 +245,17 @@ function renderTpiaoTable() {
       );
       const relatedIds = usedBy.map((i) => "#" + i.id).join("、") || "-";
       const relatedDesc =
-        usedBy
-          .map((i) => i.category + (i.description ? "（" + i.description + "）" : ""))
-          .join("；") || "-";
+        usedBy.map((i) => i.category + (i.description ? "（" + i.description + "）" : "")).join("；") || "-";
       const invoiceLabel = ticket.invoiceCategory ? "抵票-" + ticket.invoiceCategory : "-";
       const action = ticket.file
-        ? `<a class="btn" href="${ticket.file}" download target="_blank" rel="noopener">下载凭证</a>`
+        ? `<a class="btn" href="${esc(ticket.file)}" download target="_blank" rel="noopener">下载凭证</a>`
         : '<span class="muted">无扫描件</span>';
       return `
-      <tr id="tpiao-${ticket.id}">
-        <td>${ticket.id}</td>
-        <td>${invoiceLabel}</td>
+      <tr id="tpiao-${esc(ticket.id)}">
+        <td>${esc(ticket.id)}</td>
+        <td>${esc(invoiceLabel)}</td>
         <td>${relatedIds}</td>
-        <td>${relatedDesc}</td>
+        <td>${esc(relatedDesc)}</td>
         <td class="amount-cell">${fmt(ticket.amount)}</td>
         <td>${action}</td>
       </tr>`;
@@ -175,16 +281,16 @@ function renderSummaryCards() {
 
   const cards = [
     { cls: "total", label: "报销总金额", value: fmt(total) + " 元", sub: `共 ${expenseItems.length} 笔` },
-    { cls: "invoice", label: "发票金额", value: fmt(invoiceTotal) + " 元", sub: `共 ${invoiceItems.length} 张发票` },
-    {
+    { cls: "invoice", label: "有发票金额", value: fmt(invoiceTotal) + " 元", sub: `共 ${invoiceItems.length} 笔` },
+    { cls: "none", label: "无发票金额", value: fmt(noneTotal) + " 元", sub: `共 ${noneItems.length} 笔` },
+  ];
+  if (tpiaoItems.length > 0 || list.length > 0) {
+    cards.push({
       cls: "tpiao",
       label: "替票覆盖金额",
       value: fmt(tpiaoBusinessTotal) + " 元",
-      sub: `共 ${list.length} 张替票，面值合计 ${fmt(tpiaoFaceTotal)} 元 / ${tpiaoItems.length} 笔业务`,
-    },
-  ];
-  if (noneItems.length > 0) {
-    cards.push({ cls: "none", label: "无凭证金额（待补充）", value: fmt(noneTotal) + " 元", sub: `共 ${noneItems.length} 笔` });
+      sub: `共 ${list.length} 张替票 / ${tpiaoItems.length} 笔业务`,
+    });
   }
 
   document.getElementById("summary-cards").innerHTML = cards
@@ -199,17 +305,76 @@ function renderSummaryCards() {
     .join("");
 }
 
+// ---- 导出：把当前数据（含备注、分类改动）生成新的 data.js 文本 ----
+function generateDataJs() {
+  const info = reportInfo;
+  const opts = typeof categoryOptions !== "undefined" ? categoryOptions : [];
+  const tickets = typeof tpiaoList !== "undefined" ? tpiaoList : [];
+  const J = (v) => JSON.stringify(v == null ? "" : v);
+
+  let out = "// 报销单数据文件 —— 含页面上编辑的备注\n\n";
+  out += "const reportInfo = {\n";
+  out += `  reportTitle: ${J(info.reportTitle)},\n`;
+  out += `  submitter: ${J(info.submitter)},\n`;
+  out += `  department: ${J(info.department)},\n`;
+  out += `  period: ${J(info.period)},\n`;
+  out += `  reportDate: ${J(info.reportDate)},\n};\n\n`;
+  out += "const categoryOptions = [\n" + opts.map((c) => "  " + J(c)).join(",\n") + ",\n];\n\n";
+  out += "const expenseItems = [\n";
+  out += expenseItems
+    .map((it) =>
+      [
+        "  {",
+        `    id: ${it.id},`,
+        `    category: ${J(it.category)},`,
+        `    description: ${J(it.description)},`,
+        `    date: ${J(it.date)},`,
+        `    amount: ${Number(it.amount || 0)},`,
+        `    voucherType: ${J(it.voucherType)},`,
+        `    invoiceFile: ${J(it.invoiceFile)},`,
+        `    invoiceCategory: ${J(it.invoiceCategory)},`,
+        `    tpiaoIds: ${JSON.stringify(it.tpiaoIds || [])},`,
+        `    remark: ${J(it.remark)},`,
+        "  }",
+      ].join("\n")
+    )
+    .join(",\n");
+  out += "\n];\n\n";
+  out += "const tpiaoList = " + JSON.stringify(tickets, null, 2) + ";\n";
+  return out;
+}
+
+function setupExport() {
+  const btn = document.getElementById("export-btn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const text = generateDataJs();
+    const blob = new Blob([text], { type: "text/javascript;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "data.js";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+}
+
 function renderHeader() {
-  document.getElementById("report-title").textContent = reportInfo.reportTitle || "报销单";
-  document.getElementById("submitter").textContent = reportInfo.submitter || "-";
-  document.getElementById("department").textContent = reportInfo.department || "-";
-  document.getElementById("period").textContent = reportInfo.period || "-";
-  document.getElementById("report-date").textContent = reportInfo.reportDate || "-";
+  const set = (id, v) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = v;
+  };
+  set("report-title", reportInfo.reportTitle || "报销单");
+  set("submitter", reportInfo.submitter || "-");
+  set("department", reportInfo.department || "-");
+  set("period", reportInfo.period || "-");
+  set("report-date", reportInfo.reportDate || "-");
   document.title = (reportInfo.reportTitle || "报销单") + " - " + (reportInfo.submitter || "");
 }
 
 renderHeader();
 renderSummaryCards();
+renderFilterBar();
 renderExpenseTable();
 renderCategoryTable();
 renderTpiaoTable();
+setupExport();
