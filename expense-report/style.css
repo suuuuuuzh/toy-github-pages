@@ -386,3 +386,8 @@ tr.cat-row td { background: #eef2ff; font-weight: 700; padding: 8px 12px; border
 .row-op { border: 1px solid var(--color-border); background: #fff; border-radius: 5px; font-size: 11px; padding: 1px 6px; cursor: pointer; color: var(--color-muted); }
 .row-op:hover { border-color: var(--color-primary); color: var(--color-primary); }
 tr:has(.unmerge-btn) td { background: #f5f3ff; }
+
+/* 行上下移动 */
+.move-btns { display: inline-flex; flex-direction: column; line-height: 1; }
+.move-btns button { border: none; background: transparent; color: var(--color-muted); cursor: pointer; font-size: 9px; padding: 0; height: 10px; }
+.move-btns button:hover { color: var(--color-primary); }

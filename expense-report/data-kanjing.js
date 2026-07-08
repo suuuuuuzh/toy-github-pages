@@ -1247,7 +1247,7 @@ const expenseItems = [
     invoiceFile: "invoices/kanjing/lx-didiA.pdf",
     invoiceFiles: ["invoices/kanjing/lx-didiB.pdf", "invoices/kanjing/lx-didiC.pdf", "invoices/kanjing/lx-didifpA.pdf", "invoices/kanjing/lx-didifpB.pdf", "invoices/kanjing/lx-didifpC.pdf"],
     invoiceCategory: "客运服务费",
-    invoiceAmount: "",
+    invoiceAmount: 156.5,
     tpiaoIds: [],
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },

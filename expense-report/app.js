@@ -153,6 +153,54 @@ function unmerge(mergeItemId) {
   rebuildItems();
 }
 
+// ---- 自定义行顺序（在同一类目内上下移动）----
+const ORDER_KEY = "expense-order:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadOrder() {
+  try {
+    return JSON.parse(localStorage.getItem(ORDER_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+function saveOrder(a) {
+  localStorage.setItem(ORDER_KEY, JSON.stringify(a));
+}
+// 保证每个当前 id 都在顺序数组里（新出现的按默认顺序追加）
+function ensureOrder(defaultSorted) {
+  const arr = loadOrder();
+  const set = new Set(arr);
+  defaultSorted.forEach((id) => {
+    if (!set.has(id)) arr.push(id);
+  });
+  // 去掉已不存在的 id
+  const alive = new Set(expenseItems.map((i) => i.id));
+  const cleaned = arr.filter((id) => alive.has(id));
+  saveOrder(cleaned);
+  return cleaned;
+}
+function orderRank(id) {
+  const arr = loadOrder();
+  const i = arr.indexOf(id);
+  return i === -1 ? 1e9 : i;
+}
+// 在同类目内上移/下移
+function moveRow(id, dir) {
+  const item = expenseItems.find((i) => i.id === id);
+  if (!item) return;
+  const arr = loadOrder();
+  const group = expenseItems
+    .filter((i) => i.category === item.category)
+    .sort((a, b) => arr.indexOf(a.id) - arr.indexOf(b.id));
+  const pos = group.findIndex((i) => i.id === id);
+  const target = group[pos + dir];
+  if (!target) return;
+  const ia = arr.indexOf(id),
+    ib = arr.indexOf(target.id);
+  arr[ia] = target.id;
+  arr[ib] = id;
+  saveOrder(arr);
+}
+
 // ---- 人工挂发票：把发票文件路径挂到某一笔上，存本地，可挂多张 ----
 const ATTACH_KEY = "expense-attach:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
 function loadAttach() {
@@ -406,10 +454,17 @@ function renderExpenseTable() {
     const i = opts.indexOf(c);
     return 10 + (i === -1 ? 99 : i);
   };
+  // 默认顺序（类目优先 + 组内按日期），用于初始化自定义顺序
+  const defaultSorted = expenseItems
+    .slice()
+    .sort((a, b) => prio(a.category) - prio(b.category) || (a.date || "").localeCompare(b.date || ""))
+    .map((i) => i.id);
+  ensureOrder(defaultSorted);
+
   const cats = Array.from(new Set(rows.map((r) => r.category))).sort((a, b) => prio(a) - prio(b));
   let body = "<tbody>";
   cats.forEach((cat) => {
-    const group = rows.filter((r) => r.category === cat).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+    const group = rows.filter((r) => r.category === cat).sort((a, b) => orderRank(a.id) - orderRank(b.id));
     const sub = group.reduce((s, i) => s + Number(i.amount || 0), 0);
     body += `<tr class="cat-row"><td colspan="10"><span class="cat-row-name">${esc(cat)}</span><span class="cat-row-meta">${group.length} 笔 · ¥${fmt(sub)}</span></td></tr>`;
     body += group.map(rowHtml).join("");
@@ -450,9 +505,10 @@ function rowHtml(item) {
     : isAdded
     ? `<button class="row-op del-added-btn" data-id="${item.id}" title="删除这一新增行">删除</button>`
     : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" />`;
+  const moveBtns = `<span class="move-btns"><button class="move-up" data-id="${item.id}" title="上移">▲</button><button class="move-down" data-id="${item.id}" title="下移">▼</button></span>`;
   return `
       <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
-        <td><div class="num-cell">${opBtn}<span>${num}</span></div></td>
+        <td><div class="num-cell">${moveBtns}${opBtn}<span>${num}</span></div></td>
         <td>${catSelect(item)}</td>
         <td class="desc-cell"><input class="desc-input" data-id="${item.id}" value="${esc(item.description || "")}" placeholder="这笔花在哪…" /></td>
         <td><input class="date-input" data-id="${item.id}" value="${esc(item.date || "")}" placeholder="YYYY-MM-DD" /></td>
@@ -555,6 +611,18 @@ function wireRowInputs(root) {
       renderFilterBar();
       renderExpenseTable();
       renderCategoryTable();
+    })
+  );
+  root.querySelectorAll(".move-up").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      moveRow(Number(btn.getAttribute("data-id")), -1);
+      renderExpenseTable();
+    })
+  );
+  root.querySelectorAll(".move-down").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      moveRow(Number(btn.getAttribute("data-id")), 1);
+      renderExpenseTable();
     })
   );
 }
