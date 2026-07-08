@@ -232,6 +232,18 @@ function moveRow(id, dir) {
 
 // ---- 人工挂发票：把发票文件路径挂到某一笔上，存本地，可挂多张 ----
 const ATTACH_KEY = "expense-attach:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+// data.js 里自带的发票被手动移除时，记在这里，itemInvoices 会把它过滤掉
+const DETACH_KEY = "expense-detach:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadDetach() {
+  try {
+    return JSON.parse(localStorage.getItem(DETACH_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+function saveDetach(map) {
+  localStorage.setItem(DETACH_KEY, JSON.stringify(map));
+}
 function loadAttach() {
   try {
     return JSON.parse(localStorage.getItem(ATTACH_KEY) || "{}");
@@ -253,7 +265,8 @@ function itemInvoices(item) {
   (map[item.id] || []).forEach((f) => {
     if (!files.includes(f)) files.push(f);
   });
-  return files;
+  const removed = loadDetach()[item.id] || [];
+  return files.filter((f) => !removed.includes(f));
 }
 function attachInvoice(itemId, file) {
   const map = loadAttach();
@@ -262,12 +275,18 @@ function attachInvoice(itemId, file) {
   saveAttach(map);
 }
 function detachInvoice(itemId, file) {
+  // 先从本地人工挂载里移除
   const map = loadAttach();
   if (map[itemId]) {
     map[itemId] = map[itemId].filter((f) => f !== file);
     if (!map[itemId].length) delete map[itemId];
   }
   saveAttach(map);
+  // 如果这张发票是 data.js 里自带的，记到「已移除」里，itemInvoices 会过滤掉
+  const removed = loadDetach();
+  removed[itemId] = removed[itemId] || [];
+  if (!removed[itemId].includes(file)) removed[itemId].push(file);
+  saveDetach(removed);
 }
 // ---- 本地上传的发票：存成 data URL 放本地（只在本浏览器，导出后我可永久托管）----
 const UPLOAD_KEY = "expense-uploads:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
@@ -1053,7 +1072,7 @@ function setupAttachExport() {
         }
       });
     });
-    const out = { report: reportInfo.reportTitle, attachments: map, uploads: usedUploads };
+    const out = { report: reportInfo.reportTitle, attachments: map, detached: loadDetach(), uploads: usedUploads };
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
