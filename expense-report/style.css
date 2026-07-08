@@ -364,3 +364,12 @@ tfoot td {
 .inv-chip.chip-shot { background:#f1f5f9; border-color:#cbd5e1; }
 .inv-chip.chip-shot a { color:#475569; }
 .upload-lbl { font-size:12px; }
+
+/* 主表内的类目分隔行 */
+tr.cat-row td { background: #eef2ff; font-weight: 700; padding: 8px 12px; border-top: 2px solid #c7d2fe; }
+.cat-row-name { color: var(--color-primary); font-size: 14px; }
+.cat-row-meta { color: var(--color-muted); font-weight: 500; font-size: 12px; margin-left: 10px; font-variant-numeric: tabular-nums; }
+
+/* 抵票 on/off 开关 */
+.dipiao-toggle { border: 1px solid var(--color-tpiao); background: #fff; color: var(--color-tpiao); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.dipiao-toggle.on { background: var(--color-tpiao); color: #fff; }

@@ -158,11 +158,31 @@ function classifyFiles(item) {
   itemInvoices(item).forEach((f) => out[fileKind(f)].push(f));
   return out;
 }
+// 抵票标记（on/off，不一定要上传文件，点一下就标成抵票）
+const DIPIAO_KEY = "expense-dipiaoflag:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadDipiaoFlags() {
+  try {
+    return JSON.parse(localStorage.getItem(DIPIAO_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+function isDipiaoFlagged(item) {
+  return loadDipiaoFlags().indexOf(item.id) !== -1;
+}
+function toggleDipiaoFlag(id) {
+  const arr = loadDipiaoFlags();
+  const i = arr.indexOf(id);
+  if (i === -1) arr.push(id);
+  else arr.splice(i, 1);
+  localStorage.setItem(DIPIAO_KEY, JSON.stringify(arr));
+}
+
 function hasInvoice(item) {
   return classifyFiles(item).invoice.length > 0;
 }
 function hasDipiao(item) {
-  return classifyFiles(item).dipiao.length > 0;
+  return classifyFiles(item).dipiao.length > 0 || isDipiaoFlagged(item);
 }
 function hasScreenshot(item) {
   return classifyFiles(item).screenshot.length > 0;
@@ -277,7 +297,23 @@ function renderExpenseTable() {
       </tr>
     </thead>`;
 
-  const body = "<tbody>" + rows.map(rowHtml).join("") + "</tbody>";
+  // 按类目分组显示：交通费、住宿费在前，其余按 categoryOptions 顺序；组内按日期
+  const opts = typeof categoryOptions !== "undefined" ? categoryOptions.slice() : [];
+  const prio = (c) => {
+    if (c === "交通费") return 0;
+    if (c === "住宿费") return 1;
+    const i = opts.indexOf(c);
+    return 10 + (i === -1 ? 99 : i);
+  };
+  const cats = Array.from(new Set(rows.map((r) => r.category))).sort((a, b) => prio(a) - prio(b));
+  let body = "<tbody>";
+  cats.forEach((cat) => {
+    const group = rows.filter((r) => r.category === cat).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+    const sub = group.reduce((s, i) => s + Number(i.amount || 0), 0);
+    body += `<tr class="cat-row"><td colspan="10"><span class="cat-row-name">${esc(cat)}</span><span class="cat-row-meta">${group.length} 笔 · ¥${fmt(sub)}</span></td></tr>`;
+    body += group.map(rowHtml).join("");
+  });
+  body += "</tbody>";
 
   const shownTotal = rows.reduce((sum, i) => sum + Number(i.amount || 0), 0);
   const foot = `
@@ -376,6 +412,14 @@ function wireRowInputs(root) {
       renderCategoryTable();
     });
   });
+  root.querySelectorAll(".dipiao-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      toggleDipiaoFlag(Number(btn.getAttribute("data-id")));
+      renderFilterBar();
+      renderExpenseTable();
+      renderSummaryCards();
+    });
+  });
 }
 
 // 凭证类型徽章
@@ -422,7 +466,9 @@ function invoiceCell(item) {
     })
     .join("");
   const btn = `<button class="btn-outline attach-btn" data-id="${item.id}">＋挂发票</button>`;
-  return `<div class="inv-wrap">${chips}${btn}</div>`;
+  const flagged = isDipiaoFlagged(item);
+  const dipiaoToggle = `<button class="dipiao-toggle${flagged ? " on" : ""}" data-id="${item.id}" title="点一下标记/取消这笔是抵票">${flagged ? "✓抵票" : "抵票"}</button>`;
+  return `<div class="inv-wrap">${chips}${btn}${dipiaoToggle}</div>`;
 }
 
 const expandedCats = new Set();
