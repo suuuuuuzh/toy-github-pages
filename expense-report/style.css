@@ -393,5 +393,11 @@ tr:has(.unmerge-btn) td { background: #f5f3ff; }
 .move-btns button:hover { color: var(--color-primary); }
 
 /* 删除单行按钮 */
-.del-row-btn { border: none; background: transparent; color: #cbd5e1; cursor: pointer; font-size: 13px; padding: 0 2px; line-height: 1; }
+.del-row-btn { border: none; background: transparent; color: #ef4444; cursor: pointer; font-size: 15px; font-weight: 700; padding: 0 3px; line-height: 1; }
 .del-row-btn:hover { color: var(--color-none); }
+
+/* 拖动手柄 */
+.drag-grip { cursor: grab; color: #94a3b8; font-size: 15px; touch-action: none; user-select: none; padding: 0 2px; }
+.drag-grip:active { cursor: grabbing; }
+tr.dragging td { background: #dbeafe !important; opacity: 0.9; }
+tr.dragging { box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
