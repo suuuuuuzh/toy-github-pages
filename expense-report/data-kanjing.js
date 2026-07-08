@@ -932,16 +932,16 @@ const expenseItems = [
   {
     id: 66,
     category: "交通费",
-    description: "5/27 泰山晚饭打车",
+    description: "5/27 泰山晚饭打车（两程同一张票）",
     date: "2026-05-27",
-    amount: 8.6,
-    voucherType: "none",
-    invoiceFile: "",
+    amount: 15.6,
+    voucherType: "invoice",
+    invoiceFile: "invoices/kanjing/inv-019.pdf",
     invoiceFiles: [],
-    invoiceCategory: "",
-    invoiceAmount: "",
+    invoiceCategory: "客运服务费",
+    invoiceAmount: 15.6,
     tpiaoIds: [],
-    remark: "滴滴出行 特惠快车打车-燕师傅-05月27日行程",
+    remark: "两程（燕师傅8.6 + 许师傅7.0）开在同一张票",
   },
   {
     id: 67,
@@ -987,20 +987,6 @@ const expenseItems = [
   },
   {
     id: 70,
-    category: "交通费",
-    description: "5/27 泰山晚饭打车",
-    date: "2026-05-28",
-    amount: 7.0,
-    voucherType: "invoice",
-    invoiceFile: "invoices/kanjing/inv-019.pdf",
-    invoiceFiles: [],
-    invoiceCategory: "客运服务费",
-    invoiceAmount: 7.0,
-    tpiaoIds: [],
-    remark: "滴滴出行 特惠快车打车-许师傅-05月27日行程",
-  },
-  {
-    id: 71,
     category: "餐费",
     description: "5/28 咖啡，三人",
     date: "2026-05-28",
@@ -1014,7 +1000,7 @@ const expenseItems = [
     remark: "美团 肯悦咖啡（泰安银座店）",
   },
   {
-    id: 72,
+    id: 71,
     category: "餐费",
     description: "5/28 泰山上水",
     date: "2026-05-28",
@@ -1028,7 +1014,7 @@ const expenseItems = [
     remark: "无人售货机 盛马售货机仅售2999元-外星人电解水外星人电解水外星人电解...",
   },
   {
-    id: 73,
+    id: 72,
     category: "餐费",
     description: "5/28 泰山上水",
     date: "2026-05-28",
@@ -1042,7 +1028,7 @@ const expenseItems = [
     remark: "无人售货机 盛马售货机仅售2999元-外星人电解水外星人电解水外星人电解...",
   },
   {
-    id: 74,
+    id: 73,
     category: "餐费",
     description: "5/28 泰山上水",
     date: "2026-05-28",
@@ -1056,7 +1042,7 @@ const expenseItems = [
     remark: "无人售货机 盛马售货机仅售2999元-外星人电解质水外星人电解质水外星人...",
   },
   {
-    id: 75,
+    id: 74,
     category: "餐费",
     description: "5/28 泰山上水",
     date: "2026-05-28",
@@ -1070,7 +1056,7 @@ const expenseItems = [
     remark: "无人售货机 盛马售货机仅售2999元-外星人电解水外星人电解水外星人电解...",
   },
   {
-    id: 76,
+    id: 75,
     category: "餐费",
     description: "5/28 泰山午饭，六人",
     date: "2026-05-28",
@@ -1084,7 +1070,7 @@ const expenseItems = [
     remark: "泰安市可栗香",
   },
   {
-    id: 77,
+    id: 76,
     category: "餐费",
     description: "5/28 泰山午饭，六人",
     date: "2026-05-28",
@@ -1098,7 +1084,7 @@ const expenseItems = [
     remark: "沪上阿姨 【堂食】_泰安泰山景区店_61318_37090204247",
   },
   {
-    id: 78,
+    id: 77,
     category: "餐费",
     description: "5/28 泰山午饭，六人",
     date: "2026-05-28",
@@ -1112,7 +1098,7 @@ const expenseItems = [
     remark: "昌盛快餐 /",
   },
   {
-    id: 79,
+    id: 78,
     category: "业务招待费",
     description: "给堪景外联制片买烟",
     date: "2026-05-18",
@@ -1126,7 +1112,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 80,
+    id: 79,
     category: "交通费",
     description: "堪景打车前往机场",
     date: "2026-05-20",
@@ -1140,7 +1126,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 81,
+    id: 80,
     category: "餐费",
     description: "导演、制片晚餐",
     date: "2026-05-28",
@@ -1154,7 +1140,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 82,
+    id: 81,
     category: "餐费",
     description: "导演、制片出发咖啡",
     date: "2026-05-29",
@@ -1168,7 +1154,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 83,
+    id: 82,
     category: "餐费",
     description: "导演、制片、协拍4人早餐",
     date: "2026-05-29",
@@ -1182,7 +1168,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 84,
+    id: 83,
     category: "快递费",
     description: "器材快递回租赁公司(济南→北京)",
     date: "2026-05-29",
@@ -1196,7 +1182,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 85,
+    id: 84,
     category: "快递费",
     description: "器材电池闪送回租赁公司",
     date: "2026-05-30",
@@ -1210,7 +1196,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 86,
+    id: 85,
     category: "交通费",
     description: "导演济南回深圳机票",
     date: "2026-05-30",
@@ -1224,7 +1210,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 87,
+    id: 86,
     category: "交通费",
     description: "赵馨怡济南回北京高铁",
     date: "2026-05-30",
@@ -1238,7 +1224,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 88,
+    id: 87,
     category: "交通费",
     description: "制片济南打车到南站",
     date: "2026-05-30",
@@ -1252,7 +1238,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 89,
+    id: 88,
     category: "交通费",
     description: "制片出行打车行程(见行程单)",
     date: "2026-05-31",
@@ -1266,7 +1252,7 @@ const expenseItems = [
     remark: "Lexie备用金实报（原5000借款，实支3956.34，退1043.66）",
   },
   {
-    id: 90,
+    id: 89,
     category: "交通费",
     description: "5/28 水素高铁 济南- 北京",
     date: "2026-05-28",
@@ -1280,7 +1266,7 @@ const expenseItems = [
     remark: "中铁网络 12306消费",
   },
   {
-    id: 91,
+    id: 90,
     category: "交通费",
     description: "5/28 水素 泰安- 济南",
     date: "2026-05-28",
@@ -1294,7 +1280,7 @@ const expenseItems = [
     remark: "滴滴出行 特惠快车打车-刘师傅-05月28日行程",
   },
   {
-    id: 92,
+    id: 91,
     category: "汽车费用",
     description: "勘景油费",
     date: "2026-05-22",
@@ -1308,7 +1294,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）",
   },
   {
-    id: 93,
+    id: 92,
     category: "汽车费用",
     description: "勘景油费",
     date: "2026-05-25",
@@ -1322,7 +1308,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）",
   },
   {
-    id: 94,
+    id: 93,
     category: "汽车费用",
     description: "勘景过路费",
     date: "2026-05-22",
@@ -1336,7 +1322,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）",
   },
   {
-    id: 95,
+    id: 94,
     category: "汽车费用",
     description: "勘景过路费",
     date: "2026-05-23",
@@ -1350,7 +1336,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）",
   },
   {
-    id: 96,
+    id: 95,
     category: "汽车费用",
     description: "勘景过路费",
     date: "2026-05-24",
@@ -1364,7 +1350,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）",
   },
   {
-    id: 97,
+    id: 96,
     category: "汽车费用",
     description: "勘景过路费",
     date: "2026-05-24",
@@ -1378,7 +1364,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）",
   },
   {
-    id: 98,
+    id: 97,
     category: "汽车费用",
     description: "勘景停车费",
     date: "2026-05-20",
@@ -1392,7 +1378,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 99,
+    id: 98,
     category: "汽车费用",
     description: "勘景停车费",
     date: "2026-05-20",
@@ -1406,7 +1392,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 100,
+    id: 99,
     category: "汽车费用",
     description: "勘景停车费",
     date: "2026-05-22",
@@ -1420,7 +1406,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 101,
+    id: 100,
     category: "汽车费用",
     description: "勘景停车费",
     date: "2026-05-23",
@@ -1434,7 +1420,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 102,
+    id: 101,
     category: "汽车费用",
     description: "勘景停车费",
     date: "2026-05-23",
@@ -1448,7 +1434,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 103,
+    id: 102,
     category: "餐费",
     description: "勘景早餐",
     date: "2026-05-23",
@@ -1462,7 +1448,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 104,
+    id: 103,
     category: "餐费",
     description: "勘景午餐",
     date: "2026-05-23",
@@ -1476,7 +1462,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 105,
+    id: 104,
     category: "器材",
     description: "无人机租赁(400元/天×5)",
     date: "2026-05-31",
@@ -1490,7 +1476,7 @@ const expenseItems = [
     remark: "杨天奇 贵阳/都匀勘景实报（合计3465.07）（无票）",
   },
   {
-    id: 106,
+    id: 105,
     category: "其他",
     description: "贵州外联费用",
     date: "2026-05-31",
@@ -1504,7 +1490,7 @@ const expenseItems = [
     remark: "杨天奇 转账备注:堪景红包🧧",
   },
   {
-    id: 107,
+    id: 106,
     category: "器材",
     description: "器材租赁",
     date: "2026-06-02",
@@ -1516,6 +1502,20 @@ const expenseItems = [
     invoiceAmount: "",
     tpiaoIds: [],
     remark: "枪枪影视-器材租赁部 枪枪影视-器材租赁部 转账备注:5月20–29日10天器材租赁费用",
+  },
+  {
+    id: 107,
+    category: "交通费",
+    description: "5/28 打车泰山-济南站，水素",
+    date: "2026-05-28",
+    amount: 140.9,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "",
   }
 ];
 
