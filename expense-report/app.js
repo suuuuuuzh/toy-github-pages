@@ -24,13 +24,6 @@ function saveRemarkOverride(id, text) {
   else delete map[id];
   localStorage.setItem(REMARK_KEY, JSON.stringify(map));
 }
-// 把本地备注覆盖到 data.js 的初始值上
-(function applyRemarkOverrides() {
-  const map = loadRemarkOverrides();
-  expenseItems.forEach((it) => {
-    if (Object.prototype.hasOwnProperty.call(map, it.id)) it.remark = map[it.id];
-  });
-})();
 
 // ---- 字段编辑（说明/类目/日期/金额）本地存储 ----
 const EDIT_KEY = "expense-edits:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
@@ -49,13 +42,116 @@ function setField(id, field, value) {
   map[id][field] = value;
   localStorage.setItem(EDIT_KEY, JSON.stringify(map));
 }
-(function applyEdits() {
-  const map = loadEdits();
-  expenseItems.forEach((it) => {
-    const e = map[it.id];
+// ---- 添加的行 / 合并操作：本地存储，可导出 ----
+const ADDED_KEY = "expense-added:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+const MERGE_KEY = "expense-merges:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadAdded() {
+  try {
+    return JSON.parse(localStorage.getItem(ADDED_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+function saveAdded(a) {
+  localStorage.setItem(ADDED_KEY, JSON.stringify(a));
+}
+function loadMerges() {
+  try {
+    return JSON.parse(localStorage.getItem(MERGE_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+function saveMerges(m) {
+  localStorage.setItem(MERGE_KEY, JSON.stringify(m));
+}
+
+// 从原始 data.js + 本地（合并/添加/编辑/备注）重算 expenseItems
+let BASE_ITEMS = null;
+function rebuildItems() {
+  if (!BASE_ITEMS) BASE_ITEMS = JSON.parse(JSON.stringify(expenseItems));
+  const merges = loadMerges();
+  const mergedIds = new Set();
+  merges.forEach((m) => m.ids.forEach((id) => mergedIds.add(id)));
+  let list = BASE_ITEMS.filter((it) => !mergedIds.has(it.id)).map((it) => JSON.parse(JSON.stringify(it)));
+  merges.forEach((m) => list.push(JSON.parse(JSON.stringify(m.item))));
+  loadAdded().forEach((a) => list.push(JSON.parse(JSON.stringify(a))));
+  const edits = loadEdits();
+  const rem = loadRemarkOverrides();
+  list.forEach((it) => {
+    const e = edits[it.id];
     if (e) Object.keys(e).forEach((k) => (it[k] = e[k]));
+    if (Object.prototype.hasOwnProperty.call(rem, it.id)) it.remark = rem[it.id];
   });
-})();
+  expenseItems.length = 0;
+  list.forEach((x) => expenseItems.push(x));
+}
+
+// 添加一笔空白行
+function addBlankRow() {
+  const added = loadAdded();
+  const id = 10000 + Date.now() % 100000;
+  added.push({
+    id,
+    category: "其他",
+    description: "",
+    date: "",
+    amount: 0,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "",
+    _added: true,
+  });
+  saveAdded(added);
+  rebuildItems();
+}
+function deleteAddedRow(id) {
+  saveAdded(loadAdded().filter((a) => a.id !== id));
+  // 清掉可能的编辑/挂载
+  rebuildItems();
+}
+
+// 合并选中的几笔为一笔（几单开在一张票时用）
+const selectedForMerge = new Set();
+function mergeSelected() {
+  const ids = Array.from(selectedForMerge);
+  if (ids.length < 2) {
+    alert("请先勾选至少两笔再合并");
+    return;
+  }
+  const src = ids.map((id) => expenseItems.find((i) => i.id === id)).filter(Boolean);
+  const files = [];
+  src.forEach((it) => itemInvoices(it).forEach((f) => !files.includes(f) && files.push(f)));
+  const invAmts = src.map((it) => (it.invoiceAmount === "" || it.invoiceAmount == null ? null : Number(it.invoiceAmount))).filter((x) => x != null);
+  const merged = {
+    id: 20000 + (Date.now() % 100000),
+    category: src[0].category,
+    description: src.map((s) => s.description).filter(Boolean).join("；") || src[0].description,
+    date: src.map((s) => s.date).filter(Boolean).sort()[0] || src[0].date,
+    amount: Math.round(src.reduce((s, i) => s + Number(i.amount || 0), 0) * 100) / 100,
+    voucherType: files.length ? "invoice" : "none",
+    invoiceFile: files[0] || "",
+    invoiceFiles: files.slice(1),
+    invoiceCategory: src.map((s) => s.invoiceCategory).filter(Boolean)[0] || "",
+    invoiceAmount: invAmts.length ? Math.round(invAmts.reduce((a, b) => a + b, 0) * 100) / 100 : "",
+    tpiaoIds: [],
+    remark: "【合并】" + src.map((s) => s.remark).filter(Boolean).join("；"),
+    _merged: true,
+  };
+  const merges = loadMerges();
+  merges.push({ ids: ids, item: merged });
+  saveMerges(merges);
+  selectedForMerge.clear();
+  rebuildItems();
+}
+function unmerge(mergeItemId) {
+  saveMerges(loadMerges().filter((m) => m.item.id !== mergeItemId));
+  rebuildItems();
+}
 
 // ---- 人工挂发票：把发票文件路径挂到某一笔上，存本地，可挂多张 ----
 const ATTACH_KEY = "expense-attach:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
@@ -332,6 +428,7 @@ function renderExpenseTable() {
 
   table.innerHTML = head + body + foot;
   wireRowInputs(table);
+  updateMergeBtn();
 }
 
 // 一行的 HTML（主表和类目展开表共用）
@@ -345,9 +442,17 @@ function catSelect(item) {
   );
 }
 function rowHtml(item) {
+  const isMerged = item._merged;
+  const isAdded = item._added;
+  const num = isMerged ? "合并" : isAdded ? "新增" : item.id;
+  const opBtn = isMerged
+    ? `<button class="row-op unmerge-btn" data-id="${item.id}" title="拆开合并">拆开</button>`
+    : isAdded
+    ? `<button class="row-op del-added-btn" data-id="${item.id}" title="删除这一新增行">删除</button>`
+    : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" />`;
   return `
       <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
-        <td>${item.id}</td>
+        <td><div class="num-cell">${opBtn}<span>${num}</span></div></td>
         <td>${catSelect(item)}</td>
         <td class="desc-cell"><input class="desc-input" data-id="${item.id}" value="${esc(item.description || "")}" placeholder="这笔花在哪…" /></td>
         <td><input class="date-input" data-id="${item.id}" value="${esc(item.date || "")}" placeholder="YYYY-MM-DD" /></td>
@@ -425,6 +530,40 @@ function wireRowInputs(root) {
       renderSummaryCards();
     });
   });
+  root.querySelectorAll(".merge-cb").forEach((cb) => {
+    cb.addEventListener("change", () => {
+      const id = Number(cb.getAttribute("data-id"));
+      if (cb.checked) selectedForMerge.add(id);
+      else selectedForMerge.delete(id);
+      updateMergeBtn();
+    });
+  });
+  root.querySelectorAll(".unmerge-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      unmerge(Number(btn.getAttribute("data-id")));
+      renderSummaryCards();
+      renderFilterBar();
+      renderExpenseTable();
+      renderCategoryTable();
+    })
+  );
+  root.querySelectorAll(".del-added-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      if (!confirm("删除这一新增行？")) return;
+      deleteAddedRow(Number(btn.getAttribute("data-id")));
+      renderSummaryCards();
+      renderFilterBar();
+      renderExpenseTable();
+      renderCategoryTable();
+    })
+  );
+}
+function updateMergeBtn() {
+  const b = document.getElementById("merge-btn");
+  if (b) {
+    b.textContent = `合并所选（${selectedForMerge.size}）`;
+    b.disabled = selectedForMerge.size < 2;
+  }
 }
 
 // 凭证类型徽章
@@ -943,6 +1082,29 @@ function setMeta(field, value) {
   } catch (e) {}
 })();
 
+function renderEverything() {
+  renderSummaryCards();
+  renderFilterBar();
+  renderExpenseTable();
+  renderCategoryTable();
+}
+// 添加一笔 / 合并所选 按钮
+function setupRowOps() {
+  const addBtn = document.getElementById("add-row-btn");
+  if (addBtn)
+    addBtn.addEventListener("click", () => {
+      addBlankRow();
+      renderEverything();
+    });
+  const mergeBtn = document.getElementById("merge-btn");
+  if (mergeBtn)
+    mergeBtn.addEventListener("click", () => {
+      mergeSelected();
+      renderEverything();
+    });
+}
+
+rebuildItems();
 renderHeader();
 renderSummaryCards();
 renderFilterBar();
@@ -953,3 +1115,4 @@ renderInvoiceList();
 setupExport();
 setupAttachExport();
 setupPreview();
+setupRowOps();
