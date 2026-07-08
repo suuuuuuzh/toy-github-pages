@@ -131,7 +131,12 @@ function fileKind(f) {
     const u = uploadMeta(f);
     return (u && u.kind) || "invoice";
   }
-  return "invoice"; // 发票库里的都算正式发票
+  // 发票库里标了「抵票/替票」的文件，按抵票算
+  if (typeof invoiceList !== "undefined") {
+    const m = invoiceList.find((v) => v.file === f);
+    if (m && (m.kind === "抵票" || m.kind === "替票")) return "dipiao";
+  }
+  return "invoice";
 }
 
 // 发票清单里查一条的显示信息（含本地上传）
@@ -286,7 +291,7 @@ function renderExpenseTable() {
       <tr>
         <th>序号</th>
         <th>类目</th>
-        <th>说明（钱花到哪了 · 可编辑）</th>
+        <th>说明</th>
         <th>日期</th>
         <th>金额（元 · 可编辑）</th>
         <th>凭证</th>
@@ -576,10 +581,15 @@ function renderSummaryCards() {
 
   const sum = (arr) => arr.reduce((s, i) => s + Number(i.amount || 0), 0);
   const total = sum(expenseItems);
+  // 发票金额总计：各笔「发票金额」之和（有填的才算）
+  const invoiceAmtTotal = expenseItems.reduce(
+    (s, i) => s + (i.invoiceAmount === "" || i.invoiceAmount == null ? 0 : Number(i.invoiceAmount)),
+    0
+  );
 
   const cards = [
-    { cls: "total", label: "报销总金额", value: fmt(total) + " 元", sub: `共 ${expenseItems.length} 笔` },
-    { cls: "invoice", label: "有发票金额", value: fmt(sum(invoiceItems)) + " 元", sub: `共 ${invoiceItems.length} 笔` },
+    { cls: "total", label: "实际付出总计", value: fmt(total) + " 元", sub: `共 ${expenseItems.length} 笔（流水实付）` },
+    { cls: "invoice", label: "发票金额总计", value: fmt(invoiceAmtTotal) + " 元", sub: `已开票金额之和` },
     { cls: "none", label: "无发票金额", value: fmt(sum(noneItems)) + " 元", sub: `共 ${noneItems.length} 笔` },
   ];
   if (dipiaoItems.length > 0) {
@@ -818,7 +828,7 @@ function renderInvoiceList() {
         <td>${esc(v.merchant || "-")}</td>
         <td>${esc(v.kind || "-")}</td>
         <td class="amount-cell">${v.amount != null ? fmt(v.amount) : "-"}</td>
-        <td><a class="btn" href="${esc(v.file)}" download target="_blank" rel="noopener">下载</a></td>
+        <td><a class="btn inv-list-link" href="${esc(v.file)}" download target="_blank" rel="noopener">下载</a></td>
       </tr>`
     )
     .join("");
@@ -829,6 +839,59 @@ function renderInvoiceList() {
       <thead><tr><th>日期</th><th>商户</th><th>类型</th><th>金额（元）</th><th>操作</th></tr></thead>
       <tbody>${rows}</tbody>
     </table></div>`;
+}
+
+// 鼠标悬停发票 chip 时预览（图片直接显示，PDF 用 iframe 渲染）
+function setupPreview() {
+  if (document.getElementById("inv-preview")) return;
+  const box = document.createElement("div");
+  box.id = "inv-preview";
+  box.style.display = "none";
+  document.body.appendChild(box);
+
+  function extOf(a) {
+    const dn = a.getAttribute("download") || "";
+    const href = a.getAttribute("href") || "";
+    let ext = (dn.split(".").pop() || "").toLowerCase();
+    if (!ext || ext.length > 5) ext = (href.split("?")[0].split(".").pop() || "").toLowerCase();
+    if (href.indexOf("data:image") === 0) ext = "png";
+    if (href.indexOf("data:application/pdf") === 0) ext = "pdf";
+    return ext;
+  }
+  document.addEventListener("mouseover", (e) => {
+    const a = e.target.closest && e.target.closest(".inv-chip a, .pick-row a, .inv-list-link");
+    if (!a) return;
+    const href = a.getAttribute("href");
+    if (!href || href === "#") return;
+    const ext = extOf(a);
+    if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+      box.innerHTML = `<img src="${href}" alt="预览" />`;
+    } else if (ext === "pdf") {
+      box.innerHTML = `<iframe src="${href}#toolbar=0&navpanes=0" title="预览"></iframe>`;
+    } else {
+      box.innerHTML = `<div class="prev-none">此类型（${esc(ext || "?")}）无法预览，点开可下载查看</div>`;
+    }
+    box.style.display = "block";
+    positionPreview(e);
+  });
+  document.addEventListener("mousemove", (e) => {
+    if (box.style.display === "block") positionPreview(e);
+  });
+  document.addEventListener("mouseout", (e) => {
+    const a = e.target.closest && e.target.closest(".inv-chip a, .pick-row a, .inv-list-link");
+    if (a) box.style.display = "none";
+  });
+  function positionPreview(e) {
+    const w = 300,
+      h = 320;
+    let x = e.clientX + 18,
+      y = e.clientY + 18;
+    if (x + w > window.innerWidth) x = e.clientX - w - 18;
+    if (y + h > window.innerHeight) y = window.innerHeight - h - 10;
+    if (y < 10) y = 10;
+    box.style.left = x + "px";
+    box.style.top = y + "px";
+  }
 }
 
 function renderHeader() {
@@ -889,3 +952,4 @@ renderTpiaoTable();
 renderInvoiceList();
 setupExport();
 setupAttachExport();
+setupPreview();
