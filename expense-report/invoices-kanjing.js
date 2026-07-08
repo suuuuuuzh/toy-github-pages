@@ -1,4 +1,4 @@
-// 堪景发票清单（托管在 invoices/kanjing/，供人工对应）
+// 堪景发票清单
 const invoiceList = [
  {
   "file": "invoices/kanjing/inv-001.pdf",
@@ -398,5 +398,161 @@ const invoiceList = [
   "merchant": "华住酒店集团",
   "amount": null,
   "kind": "结账单"
+ },
+ {
+  "file": "invoices/kanjing/lx-breakfast-92.jpg",
+  "date": "2026-05-29",
+  "merchant": "4人早餐",
+  "amount": 92.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-coffee-35.jpg",
+  "date": "2026-05-29",
+  "merchant": "出发咖啡",
+  "amount": 35.72,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-didiA.pdf",
+  "date": "2026-05",
+  "merchant": "制片打车行程A",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-didiB.pdf",
+  "date": "2026-05",
+  "merchant": "制片打车行程B",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-didiC.pdf",
+  "date": "2026-05",
+  "merchant": "制片打车行程C",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-didifpA.pdf",
+  "date": "2026-05",
+  "merchant": "制片打车发票A",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-didifpB.pdf",
+  "date": "2026-05",
+  "merchant": "制片打车发票B",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-didifpC.pdf",
+  "date": "2026-05",
+  "merchant": "制片打车发票C",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-dinner-131.jpg",
+  "date": "2026-05-28",
+  "merchant": "导演制片晚餐",
+  "amount": 131.6,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-gaotie-223.pdf",
+  "date": "2026-05-30",
+  "merchant": "赵馨怡高铁济南北京",
+  "amount": 223.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-jichang-109.jpg",
+  "date": "2026-05-20",
+  "merchant": "打车去机场",
+  "amount": 109.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-jipiao-1097a.jpg",
+  "date": "2026-05-30",
+  "merchant": "导演机票济南深圳A",
+  "amount": 1097.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-jipiao-1097b.jpg",
+  "date": "2026-05-30",
+  "merchant": "导演机票济南深圳B",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-sf-106.pdf",
+  "date": "2026-05-29",
+  "merchant": "器材快递济南到北京",
+  "amount": 106.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-shansong-80.pdf",
+  "date": "2026-05-30",
+  "merchant": "器材电池闪送",
+  "amount": 80.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/lx-yan-530.jpg",
+  "date": "2026-05-18",
+  "merchant": "买烟(外联)",
+  "amount": 530.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/tq-gonglu-1.pdf",
+  "date": "2026-05-22",
+  "merchant": "过路费",
+  "amount": 16.15,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/tq-gonglu-2.pdf",
+  "date": "2026-05-23",
+  "merchant": "过路费",
+  "amount": 57.76,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/tq-gonglu-3.pdf",
+  "date": "2026-05-24",
+  "merchant": "过路费",
+  "amount": 20.9,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/tq-gonglu-4.pdf",
+  "date": "2026-05-24",
+  "merchant": "过路费",
+  "amount": 33.4,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/tq-youfei-520.pdf",
+  "date": "2026-05-22",
+  "merchant": "油费",
+  "amount": 520.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/tq-youfei-625.pdf",
+  "date": "2026-05-25",
+  "merchant": "油费",
+  "amount": 625.86,
+  "kind": "发票"
  }
 ];
+
+const invoiceZip = "invoices/kanjing-all.zip";
