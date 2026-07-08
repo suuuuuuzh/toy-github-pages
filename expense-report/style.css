@@ -119,6 +119,21 @@ th {
   color: var(--color-muted);
 }
 
+/* 主明细表：滚动时表头一直吸附在页面顶部。
+   table 上的 overflow:hidden 会拦截 sticky，这里去掉。 */
+#expense-table { overflow: visible; }
+#expense-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: inset 0 -1px 0 var(--color-border), 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+/* 桌面端不设 overflow，页面滚动时表头才能吸顶；窄屏才允许横向滚动 */
+.table-scroll { overflow-x: visible; }
+@media (max-width: 900px) {
+  .table-scroll { overflow-x: auto; }
+}
+
 tbody tr:last-child td {
   border-bottom: none;
 }
