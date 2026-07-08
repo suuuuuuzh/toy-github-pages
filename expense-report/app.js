@@ -66,7 +66,27 @@ function saveMerges(m) {
   localStorage.setItem(MERGE_KEY, JSON.stringify(m));
 }
 
-// 从原始 data.js + 本地（合并/添加/编辑/备注）重算 expenseItems
+// 删除的行（可恢复）
+const DELETED_KEY = "expense-deleted:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadDeleted() {
+  try {
+    return JSON.parse(localStorage.getItem(DELETED_KEY) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+function deleteRow(id) {
+  const arr = loadDeleted();
+  if (!arr.includes(id)) arr.push(id);
+  localStorage.setItem(DELETED_KEY, JSON.stringify(arr));
+  rebuildItems();
+}
+function restoreDeleted() {
+  localStorage.removeItem(DELETED_KEY);
+  rebuildItems();
+}
+
+// 从原始 data.js + 本地（合并/添加/编辑/备注/删除）重算 expenseItems
 let BASE_ITEMS = null;
 function rebuildItems() {
   if (!BASE_ITEMS) BASE_ITEMS = JSON.parse(JSON.stringify(expenseItems));
@@ -76,6 +96,8 @@ function rebuildItems() {
   let list = BASE_ITEMS.filter((it) => !mergedIds.has(it.id)).map((it) => JSON.parse(JSON.stringify(it)));
   merges.forEach((m) => list.push(JSON.parse(JSON.stringify(m.item))));
   loadAdded().forEach((a) => list.push(JSON.parse(JSON.stringify(a))));
+  const deleted = new Set(loadDeleted());
+  list = list.filter((it) => !deleted.has(it.id));
   const edits = loadEdits();
   const rem = loadRemarkOverrides();
   list.forEach((it) => {
@@ -504,7 +526,7 @@ function rowHtml(item) {
     ? `<button class="row-op unmerge-btn" data-id="${item.id}" title="拆开合并">拆开</button>`
     : isAdded
     ? `<button class="row-op del-added-btn" data-id="${item.id}" title="删除这一新增行">删除</button>`
-    : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" />`;
+    : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" /><button class="del-row-btn" data-id="${item.id}" title="删除这一笔">✕</button>`;
   const moveBtns = `<span class="move-btns"><button class="move-up" data-id="${item.id}" title="上移">▲</button><button class="move-down" data-id="${item.id}" title="下移">▼</button></span>`;
   return `
       <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
@@ -613,6 +635,13 @@ function wireRowInputs(root) {
       renderCategoryTable();
     })
   );
+  root.querySelectorAll(".del-row-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      if (!confirm("删除这一笔？（可点上方「恢复已删除」找回）")) return;
+      deleteRow(Number(btn.getAttribute("data-id")));
+      renderEverything();
+    })
+  );
   root.querySelectorAll(".move-up").forEach((btn) =>
     btn.addEventListener("click", () => {
       moveRow(Number(btn.getAttribute("data-id")), -1);
@@ -631,6 +660,12 @@ function updateMergeBtn() {
   if (b) {
     b.textContent = `合并所选（${selectedForMerge.size}）`;
     b.disabled = selectedForMerge.size < 2;
+  }
+  const rb = document.getElementById("restore-deleted-btn");
+  if (rb) {
+    const n = loadDeleted().length;
+    rb.style.display = n ? "" : "none";
+    rb.textContent = `恢复已删除（${n}）`;
   }
 }
 
@@ -1168,6 +1203,12 @@ function setupRowOps() {
   if (mergeBtn)
     mergeBtn.addEventListener("click", () => {
       mergeSelected();
+      renderEverything();
+    });
+  const restoreBtn = document.getElementById("restore-deleted-btn");
+  if (restoreBtn)
+    restoreBtn.addEventListener("click", () => {
+      restoreDeleted();
       renderEverything();
     });
 }
