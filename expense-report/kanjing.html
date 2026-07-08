@@ -10,13 +10,9 @@
   <div class="container">
     <header>
       <h1 id="report-title">报销单</h1>
-      <div class="meta">
-        <span>报销人：<b id="submitter"></b></span>
-        <span>部门：<b id="department"></b></span>
-        <span>报销周期：<b id="period"></b></span>
-        <span>填报日期：<b id="report-date"></b></span>
-        <span><a href="index.html">← 返回</a></span>
-      </div>
+      <div class="meta" id="report-meta"></div>
+      <div class="meta" style="margin-top:6px"><span>填报日期：<b id="report-date"></b></span><span><a href="index.html">← 返回</a></span></div>
+      <h2 style="margin:14px 0 0;font-size:18px;">费用报销明细</h2>
     </header>
 
     <section class="summary-cards" id="summary-cards"></section>
@@ -24,7 +20,7 @@
 
     <section>
       <div class="section-head">
-        <h2>报销明细</h2>
+        <h2>明细</h2>
         <div class="section-actions">
           <div id="filter-bar" class="filter-bar"></div>
           <button id="attach-export-btn" class="btn-outline">导出发票挂载</button>
@@ -38,24 +34,8 @@
     </section>
 
     <section>
-      <h2>费用类目汇总</h2>
-      <table id="category-table">
-        <thead>
-          <tr>
-            <th>类目</th>
-            <th>笔数</th>
-            <th>金额合计（元）</th>
-          </tr>
-        </thead>
-        <tbody id="category-tbody"></tbody>
-        <tfoot>
-          <tr>
-            <td>合计</td>
-            <td></td>
-            <td class="amount-cell" id="category-total-cell"></td>
-          </tr>
-        </tfoot>
-      </table>
+      <h2>费用类目汇总（点类目展开明细）</h2>
+      <div id="category-accordion"></div>
     </section>
 
     <section>

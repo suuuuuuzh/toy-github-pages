@@ -329,3 +329,26 @@ tfoot td {
 .desc-input:focus, .date-input:focus, .amt-input:focus, .cat-input:focus {
   outline: none; border-color: var(--color-primary); background: #fff;
 }
+
+/* 借款输入 */
+.loan-input { width: 90px; border: 1px solid var(--color-border); border-radius: 6px; padding: 2px 6px; font-size: 14px; font-family: inherit; text-align: right; }
+.loan-input:focus { outline: none; border-color: var(--color-primary); }
+
+/* 发票内容 / 发票金额输入 */
+.invcat-input, .invamt-input { width: 100%; min-width: 72px; border: 1px solid transparent; border-radius: 6px; padding: 4px 6px; font-size: 13px; font-family: inherit; background: #fffef8; }
+.invamt-input { text-align: right; font-variant-numeric: tabular-nums; }
+.invcat-input:hover, .invamt-input:hover { border-color: var(--color-border); }
+.invcat-input:focus, .invamt-input:focus { outline: none; border-color: var(--color-primary); background: #fff; }
+
+/* 类目手风琴 */
+#category-accordion { display: flex; flex-direction: column; gap: 8px; }
+.cat-group { border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; background: #fff; }
+.cat-head { width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #fff; border: none; cursor: pointer; font-size: 15px; text-align: left; }
+.cat-head:hover { background: #f8fafc; }
+.cat-head.open { background: #f1f5f9; border-bottom: 1px solid var(--color-border); }
+.cat-caret { color: var(--color-muted); width: 14px; }
+.cat-name { font-weight: 600; flex: 1; }
+.cat-meta { color: var(--color-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.cat-panel { padding: 8px 12px 14px; }
+.cat-panel table { font-size: 13px; }
+.cat-grand { text-align: right; font-weight: 700; padding: 8px 16px 0; font-variant-numeric: tabular-nums; }

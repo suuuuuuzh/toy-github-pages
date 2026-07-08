@@ -236,7 +236,6 @@ function renderExpenseTable() {
   const table = document.getElementById("expense-table");
   const rows = expenseItems.filter(matchFilter);
 
-  const opts = typeof categoryOptions !== "undefined" ? categoryOptions.slice() : [];
   const head = `
     <thead>
       <tr>
@@ -246,25 +245,41 @@ function renderExpenseTable() {
         <th>日期</th>
         <th>金额（元 · 可编辑）</th>
         <th>凭证</th>
-        <th>发票（点「＋挂发票」选票）</th>
+        <th>发票</th>
+        <th>发票内容</th>
+        <th>发票金额</th>
         <th>备注</th>
       </tr>
     </thead>`;
 
-  const catSelect = (item) => {
-    const list = opts.includes(item.category) ? opts : opts.concat([item.category]);
-    return (
-      `<select class="cat-input" data-id="${item.id}">` +
-      list.map((c) => `<option value="${esc(c)}"${c === item.category ? " selected" : ""}>${esc(c)}</option>`).join("") +
-      `</select>`
-    );
-  };
+  const body = "<tbody>" + rows.map(rowHtml).join("") + "</tbody>";
 
-  const body =
-    "<tbody>" +
-    rows
-      .map(
-        (item) => `
+  const shownTotal = rows.reduce((sum, i) => sum + Number(i.amount || 0), 0);
+  const foot = `
+    <tfoot>
+      <tr>
+        <td colspan="4">${currentFilter === "all" ? "合计" : "当前视图合计"}（${rows.length} 笔）</td>
+        <td class="amount-cell">${fmt(shownTotal)} 元</td>
+        <td colspan="5"></td>
+      </tr>
+    </tfoot>`;
+
+  table.innerHTML = head + body + foot;
+  wireRowInputs(table);
+}
+
+// 一行的 HTML（主表和类目展开表共用）
+function catSelect(item) {
+  const opts = typeof categoryOptions !== "undefined" ? categoryOptions.slice() : [];
+  const list = opts.includes(item.category) ? opts : opts.concat([item.category]);
+  return (
+    `<select class="cat-input" data-id="${item.id}">` +
+    list.map((c) => `<option value="${esc(c)}"${c === item.category ? " selected" : ""}>${esc(c)}</option>`).join("") +
+    `</select>`
+  );
+}
+function rowHtml(item) {
+  return `
       <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
         <td>${item.id}</td>
         <td>${catSelect(item)}</td>
@@ -273,65 +288,67 @@ function renderExpenseTable() {
         <td class="amount-cell"><input class="amt-input" data-id="${item.id}" value="${item.amount}" inputmode="decimal" /></td>
         <td>${effectiveBadge(item)}</td>
         <td class="invoice-cell">${invoiceCell(item)}</td>
+        <td><input class="invcat-input" data-id="${item.id}" value="${esc(item.invoiceCategory || "")}" placeholder="如 住宿费" /></td>
+        <td class="amount-cell"><input class="invamt-input" data-id="${item.id}" value="${item.invoiceAmount === "" || item.invoiceAmount == null ? "" : item.invoiceAmount}" inputmode="decimal" placeholder="发票额" /></td>
         <td class="remark-cell"><input class="remark-input" data-id="${item.id}" value="${esc(item.remark || "")}" placeholder="备注…" /></td>
-      </tr>`
-      )
-      .join("") +
-    "</tbody>";
-
-  const shownTotal = rows.reduce((sum, i) => sum + Number(i.amount || 0), 0);
-  const foot = `
-    <tfoot>
-      <tr>
-        <td colspan="4">${currentFilter === "all" ? "合计" : "当前视图合计"}（${rows.length} 笔）</td>
-        <td class="amount-cell">${fmt(shownTotal)} 元</td>
-        <td colspan="3"></td>
-      </tr>
-    </tfoot>`;
-
-  table.innerHTML = head + body + foot;
-
-  table.querySelectorAll(".remark-input").forEach((inp) => {
+      </tr>`;
+}
+// 给一段容器里的可编辑输入绑定事件
+function wireRowInputs(root) {
+  const rerenderAll = () => {
+    renderFilterBar();
+    renderExpenseTable();
+    renderSummaryCards();
+    renderCategoryTable();
+  };
+  root.querySelectorAll(".remark-input").forEach((inp) =>
     inp.addEventListener("change", () => {
       const id = Number(inp.getAttribute("data-id"));
       const item = expenseItems.find((i) => i.id === id);
       if (item) item.remark = inp.value.trim();
       saveRemarkOverride(id, inp.value.trim());
-    });
-  });
-  // 说明 / 类目 / 日期 / 金额 可编辑
-  table.querySelectorAll(".desc-input").forEach((inp) =>
-    inp.addEventListener("change", () => setField(Number(inp.getAttribute("data-id")), "description", inp.value.trim()))
-  );
-  table.querySelectorAll(".cat-input").forEach((sel) =>
-    sel.addEventListener("change", () => {
-      setField(Number(sel.getAttribute("data-id")), "category", sel.value);
-      renderCategoryTable();
     })
   );
-  table.querySelectorAll(".date-input").forEach((inp) =>
+  // 说明 / 类目 / 日期 / 金额 / 发票内容 / 发票金额 可编辑
+  root.querySelectorAll(".desc-input").forEach((inp) =>
+    inp.addEventListener("change", () => setField(Number(inp.getAttribute("data-id")), "description", inp.value.trim()))
+  );
+  root.querySelectorAll(".cat-input").forEach((sel) =>
+    sel.addEventListener("change", () => {
+      setField(Number(sel.getAttribute("data-id")), "category", sel.value);
+      rerenderAll();
+    })
+  );
+  root.querySelectorAll(".date-input").forEach((inp) =>
     inp.addEventListener("change", () => setField(Number(inp.getAttribute("data-id")), "date", inp.value.trim()))
   );
-  table.querySelectorAll(".amt-input").forEach((inp) =>
+  root.querySelectorAll(".invcat-input").forEach((inp) =>
+    inp.addEventListener("change", () => setField(Number(inp.getAttribute("data-id")), "invoiceCategory", inp.value.trim()))
+  );
+  root.querySelectorAll(".invamt-input").forEach((inp) =>
+    inp.addEventListener("change", () => {
+      const raw = String(inp.value).replace(/[,，¥￥\s]/g, "");
+      setField(Number(inp.getAttribute("data-id")), "invoiceAmount", raw === "" ? "" : parseFloat(raw) || 0);
+    })
+  );
+  root.querySelectorAll(".amt-input").forEach((inp) =>
     inp.addEventListener("change", () => {
       const v = parseFloat(String(inp.value).replace(/[,，¥￥\s]/g, ""));
       setField(Number(inp.getAttribute("data-id")), "amount", isNaN(v) ? 0 : v);
-      renderFilterBar();
-      renderExpenseTable();
-      renderSummaryCards();
-      renderCategoryTable();
+      rerenderAll();
     })
   );
   // 挂发票 / 移除发票 按钮
-  table.querySelectorAll(".attach-btn").forEach((btn) => {
+  root.querySelectorAll(".attach-btn").forEach((btn) => {
     btn.addEventListener("click", () => openInvoicePicker(Number(btn.getAttribute("data-id"))));
   });
-  table.querySelectorAll(".detach-btn").forEach((btn) => {
+  root.querySelectorAll(".detach-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       detachInvoice(Number(btn.getAttribute("data-id")), btn.getAttribute("data-file"));
       renderFilterBar();
       renderExpenseTable();
       renderSummaryCards();
+      renderCategoryTable();
     });
   });
 }
@@ -343,6 +360,21 @@ function effectiveBadge(item) {
   return '<span class="badge badge-none">无凭证</span>';
 }
 
+// 下载文件名：细项说明_发票内容_金额.扩展名（干净、可读）
+function downloadName(item, file) {
+  const ext = (file.split(".").pop() || "").split("?")[0].toLowerCase();
+  const meta = invoiceMeta(file);
+  const parts = [];
+  if (item && item.description) parts.push(item.description);
+  const content = (item && item.invoiceCategory) || (meta && meta.merchant) || "";
+  if (content) parts.push(content);
+  const amt = meta && meta.amount != null ? meta.amount : item && item.invoiceAmount ? item.invoiceAmount : "";
+  if (amt !== "") parts.push(fmt(amt).replace(/,/g, ""));
+  let name = parts.join("_").replace(/[\\/:*?"<>|\s]+/g, "_").slice(0, 80);
+  if (!name) name = file.split("/").pop().replace(/\.[^.]+$/, "");
+  return name + (ext ? "." + ext : "");
+}
+
 // 发票单元格：已挂的发票（可下载/移除）+「挂发票」按钮
 function invoiceCell(item) {
   const files = itemInvoices(item);
@@ -350,53 +382,67 @@ function invoiceCell(item) {
     .map((f) => {
       const meta = invoiceMeta(f);
       const label = meta ? (meta.merchant || "发票") + (meta.amount != null ? " ¥" + fmt(meta.amount) : "") : f.split("/").pop();
-      const dlname = f.indexOf("upload:") === 0 && meta ? ` download="${esc(meta.merchant)}"` : " download";
-      return `<span class="inv-chip"><a href="${esc(invoiceHref(f))}"${dlname} target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
+      return `<span class="inv-chip"><a href="${esc(invoiceHref(f))}" download="${esc(downloadName(item, f))}" target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
     })
     .join("");
   const btn = `<button class="btn-outline attach-btn" data-id="${item.id}">＋挂发票</button>`;
   return `<div class="inv-wrap">${chips}${btn}</div>`;
 }
 
+const expandedCats = new Set();
 function renderCategoryTable() {
+  const box = document.getElementById("category-accordion");
+  if (!box) return;
   const options = typeof categoryOptions !== "undefined" ? categoryOptions : [];
   const seen = new Set();
-  const orderedCategories = [];
+  const ordered = [];
   options.forEach((c) => {
     if (!seen.has(c)) {
       seen.add(c);
-      orderedCategories.push(c);
+      ordered.push(c);
     }
   });
   expenseItems.forEach((i) => {
     if (!seen.has(i.category)) {
       seen.add(i.category);
-      orderedCategories.push(i.category);
+      ordered.push(i.category);
     }
   });
 
-  const rows = orderedCategories
-    .map((cat) => {
-      const items = expenseItems.filter((i) => i.category === cat);
-      if (items.length === 0) return null;
-      const sum = items.reduce((s, i) => s + Number(i.amount || 0), 0);
-      return { cat, count: items.length, sum };
+  const groups = ordered
+    .map((cat) => ({ cat, items: expenseItems.filter((i) => i.category === cat) }))
+    .filter((g) => g.items.length > 0);
+  const grand = groups.reduce((s, g) => s + g.items.reduce((a, i) => a + Number(i.amount || 0), 0), 0);
+
+  const colgroup = `<thead><tr><th>序号</th><th>类目</th><th>说明</th><th>日期</th><th>金额（元）</th><th>凭证</th><th>发票</th><th>发票内容</th><th>发票金额</th><th>备注</th></tr></thead>`;
+
+  box.innerHTML =
+    groups
+      .map((g) => {
+        const sum = g.items.reduce((a, i) => a + Number(i.amount || 0), 0);
+        const open = expandedCats.has(g.cat);
+        const panel = open
+          ? `<div class="cat-panel"><div style="overflow-x:auto"><table>${colgroup}<tbody>${g.items.map(rowHtml).join("")}</tbody></table></div></div>`
+          : "";
+        return `<div class="cat-group">
+          <button class="cat-head${open ? " open" : ""}" data-cat="${esc(g.cat)}">
+            <span class="cat-caret">${open ? "▾" : "▸"}</span>
+            <span class="cat-name">${esc(g.cat)}</span>
+            <span class="cat-meta">${g.items.length} 笔 · ¥${fmt(sum)}</span>
+          </button>${panel}</div>`;
+      })
+      .join("") +
+    `<div class="cat-grand">合计：¥${fmt(grand)}（${expenseItems.length} 笔）</div>`;
+
+  box.querySelectorAll(".cat-head").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      const c = btn.getAttribute("data-cat");
+      if (expandedCats.has(c)) expandedCats.delete(c);
+      else expandedCats.add(c);
+      renderCategoryTable();
     })
-    .filter(Boolean);
-
-  document.getElementById("category-tbody").innerHTML = rows
-    .map(
-      (r) => `
-      <tr>
-        <td>${esc(r.cat)}</td>
-        <td>${r.count}</td>
-        <td class="amount-cell">${fmt(r.sum)}</td>
-      </tr>`
-    )
-    .join("");
-
-  const total = rows.reduce((s, r) => s + r.sum, 0);
-  document.getElementById("category-total-cell").textContent = fmt(total) + " 元";
+  );
+  box.querySelectorAll(".cat-panel table").forEach((t) => wireRowInputs(t));
 }
 
 function renderTpiaoTable() {
@@ -515,6 +561,7 @@ function generateDataJs() {
         `    invoiceFile: ${J(it.invoiceFile)},`,
         `    invoiceFiles: ${JSON.stringify(it.invoiceFiles || [])},`,
         `    invoiceCategory: ${J(it.invoiceCategory)},`,
+        `    invoiceAmount: ${it.invoiceAmount === "" || it.invoiceAmount == null ? '""' : Number(it.invoiceAmount)},`,
         `    tpiaoIds: ${JSON.stringify(it.tpiaoIds || [])},`,
         `    remark: ${J(it.remark)},`,
         "  }",
@@ -713,7 +760,43 @@ function renderHeader() {
   set("period", reportInfo.period || "-");
   set("report-date", reportInfo.reportDate || "-");
   document.title = (reportInfo.reportTitle || "报销单") + " - " + (reportInfo.submitter || "");
+
+  // 表头补充：公司 / 报销人 / 项目 / 借款金额（借款可编辑）
+  const box = document.getElementById("report-meta");
+  if (box) {
+    box.innerHTML =
+      `<span>公司：<b>${esc(reportInfo.company || "-")}</b></span>` +
+      `<span>报销人：<b>${esc(reportInfo.submitter || "-")}</b></span>` +
+      `<span>项目名称：<b>${esc(reportInfo.project || "-")}</b></span>` +
+      `<span>报销周期：<b>${esc(reportInfo.period || "-")}</b></span>` +
+      `<span>借款金额：¥<input id="loan-input" class="loan-input" value="${reportInfo.loan != null ? reportInfo.loan : 0}" inputmode="decimal" /></span>`;
+    const loanInp = document.getElementById("loan-input");
+    if (loanInp) {
+      loanInp.addEventListener("change", () => {
+        const v = parseFloat(String(loanInp.value).replace(/[,，¥￥\s]/g, ""));
+        reportInfo.loan = isNaN(v) ? 0 : v;
+        setMeta("loan", reportInfo.loan);
+        renderSummaryCards();
+      });
+    }
+  }
 }
+// 表头字段（借款）本地存储
+const META_KEY = "expense-meta:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function setMeta(field, value) {
+  let map = {};
+  try {
+    map = JSON.parse(localStorage.getItem(META_KEY) || "{}");
+  } catch (e) {}
+  map[field] = value;
+  localStorage.setItem(META_KEY, JSON.stringify(map));
+}
+(function applyMeta() {
+  try {
+    const map = JSON.parse(localStorage.getItem(META_KEY) || "{}");
+    if (map.loan != null) reportInfo.loan = map.loan;
+  } catch (e) {}
+})();
 
 renderHeader();
 renderSummaryCards();
