@@ -211,7 +211,7 @@ const expenseItems = [
   {
     id: 17,
     category: "餐费",
-    description: "5/21 早饭，私人",
+    description: "5/21 早饭，四人",
     date: "2026-05-21",
     amount: 63.0,
     voucherType: "none",

@@ -305,3 +305,8 @@ tfoot td {
   padding: 1px 8px; font-size: 11px; margin-left: 6px;
 }
 .pick-add[disabled] { background: #cbd5e1; pointer-events: none; }
+
+.picker-tools { display: flex; gap: 8px; align-items: center; margin: 12px 16px 6px; }
+.picker-tools .picker-search { margin: 0; flex: 1; }
+.upload-lbl { cursor: pointer; white-space: nowrap; }
+.picker-hint { padding: 0 16px; font-size: 12px; min-height: 16px; }

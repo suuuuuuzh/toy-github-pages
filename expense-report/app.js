@@ -68,10 +68,48 @@ function detachInvoice(itemId, file) {
   }
   saveAttach(map);
 }
-// 发票清单里查一条的显示信息
+// ---- 本地上传的发票：存成 data URL 放本地（只在本浏览器，导出后我可永久托管）----
+const UPLOAD_KEY = "expense-uploads:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadUploads() {
+  try {
+    return JSON.parse(localStorage.getItem(UPLOAD_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+function saveUploads(map) {
+  localStorage.setItem(UPLOAD_KEY, JSON.stringify(map));
+}
+// 存一个上传文件，返回它的引用 key（upload:xxx）
+function addUpload(name, dataUrl) {
+  const map = loadUploads();
+  const id = "u" + Date.now() + Math.floor(Math.random() * 1000);
+  map[id] = { name: name, data: dataUrl };
+  saveUploads(map);
+  return "upload:" + id;
+}
+function uploadMeta(ref) {
+  const id = ref.slice("upload:".length);
+  const map = loadUploads();
+  return map[id] || null;
+}
+
+// 发票清单里查一条的显示信息（含本地上传）
 function invoiceMeta(file) {
+  if (file && file.indexOf("upload:") === 0) {
+    const u = uploadMeta(file);
+    return u ? { file: file, merchant: u.name, amount: null, kind: "本地上传", date: "" } : null;
+  }
   if (typeof invoiceList === "undefined") return null;
   return invoiceList.find((v) => v.file === file) || null;
+}
+// 解析下载链接（本地上传用 data URL）
+function invoiceHref(file) {
+  if (file && file.indexOf("upload:") === 0) {
+    const u = uploadMeta(file);
+    return u ? u.data : "#";
+  }
+  return file;
 }
 function hasInvoice(item) {
   return itemInvoices(item).length > 0;
@@ -251,11 +289,11 @@ function invoiceCell(item) {
     .map((f) => {
       const meta = invoiceMeta(f);
       const label = meta ? (meta.merchant || "发票") + (meta.amount != null ? " ¥" + fmt(meta.amount) : "") : f.split("/").pop();
-      return `<span class="inv-chip"><a href="${esc(f)}" download target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
+      const dlname = f.indexOf("upload:") === 0 && meta ? ` download="${esc(meta.merchant)}"` : " download";
+      return `<span class="inv-chip"><a href="${esc(invoiceHref(f))}"${dlname} target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
     })
     .join("");
-  const canAttach = typeof invoiceList !== "undefined" && invoiceList.length;
-  const btn = canAttach ? `<button class="btn-outline attach-btn" data-id="${item.id}">＋挂发票</button>` : "";
+  const btn = `<button class="btn-outline attach-btn" data-id="${item.id}">＋挂发票</button>`;
   return `<div class="inv-wrap">${chips}${btn}</div>`;
 }
 
@@ -343,9 +381,9 @@ function renderTpiaoTable() {
 }
 
 function renderSummaryCards() {
-  const invoiceItems = expenseItems.filter((i) => i.voucherType === "invoice");
-  const tpiaoItems = expenseItems.filter((i) => i.voucherType === "tpiao");
-  const noneItems = expenseItems.filter((i) => i.voucherType === "none");
+  const invoiceItems = expenseItems.filter((i) => hasInvoice(i));
+  const tpiaoItems = expenseItems.filter((i) => i.voucherType === "tpiao" && !hasInvoice(i));
+  const noneItems = expenseItems.filter((i) => !hasInvoice(i) && i.voucherType !== "tpiao");
   const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
 
   const total = expenseItems.reduce((s, i) => s + Number(i.amount || 0), 0);
@@ -433,10 +471,10 @@ function setupExport() {
   });
 }
 
-// 挂发票弹窗：列出所有已托管发票，按日期/商户/金额搜索，点「选」挂到这一笔
+// 挂发票弹窗：从已托管发票库里选，或本地上传，挂到这一笔
 function openInvoicePicker(itemId) {
-  if (typeof invoiceList === "undefined") return;
   const item = expenseItems.find((i) => i.id === itemId);
+  const library = typeof invoiceList !== "undefined" ? invoiceList : [];
   const already = new Set(itemInvoices(item));
 
   let overlay = document.getElementById("inv-picker");
@@ -450,16 +488,54 @@ function openInvoicePicker(itemId) {
         <div>给 <b>#${item.id} ${esc(item.description || "")}</b>（¥${fmt(item.amount)}）挂发票</div>
         <button class="picker-close">×</button>
       </div>
-      <input class="picker-search" placeholder="搜商户 / 日期 / 金额…（这笔金额 ${fmt(item.amount)}）" />
+      <div class="picker-tools">
+        <input class="picker-search" placeholder="搜商户 / 日期 / 金额…" />
+        <label class="btn-outline upload-lbl">本地上传发票
+          <input type="file" class="upload-input" accept=".pdf,.png,.jpg,.jpeg,.ofd,image/*" multiple hidden />
+        </label>
+      </div>
+      <div class="picker-hint muted"></div>
       <div class="picker-list"></div>
     </div>`;
   document.body.appendChild(overlay);
 
   const listBox = overlay.querySelector(".picker-list");
   const search = overlay.querySelector(".picker-search");
+  const hint = overlay.querySelector(".picker-hint");
+  if (!library.length) hint.textContent = "这份报销单还没有托管发票库，可用右上「本地上传发票」直接挂。";
+
+  // 本地上传
+  overlay.querySelector(".upload-input").addEventListener("change", (e) => {
+    const filesSel = Array.from(e.target.files || []);
+    let done = 0;
+    filesSel.forEach((file) => {
+      if (file.size > 4 * 1024 * 1024) {
+        hint.textContent = `「${file.name}」超过 4MB，本地上传太大，建议把这批发票打包发我托管。`;
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const ref = addUpload(file.name, reader.result);
+          attachInvoice(itemId, ref);
+          already.add(ref);
+          done++;
+          hint.textContent = `已上传并挂上 ${done} 个本地文件。仅存本浏览器；点「导出发票挂载」发我可永久托管。`;
+          draw();
+          renderFilterBar();
+          renderExpenseTable();
+          renderSummaryCards();
+        } catch (err) {
+          hint.textContent = "浏览器本地存储已满，无法再存更多上传；请把发票打包发我托管。";
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
   function draw() {
     const q = search.value.trim().toLowerCase();
-    const rows = invoiceList
+    const rows = library
       .slice()
       // 金额吻合的排最前，其次按日期
       .sort((a, b) => {
@@ -478,7 +554,7 @@ function openInvoicePicker(itemId) {
         const near = Math.abs((v.amount || 0) - item.amount) < 0.01 ? ' <span class="pick-near">金额吻合</span>' : "";
         return `<div class="pick-row">
           <div class="pick-info"><b>${esc(v.merchant || "发票")}</b>${near}<br><span class="muted">${esc(v.date || "")} · ${esc(v.kind || "")} · ${v.amount != null ? "¥" + fmt(v.amount) : "金额见文件"}</span></div>
-          <a class="btn" href="${esc(v.file)}" download target="_blank" rel="noopener">看</a>
+          <a class="btn" href="${esc(invoiceHref(v.file))}" download target="_blank" rel="noopener">看</a>
           <button class="btn pick-add" data-file="${esc(v.file)}" ${on ? "disabled" : ""}>${on ? "已挂" : "选"}</button>
         </div>`;
       })
@@ -509,7 +585,18 @@ function setupAttachExport() {
   if (!btn) return;
   btn.addEventListener("click", () => {
     const map = loadAttach();
-    const out = { report: reportInfo.reportTitle, attachments: map };
+    // 把被挂上的本地上传文件（data URL）也一起导出，这样我能永久托管
+    const uploads = loadUploads();
+    const usedUploads = {};
+    Object.values(map).forEach((files) => {
+      files.forEach((f) => {
+        if (f.indexOf("upload:") === 0) {
+          const id = f.slice("upload:".length);
+          if (uploads[id]) usedUploads[id] = uploads[id];
+        }
+      });
+    });
+    const out = { report: reportInfo.reportTitle, attachments: map, uploads: usedUploads };
     const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
