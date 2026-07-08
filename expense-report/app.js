@@ -1,5 +1,5 @@
 // 根据 data.js 中的 reportInfo / categoryOptions / expenseItems / tpiaoList 渲染整个页面。
-// 明细表由本文件动态生成，支持：筛选视图（全部 / 有发票 / 无发票 / 替票）、
+// 明细表由本文件动态生成，支持：筛选视图（全部 / 有发票 / 无发票 / 抵票）、
 // 每笔可编辑备注（存在浏览器本地），以及把带备注的数据导出成新的 data.js。
 
 const fmt = (n) =>
@@ -109,10 +109,11 @@ function saveUploads(map) {
   localStorage.setItem(UPLOAD_KEY, JSON.stringify(map));
 }
 // 存一个上传文件，返回它的引用 key（upload:xxx）
-function addUpload(name, dataUrl) {
+// kind: "invoice"（发票/行程单）| "dipiao"（抵票）| "screenshot"（付款截图）
+function addUpload(name, dataUrl, kind) {
   const map = loadUploads();
   const id = "u" + Date.now() + Math.floor(Math.random() * 1000);
-  map[id] = { name: name, data: dataUrl };
+  map[id] = { name: name, data: dataUrl, kind: kind || "invoice" };
   saveUploads(map);
   return "upload:" + id;
 }
@@ -121,35 +122,59 @@ function uploadMeta(ref) {
   const map = loadUploads();
   return map[id] || null;
 }
+function isUpload(f) {
+  return f && f.indexOf("upload:") === 0;
+}
+// 一个文件的类别：invoice（含库里发票和上传发票/行程单）| dipiao | screenshot
+function fileKind(f) {
+  if (isUpload(f)) {
+    const u = uploadMeta(f);
+    return (u && u.kind) || "invoice";
+  }
+  return "invoice"; // 发票库里的都算正式发票
+}
 
 // 发票清单里查一条的显示信息（含本地上传）
 function invoiceMeta(file) {
-  if (file && file.indexOf("upload:") === 0) {
+  if (isUpload(file)) {
     const u = uploadMeta(file);
-    return u ? { file: file, merchant: u.name, amount: null, kind: "本地上传", date: "" } : null;
+    const kindLabel = u && u.kind === "dipiao" ? "抵票" : u && u.kind === "screenshot" ? "付款截图" : "本地上传";
+    return u ? { file: file, merchant: u.name, amount: null, kind: kindLabel, date: "" } : null;
   }
   if (typeof invoiceList === "undefined") return null;
   return invoiceList.find((v) => v.file === file) || null;
 }
 // 解析下载链接（本地上传用 data URL）
 function invoiceHref(file) {
-  if (file && file.indexOf("upload:") === 0) {
+  if (isUpload(file)) {
     const u = uploadMeta(file);
     return u ? u.data : "#";
   }
   return file;
 }
+// 分类某一笔挂着的文件
+function classifyFiles(item) {
+  const out = { invoice: [], dipiao: [], screenshot: [] };
+  itemInvoices(item).forEach((f) => out[fileKind(f)].push(f));
+  return out;
+}
 function hasInvoice(item) {
-  return itemInvoices(item).length > 0;
+  return classifyFiles(item).invoice.length > 0;
+}
+function hasDipiao(item) {
+  return classifyFiles(item).dipiao.length > 0;
+}
+function hasScreenshot(item) {
+  return classifyFiles(item).screenshot.length > 0;
 }
 
-let currentFilter = "all"; // all | invoice | none | tpiao
+let currentFilter = "all"; // all | invoice | dipiao | none
 
 function matchFilter(item) {
   if (currentFilter === "all") return true;
   if (currentFilter === "invoice") return hasInvoice(item);
-  if (currentFilter === "none") return !hasInvoice(item) && item.voucherType !== "tpiao";
-  if (currentFilter === "tpiao") return item.voucherType === "tpiao";
+  if (currentFilter === "dipiao") return hasDipiao(item) && !hasInvoice(item);
+  if (currentFilter === "none") return !hasInvoice(item) && !hasDipiao(item);
   return true;
 }
 
@@ -160,7 +185,7 @@ function findTpiao(id) {
 
 function voucherBadge(type) {
   if (type === "invoice") return '<span class="badge badge-invoice">发票</span>';
-  if (type === "tpiao") return '<span class="badge badge-tpiao">替票</span>';
+  if (type === "tpiao") return '<span class="badge badge-tpiao">抵票</span>';
   return '<span class="badge badge-none">无凭证</span>';
 }
 
@@ -195,7 +220,7 @@ function voucherAction(item) {
   }
   if (item.voucherType === "tpiao") {
     const ids = item.tpiaoIds || [];
-    if (!ids.length) return '<span class="muted">未关联替票</span>';
+    if (!ids.length) return '<span class="muted">未关联抵票</span>';
     return ids.map((id) => `<a class="btn" href="#tpiao-${esc(id)}">查看${esc(id)}</a>`).join(" ");
   }
   return '<span class="muted">-</span>';
@@ -205,15 +230,15 @@ function renderFilterBar() {
   const counts = {
     all: expenseItems.length,
     invoice: expenseItems.filter((i) => hasInvoice(i)).length,
-    none: expenseItems.filter((i) => !hasInvoice(i) && i.voucherType !== "tpiao").length,
-    tpiao: expenseItems.filter((i) => i.voucherType === "tpiao").length,
+    dipiao: expenseItems.filter((i) => hasDipiao(i) && !hasInvoice(i)).length,
+    none: expenseItems.filter((i) => !hasInvoice(i) && !hasDipiao(i)).length,
   };
   const defs = [
     { key: "all", label: "全部" },
     { key: "invoice", label: "有发票" },
     { key: "none", label: "无发票" },
   ];
-  if (counts.tpiao > 0) defs.push({ key: "tpiao", label: "替票" });
+  if (counts.dipiao > 0) defs.push({ key: "dipiao", label: "抵票" });
 
   const bar = document.getElementById("filter-bar");
   if (!bar) return;
@@ -353,36 +378,47 @@ function wireRowInputs(root) {
   });
 }
 
-// 凭证类型徽章：挂了发票就算有票
+// 凭证类型徽章
 function effectiveBadge(item) {
   if (hasInvoice(item)) return '<span class="badge badge-invoice">发票</span>';
-  if (item.voucherType === "tpiao") return '<span class="badge badge-tpiao">替票</span>';
+  if (hasDipiao(item)) return '<span class="badge badge-tpiao">抵票</span>';
+  if (hasScreenshot(item)) return '<span class="badge badge-shot">付款截图</span>';
   return '<span class="badge badge-none">无凭证</span>';
 }
 
-// 下载文件名：细项说明_发票内容_金额.扩展名（干净、可读）
+// 下载文件名：细项说明_发票内容_金额.扩展名（抵票加「抵票」前缀）
 function downloadName(item, file) {
-  const ext = (file.split(".").pop() || "").split("?")[0].toLowerCase();
+  let extSrc = file;
+  if (isUpload(file)) {
+    const u = uploadMeta(file);
+    extSrc = u ? u.name : "file.pdf";
+  }
+  const ext = (extSrc.split(".").pop() || "").split("?")[0].toLowerCase();
   const meta = invoiceMeta(file);
+  const kind = fileKind(file);
   const parts = [];
+  if (kind === "dipiao") parts.push("抵票");
+  else if (kind === "screenshot") parts.push("付款截图");
   if (item && item.description) parts.push(item.description);
   const content = (item && item.invoiceCategory) || (meta && meta.merchant) || "";
-  if (content) parts.push(content);
+  if (content && kind === "invoice") parts.push(content);
   const amt = meta && meta.amount != null ? meta.amount : item && item.invoiceAmount ? item.invoiceAmount : "";
-  if (amt !== "") parts.push(fmt(amt).replace(/,/g, ""));
+  if (amt !== "" && kind === "invoice") parts.push(fmt(amt).replace(/,/g, ""));
   let name = parts.join("_").replace(/[\\/:*?"<>|\s]+/g, "_").slice(0, 80);
   if (!name) name = file.split("/").pop().replace(/\.[^.]+$/, "");
   return name + (ext ? "." + ext : "");
 }
 
-// 发票单元格：已挂的发票（可下载/移除）+「挂发票」按钮
+// 发票单元格：已挂的凭证（发票/抵票/截图，可下载/移除）+「挂发票」按钮
 function invoiceCell(item) {
   const files = itemInvoices(item);
   const chips = files
     .map((f) => {
       const meta = invoiceMeta(f);
+      const kind = fileKind(f);
+      const tag = kind === "dipiao" ? '<span class="chip-tag tag-dipiao">抵票</span>' : kind === "screenshot" ? '<span class="chip-tag tag-shot">截图</span>' : "";
       const label = meta ? (meta.merchant || "发票") + (meta.amount != null ? " ¥" + fmt(meta.amount) : "") : f.split("/").pop();
-      return `<span class="inv-chip"><a href="${esc(invoiceHref(f))}" download="${esc(downloadName(item, f))}" target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
+      return `<span class="inv-chip ${kind === "dipiao" ? "chip-dipiao" : kind === "screenshot" ? "chip-shot" : ""}">${tag}<a href="${esc(invoiceHref(f))}" download="${esc(downloadName(item, f))}" target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
     })
     .join("");
   const btn = `<button class="btn-outline attach-btn" data-id="${item.id}">＋挂发票</button>`;
@@ -489,27 +525,23 @@ function renderTpiaoTable() {
 
 function renderSummaryCards() {
   const invoiceItems = expenseItems.filter((i) => hasInvoice(i));
-  const tpiaoItems = expenseItems.filter((i) => i.voucherType === "tpiao" && !hasInvoice(i));
-  const noneItems = expenseItems.filter((i) => !hasInvoice(i) && i.voucherType !== "tpiao");
-  const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
+  const dipiaoItems = expenseItems.filter((i) => hasDipiao(i) && !hasInvoice(i));
+  const noneItems = expenseItems.filter((i) => !hasInvoice(i) && !hasDipiao(i));
 
-  const total = expenseItems.reduce((s, i) => s + Number(i.amount || 0), 0);
-  const invoiceTotal = invoiceItems.reduce((s, i) => s + Number(i.amount || 0), 0);
-  const tpiaoBusinessTotal = tpiaoItems.reduce((s, i) => s + Number(i.amount || 0), 0);
-  const tpiaoFaceTotal = list.reduce((s, t) => s + Number(t.amount || 0), 0);
-  const noneTotal = noneItems.reduce((s, i) => s + Number(i.amount || 0), 0);
+  const sum = (arr) => arr.reduce((s, i) => s + Number(i.amount || 0), 0);
+  const total = sum(expenseItems);
 
   const cards = [
     { cls: "total", label: "报销总金额", value: fmt(total) + " 元", sub: `共 ${expenseItems.length} 笔` },
-    { cls: "invoice", label: "有发票金额", value: fmt(invoiceTotal) + " 元", sub: `共 ${invoiceItems.length} 笔` },
-    { cls: "none", label: "无发票金额", value: fmt(noneTotal) + " 元", sub: `共 ${noneItems.length} 笔` },
+    { cls: "invoice", label: "有发票金额", value: fmt(sum(invoiceItems)) + " 元", sub: `共 ${invoiceItems.length} 笔` },
+    { cls: "none", label: "无发票金额", value: fmt(sum(noneItems)) + " 元", sub: `共 ${noneItems.length} 笔` },
   ];
-  if (tpiaoItems.length > 0 || list.length > 0) {
+  if (dipiaoItems.length > 0) {
     cards.push({
       cls: "tpiao",
-      label: "替票覆盖金额",
-      value: fmt(tpiaoBusinessTotal) + " 元",
-      sub: `共 ${list.length} 张替票 / ${tpiaoItems.length} 笔业务`,
+      label: "抵票金额",
+      value: fmt(sum(dipiaoItems)) + " 元",
+      sub: `共 ${dipiaoItems.length} 笔`,
     });
   }
 
@@ -606,11 +638,11 @@ function openInvoicePicker(itemId) {
       </div>
       <div class="picker-tools">
         <input class="picker-search" placeholder="搜商户 / 日期 / 金额…" />
-        <label class="btn-outline upload-lbl">本地上传发票
-          <input type="file" class="upload-input" accept=".pdf,.png,.jpg,.jpeg,.ofd,image/*" multiple hidden />
-        </label>
+        <label class="btn-outline upload-lbl">上传发票/行程单<input type="file" class="upload-input" data-kind="invoice" accept=".pdf,.png,.jpg,.jpeg,.ofd,image/*" multiple hidden /></label>
+        <label class="btn-outline upload-lbl">上传抵票<input type="file" class="upload-input" data-kind="dipiao" accept=".pdf,.png,.jpg,.jpeg,.ofd,image/*" multiple hidden /></label>
+        <label class="btn-outline upload-lbl">上传付款截图<input type="file" class="upload-input" data-kind="screenshot" accept=".pdf,.png,.jpg,.jpeg,image/*" multiple hidden /></label>
       </div>
-      <div class="picker-hint muted"></div>
+      <div class="picker-hint muted">打车/机票可把发票和行程单一起选（可多选）。抵票和付款截图会分别标注，抵票下载时文件名带「抵票」前缀。</div>
       <div class="picker-list"></div>
     </div>`;
   document.body.appendChild(overlay);
@@ -618,36 +650,40 @@ function openInvoicePicker(itemId) {
   const listBox = overlay.querySelector(".picker-list");
   const search = overlay.querySelector(".picker-search");
   const hint = overlay.querySelector(".picker-hint");
-  if (!library.length) hint.textContent = "这份报销单还没有托管发票库，可用右上「本地上传发票」直接挂。";
+  if (!library.length) hint.textContent = "这份报销单还没有托管发票库，可用上面的「上传…」按钮直接挂本地文件（可多选）。";
 
-  // 本地上传
-  overlay.querySelector(".upload-input").addEventListener("change", (e) => {
-    const filesSel = Array.from(e.target.files || []);
-    let done = 0;
-    filesSel.forEach((file) => {
-      if (file.size > 4 * 1024 * 1024) {
-        hint.textContent = `「${file.name}」超过 4MB，本地上传太大，建议把这批发票打包发我托管。`;
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const ref = addUpload(file.name, reader.result);
-          attachInvoice(itemId, ref);
-          already.add(ref);
-          done++;
-          hint.textContent = `已上传并挂上 ${done} 个本地文件。仅存本浏览器；点「导出发票挂载」发我可永久托管。`;
-          draw();
-          renderFilterBar();
-          renderExpenseTable();
-          renderSummaryCards();
-        } catch (err) {
-          hint.textContent = "浏览器本地存储已满，无法再存更多上传；请把发票打包发我托管。";
+  // 本地上传（三种类型）
+  overlay.querySelectorAll(".upload-input").forEach((input) =>
+    input.addEventListener("change", (e) => {
+      const kind = input.getAttribute("data-kind");
+      const kindLabel = kind === "dipiao" ? "抵票" : kind === "screenshot" ? "付款截图" : "发票/行程单";
+      const filesSel = Array.from(e.target.files || []);
+      let done = 0;
+      filesSel.forEach((file) => {
+        if (file.size > 4 * 1024 * 1024) {
+          hint.textContent = `「${file.name}」超过 4MB，太大存不进浏览器，建议打包发我托管。`;
+          return;
         }
-      };
-      reader.readAsDataURL(file);
-    });
-  });
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const ref = addUpload(file.name, reader.result, kind);
+            attachInvoice(itemId, ref);
+            already.add(ref);
+            done++;
+            hint.textContent = `已上传并挂上 ${done} 个${kindLabel}。仅存本浏览器；点「导出发票挂载」发我可永久托管。`;
+            draw();
+            renderFilterBar();
+            renderExpenseTable();
+            renderSummaryCards();
+          } catch (err) {
+            hint.textContent = "浏览器本地存储已满，无法再存；请把文件打包发我托管。";
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    })
+  );
 
   function draw() {
     const q = search.value.trim().toLowerCase();

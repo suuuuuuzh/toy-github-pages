@@ -352,3 +352,15 @@ tfoot td {
 .cat-panel { padding: 8px 12px 14px; }
 .cat-panel table { font-size: 13px; }
 .cat-grand { text-align: right; font-weight: 700; padding: 8px 16px 0; font-variant-numeric: tabular-nums; }
+
+/* 付款截图徽章 */
+.badge-shot { background: #64748b; }
+/* 凭证 chip 类型标签 */
+.chip-tag { display:inline-block; font-size:10px; padding:0 5px; border-radius:4px; color:#fff; margin-right:3px; }
+.tag-dipiao { background: var(--color-tpiao); }
+.tag-shot { background: #64748b; }
+.inv-chip.chip-dipiao { background:#fff7ed; border-color:#fed7aa; }
+.inv-chip.chip-dipiao a { color: var(--color-tpiao); }
+.inv-chip.chip-shot { background:#f1f5f9; border-color:#cbd5e1; }
+.inv-chip.chip-shot a { color:#475569; }
+.upload-lbl { font-size:12px; }
