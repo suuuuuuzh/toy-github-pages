@@ -20,16 +20,18 @@
     </header>
 
     <section class="summary-cards" id="summary-cards"></section>
+    <div id="download-all" style="margin:0 0 20px;"></div>
 
     <section>
       <div class="section-head">
         <h2>报销明细</h2>
         <div class="section-actions">
           <div id="filter-bar" class="filter-bar"></div>
+          <button id="attach-export-btn" class="btn-outline">导出发票挂载</button>
           <button id="export-btn" class="btn-outline">导出 data.js（含备注）</button>
         </div>
       </div>
-      <p class="muted" style="font-size:12px;margin:0 0 10px;">备注可直接点右侧格子输入（谁的票 / 那天早中晚饭 / 用途），会自动存在本浏览器；改完点「导出 data.js」把备注永久存回文件。</p>
+      <p class="muted" style="font-size:12px;margin:0 0 10px;">「说明」和「备注」都可直接点格子编辑；每笔右侧点「＋挂发票」从库里选或本地上传；改完点「导出发票挂载」把结果发我永久保存。</p>
       <div style="overflow-x:auto;">
         <table id="expense-table"></table>
       </div>
@@ -81,9 +83,12 @@
       </table>
       <p class="empty-hint" id="tpiao-empty" style="display: none">本次报销无 T 票项目。</p>
     </section>
+
+    <section id="invoice-list-section"></section>
   </div>
 
   <script src="data-shanghai.js"></script>
+  <script src="invoices-shanghai.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

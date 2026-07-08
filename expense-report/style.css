@@ -310,3 +310,22 @@ tfoot td {
 .picker-tools .picker-search { margin: 0; flex: 1; }
 .upload-lbl { cursor: pointer; white-space: nowrap; }
 .picker-hint { padding: 0 16px; font-size: 12px; min-height: 16px; }
+
+/* 可编辑单元格 */
+.desc-input, .date-input, .amt-input, .cat-input {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fffef8;
+}
+.desc-input { min-width: 180px; font-weight: 500; }
+.amt-input { text-align: right; font-variant-numeric: tabular-nums; }
+.date-input { min-width: 96px; }
+.cat-input { background: #fff; border-color: var(--color-border); }
+.desc-input:hover, .date-input:hover, .amt-input:hover { border-color: var(--color-border); }
+.desc-input:focus, .date-input:focus, .amt-input:focus, .cat-input:focus {
+  outline: none; border-color: var(--color-primary); background: #fff;
+}

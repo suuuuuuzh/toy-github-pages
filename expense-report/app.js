@@ -32,6 +32,31 @@ function saveRemarkOverride(id, text) {
   });
 })();
 
+// ---- 字段编辑（说明/类目/日期/金额）本地存储 ----
+const EDIT_KEY = "expense-edits:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadEdits() {
+  try {
+    return JSON.parse(localStorage.getItem(EDIT_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+function setField(id, field, value) {
+  const item = expenseItems.find((i) => i.id === id);
+  if (item) item[field] = value;
+  const map = loadEdits();
+  map[id] = map[id] || {};
+  map[id][field] = value;
+  localStorage.setItem(EDIT_KEY, JSON.stringify(map));
+}
+(function applyEdits() {
+  const map = loadEdits();
+  expenseItems.forEach((it) => {
+    const e = map[it.id];
+    if (e) Object.keys(e).forEach((k) => (it[k] = e[k]));
+  });
+})();
+
 // ---- 人工挂发票：把发票文件路径挂到某一笔上，存本地，可挂多张 ----
 const ATTACH_KEY = "expense-attach:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
 function loadAttach() {
@@ -48,6 +73,9 @@ function saveAttach(map) {
 function itemInvoices(item) {
   const files = [];
   if (item.invoiceFile) files.push(item.invoiceFile);
+  (item.invoiceFiles || []).forEach((f) => {
+    if (f && !files.includes(f)) files.push(f);
+  });
   const map = loadAttach();
   (map[item.id] || []).forEach((f) => {
     if (!files.includes(f)) files.push(f);
@@ -208,19 +236,29 @@ function renderExpenseTable() {
   const table = document.getElementById("expense-table");
   const rows = expenseItems.filter(matchFilter);
 
+  const opts = typeof categoryOptions !== "undefined" ? categoryOptions.slice() : [];
   const head = `
     <thead>
       <tr>
         <th>序号</th>
         <th>类目</th>
-        <th>说明</th>
-        <th>备注（谁的票 / 早中晚饭 / 用途）</th>
+        <th>说明（钱花到哪了 · 可编辑）</th>
         <th>日期</th>
-        <th>金额（元）</th>
+        <th>金额（元 · 可编辑）</th>
         <th>凭证</th>
         <th>发票（点「＋挂发票」选票）</th>
+        <th>备注</th>
       </tr>
     </thead>`;
+
+  const catSelect = (item) => {
+    const list = opts.includes(item.category) ? opts : opts.concat([item.category]);
+    return (
+      `<select class="cat-input" data-id="${item.id}">` +
+      list.map((c) => `<option value="${esc(c)}"${c === item.category ? " selected" : ""}>${esc(c)}</option>`).join("") +
+      `</select>`
+    );
+  };
 
   const body =
     "<tbody>" +
@@ -229,13 +267,13 @@ function renderExpenseTable() {
         (item) => `
       <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
         <td>${item.id}</td>
-        <td>${esc(item.category)}</td>
-        <td>${esc(item.description || "-")}</td>
-        <td class="remark-cell"><input class="remark-input" data-id="${item.id}" value="${esc(item.remark || "")}" placeholder="加备注…" /></td>
-        <td>${esc(item.date || "-")}</td>
-        <td class="amount-cell">${fmt(item.amount)}</td>
+        <td>${catSelect(item)}</td>
+        <td class="desc-cell"><input class="desc-input" data-id="${item.id}" value="${esc(item.description || "")}" placeholder="这笔花在哪…" /></td>
+        <td><input class="date-input" data-id="${item.id}" value="${esc(item.date || "")}" placeholder="YYYY-MM-DD" /></td>
+        <td class="amount-cell"><input class="amt-input" data-id="${item.id}" value="${item.amount}" inputmode="decimal" /></td>
         <td>${effectiveBadge(item)}</td>
         <td class="invoice-cell">${invoiceCell(item)}</td>
+        <td class="remark-cell"><input class="remark-input" data-id="${item.id}" value="${esc(item.remark || "")}" placeholder="备注…" /></td>
       </tr>`
       )
       .join("") +
@@ -245,9 +283,9 @@ function renderExpenseTable() {
   const foot = `
     <tfoot>
       <tr>
-        <td colspan="5">${currentFilter === "all" ? "合计" : "当前视图合计"}（${rows.length} 笔）</td>
+        <td colspan="4">${currentFilter === "all" ? "合计" : "当前视图合计"}（${rows.length} 笔）</td>
         <td class="amount-cell">${fmt(shownTotal)} 元</td>
-        <td colspan="2"></td>
+        <td colspan="3"></td>
       </tr>
     </tfoot>`;
 
@@ -261,6 +299,29 @@ function renderExpenseTable() {
       saveRemarkOverride(id, inp.value.trim());
     });
   });
+  // 说明 / 类目 / 日期 / 金额 可编辑
+  table.querySelectorAll(".desc-input").forEach((inp) =>
+    inp.addEventListener("change", () => setField(Number(inp.getAttribute("data-id")), "description", inp.value.trim()))
+  );
+  table.querySelectorAll(".cat-input").forEach((sel) =>
+    sel.addEventListener("change", () => {
+      setField(Number(sel.getAttribute("data-id")), "category", sel.value);
+      renderCategoryTable();
+    })
+  );
+  table.querySelectorAll(".date-input").forEach((inp) =>
+    inp.addEventListener("change", () => setField(Number(inp.getAttribute("data-id")), "date", inp.value.trim()))
+  );
+  table.querySelectorAll(".amt-input").forEach((inp) =>
+    inp.addEventListener("change", () => {
+      const v = parseFloat(String(inp.value).replace(/[,，¥￥\s]/g, ""));
+      setField(Number(inp.getAttribute("data-id")), "amount", isNaN(v) ? 0 : v);
+      renderFilterBar();
+      renderExpenseTable();
+      renderSummaryCards();
+      renderCategoryTable();
+    })
+  );
   // 挂发票 / 移除发票 按钮
   table.querySelectorAll(".attach-btn").forEach((btn) => {
     btn.addEventListener("click", () => openInvoicePicker(Number(btn.getAttribute("data-id"))));
@@ -416,6 +477,13 @@ function renderSummaryCards() {
       </div>`
     )
     .join("");
+
+  // 一键下载所有发票（打包 zip）
+  const zipBox = document.getElementById("download-all");
+  if (zipBox && typeof invoiceZip !== "undefined") {
+    const count = typeof invoiceList !== "undefined" ? invoiceList.length : "";
+    zipBox.innerHTML = `<a class="btn" href="${esc(invoiceZip)}" download>⬇ 一键下载所有发票${count ? "（" + count + " 张，zip）" : "（zip）"}</a>`;
+  }
 }
 
 // ---- 导出：把当前数据（含备注、分类改动）生成新的 data.js 文本 ----
@@ -445,6 +513,7 @@ function generateDataJs() {
         `    amount: ${Number(it.amount || 0)},`,
         `    voucherType: ${J(it.voucherType)},`,
         `    invoiceFile: ${J(it.invoiceFile)},`,
+        `    invoiceFiles: ${JSON.stringify(it.invoiceFiles || [])},`,
         `    invoiceCategory: ${J(it.invoiceCategory)},`,
         `    tpiaoIds: ${JSON.stringify(it.tpiaoIds || [])},`,
         `    remark: ${J(it.remark)},`,
