@@ -1,4 +1,4 @@
-// 堪景发票清单
+// kanjing 发票清单
 const invoiceList = [
  {
   "file": "invoices/kanjing/inv-001.pdf",
@@ -629,6 +629,34 @@ const invoiceList = [
   "merchant": "美团",
   "amount": null,
   "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-012.pdf",
+  "date": "2026-07-01",
+  "merchant": "廿一影视文化传播（上海）有限公司",
+  "amount": 417.92,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/z-013.pdf",
+  "date": "2026-07-03",
+  "merchant": "东部新区樊薯薯小吃店（个体工商户）",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/z-014.pdf",
+  "date": "2026-07-03",
+  "merchant": "贵州黔邺超市有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/z-015.pdf",
+  "date": "2026-07-03",
+  "merchant": "都匀市干平便利店",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
 

@@ -1432,6 +1432,20 @@ const expenseItems = [
     invoiceAmount: "",
     tpiaoIds: [],
     remark: "浙江周大福创建公路有限公司 浙江高速：浙江东洲岛站-留下",
+  },
+  {
+    id: 102,
+    category: "餐费",
+    description: "美团配送费（合集）",
+    date: "2026-06-30",
+    amount: 45.68,
+    voucherType: "invoice",
+    invoiceFile: "invoices/shanghai/z-039.pdf",
+    invoiceFiles: ["invoices/shanghai/z-040.pdf", "invoices/shanghai/z-041.pdf", "invoices/shanghai/z-042.pdf", "invoices/shanghai/z-043.pdf", "invoices/shanghai/z-044.pdf", "invoices/shanghai/z-045.pdf", "invoices/shanghai/z-046.pdf", "invoices/shanghai/z-047.pdf", "invoices/shanghai/z-048.pdf", "invoices/shanghai/z-049.pdf", "invoices/shanghai/z-050.pdf", "invoices/shanghai/z-051.pdf", "invoices/shanghai/z-052.pdf", "invoices/shanghai/z-053.pdf", "invoices/shanghai/z-054.pdf", "invoices/shanghai/z-055.pdf", "invoices/shanghai/z-056.pdf"],
+    invoiceCategory: "配送费",
+    invoiceAmount: 45.68,
+    tpiaoIds: [],
+    remark: "美团各单配送费发票合并到此一笔",
   }
 ];
 
