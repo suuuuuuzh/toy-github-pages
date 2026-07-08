@@ -95,7 +95,10 @@ function rebuildItems() {
   merges.forEach((m) => m.ids.forEach((id) => mergedIds.add(id)));
   let list = BASE_ITEMS.filter((it) => !mergedIds.has(it.id)).map((it) => JSON.parse(JSON.stringify(it)));
   merges.forEach((m) => list.push(JSON.parse(JSON.stringify(m.item))));
-  loadAdded().forEach((a) => list.push(JSON.parse(JSON.stringify(a))));
+  // 新增行也可能被合并进去，合并过的就别再单独列出来
+  loadAdded().forEach((a) => {
+    if (!mergedIds.has(a.id)) list.push(JSON.parse(JSON.stringify(a)));
+  });
   const deleted = new Set(loadDeleted());
   list = list.filter((it) => !deleted.has(it.id));
   const edits = loadEdits();
@@ -107,6 +110,26 @@ function rebuildItems() {
   });
   expenseItems.length = 0;
   list.forEach((x) => expenseItems.push(x));
+  computeNumMap();
+}
+
+// 显示用的序号：基础行沿用它自己的编号，新增行接在最大编号后面顺延（108、109…），合并行不在这里
+let numMap = {};
+function computeNumMap() {
+  numMap = {};
+  let maxBase = 0;
+  expenseItems.forEach((it) => {
+    if (it._added || it._merged) return;
+    const n = Number(it.id);
+    if (!isNaN(n) && n > maxBase) maxBase = n;
+  });
+  expenseItems
+    .filter((it) => it._added)
+    .slice()
+    .sort((a, b) => Number(a.id) - Number(b.id))
+    .forEach((it, i) => {
+      numMap[it.id] = maxBase + i + 1;
+    });
 }
 
 // 添加一笔空白行
@@ -547,12 +570,14 @@ function catSelect(item) {
 function rowHtml(item) {
   const isMerged = item._merged;
   const isAdded = item._added;
-  const num = isMerged ? "合并" : isAdded ? "新增" : item.id;
+  const num = isMerged ? "合并" : numMap[item.id] != null ? numMap[item.id] : item.id;
+  // 新增行也能勾选合并；删除按钮用它专属的 del-added-btn（直接删掉，不进「已删除」）
+  const delBtn = isAdded
+    ? `<button class="del-row-btn del-added-btn" data-id="${item.id}" title="删除这一新增行">✕</button>`
+    : `<button class="del-row-btn" data-id="${item.id}" title="删除这一笔">✕</button>`;
   const opBtn = isMerged
     ? `<button class="row-op unmerge-btn" data-id="${item.id}" title="拆开合并">拆开</button>`
-    : isAdded
-    ? `<button class="row-op del-added-btn" data-id="${item.id}" title="删除这一新增行">删除</button>`
-    : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" /><button class="del-row-btn" data-id="${item.id}" title="删除这一笔">✕</button>`;
+    : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" />${delBtn}`;
   const grip = `<span class="drag-grip" data-id="${item.id}" title="按住拖动，可在同类目内调整顺序">⠿</span>`;
   return `
       <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}" data-row-id="${item.id}" data-row-cat="${esc(item.category)}">
@@ -663,6 +688,8 @@ function wireRowInputs(root) {
   );
   root.querySelectorAll(".del-row-btn").forEach((btn) =>
     btn.addEventListener("click", () => {
+      // 新增行由 del-added-btn 那个 handler 处理，这里跳过，避免删两次
+      if (btn.classList.contains("del-added-btn")) return;
       if (!confirm("删除这一笔？（可点上方「恢复已删除」找回）")) return;
       deleteRow(Number(btn.getAttribute("data-id")));
       renderEverything();
