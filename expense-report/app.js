@@ -167,8 +167,15 @@ function mergeSelected() {
   const merges = loadMerges();
   merges.push({ ids: ids, item: merged });
   saveMerges(merges);
+  // 让合并后的行出现在原来那几条最靠前的位置，而不是排到最后
+  const order = loadOrder();
+  const positions = ids.map((id) => order.indexOf(id)).filter((i) => i >= 0);
+  const insertAt = positions.length ? Math.min.apply(null, positions) : order.length;
+  order.splice(insertAt, 0, merged.id);
+  saveOrder(order);
   selectedForMerge.clear();
   rebuildItems();
+  return merged.id;
 }
 function unmerge(mergeItemId) {
   saveMerges(loadMerges().filter((m) => m.item.id !== mergeItemId));
@@ -1268,8 +1275,16 @@ function setupRowOps() {
   const mergeBtn = document.getElementById("merge-btn");
   if (mergeBtn)
     mergeBtn.addEventListener("click", () => {
-      mergeSelected();
+      const mid = mergeSelected();
       renderEverything();
+      if (mid) {
+        const row = document.querySelector(`#expense-table tr[data-row-id="${mid}"]`);
+        if (row) {
+          row.scrollIntoView({ behavior: "smooth", block: "center" });
+          row.classList.add("flash");
+          setTimeout(() => row.classList.remove("flash"), 2000);
+        }
+      }
     });
   const restoreBtn = document.getElementById("restore-deleted-btn");
   if (restoreBtn)

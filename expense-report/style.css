@@ -401,3 +401,7 @@ tr:has(.unmerge-btn) td { background: #f5f3ff; }
 .drag-grip:active { cursor: grabbing; }
 tr.dragging td { background: #dbeafe !important; opacity: 0.9; }
 tr.dragging { box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+
+/* 合并后高亮闪一下 */
+tr.flash td { animation: flashbg 2s ease; }
+@keyframes flashbg { 0%,40% { background: #fde68a; } 100% { background: transparent; } }
