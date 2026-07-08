@@ -358,6 +358,33 @@ function setupExport() {
   });
 }
 
+// 发票清单：把托管在 invoices/ 里的所有发票列出来，方便人工对应/下载
+function renderInvoiceList() {
+  const box = document.getElementById("invoice-list-section");
+  if (!box || typeof invoiceList === "undefined") return;
+  const rows = invoiceList
+    .slice()
+    .sort((a, b) => (a.date || "").localeCompare(b.date || ""))
+    .map(
+      (v) => `
+      <tr>
+        <td>${esc(v.date || "-")}</td>
+        <td>${esc(v.merchant || "-")}</td>
+        <td>${esc(v.kind || "-")}</td>
+        <td class="amount-cell">${v.amount != null ? fmt(v.amount) : "-"}</td>
+        <td><a class="btn" href="${esc(v.file)}" download target="_blank" rel="noopener">下载</a></td>
+      </tr>`
+    )
+    .join("");
+  box.innerHTML = `
+    <h2>发票清单（已托管 ${invoiceList.length} 张）</h2>
+    <p class="muted" style="margin-top:-6px;font-size:13px;">这些发票已上传到网页、可直接下载。上表未自动挂上的（酒店分晚、美团餐费等），可对照日期/商户/金额人工匹配。</p>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>日期</th><th>商户</th><th>类型</th><th>金额（元）</th><th>操作</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
 function renderHeader() {
   const set = (id, v) => {
     const el = document.getElementById(id);
@@ -377,4 +404,5 @@ renderFilterBar();
 renderExpenseTable();
 renderCategoryTable();
 renderTpiaoTable();
+renderInvoiceList();
 setupExport();
