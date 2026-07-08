@@ -527,10 +527,10 @@ function rowHtml(item) {
     : isAdded
     ? `<button class="row-op del-added-btn" data-id="${item.id}" title="删除这一新增行">删除</button>`
     : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" /><button class="del-row-btn" data-id="${item.id}" title="删除这一笔">✕</button>`;
-  const moveBtns = `<span class="move-btns"><button class="move-up" data-id="${item.id}" title="上移">▲</button><button class="move-down" data-id="${item.id}" title="下移">▼</button></span>`;
+  const grip = `<span class="drag-grip" data-id="${item.id}" title="按住拖动，可在同类目内调整顺序">⠿</span>`;
   return `
-      <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
-        <td><div class="num-cell">${moveBtns}${opBtn}<span>${num}</span></div></td>
+      <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}" data-row-id="${item.id}" data-row-cat="${esc(item.category)}">
+        <td><div class="num-cell">${grip}${opBtn}<span>${num}</span></div></td>
         <td>${catSelect(item)}</td>
         <td class="desc-cell"><input class="desc-input" data-id="${item.id}" value="${esc(item.description || "")}" placeholder="这笔花在哪…" /></td>
         <td><input class="date-input" data-id="${item.id}" value="${esc(item.date || "")}" placeholder="YYYY-MM-DD" /></td>
@@ -1136,6 +1136,72 @@ function setupPreview() {
   }
 }
 
+// 长按拖动排序（同类目内）
+function setupDragReorder() {
+  const table = document.getElementById("expense-table");
+  if (!table) return;
+  let dragId = null,
+    dragCat = null,
+    dragTr = null,
+    longTimer = null,
+    active = false,
+    startY = 0;
+
+  table.addEventListener("pointerdown", (e) => {
+    const grip = e.target.closest && e.target.closest(".drag-grip");
+    if (!grip) return;
+    dragId = Number(grip.getAttribute("data-id"));
+    dragTr = grip.closest("tr");
+    dragCat = dragTr.getAttribute("data-row-cat");
+    startY = e.clientY;
+    active = false;
+    longTimer = setTimeout(() => {
+      active = true;
+      dragTr.classList.add("dragging");
+    }, 200);
+    try {
+      grip.setPointerCapture(e.pointerId);
+    } catch (err) {}
+    e.preventDefault();
+  });
+  table.addEventListener("pointermove", (e) => {
+    if (dragId == null) return;
+    if (!active) {
+      if (Math.abs(e.clientY - startY) > 6) {
+        clearTimeout(longTimer);
+        active = true;
+        if (dragTr) dragTr.classList.add("dragging");
+      } else return;
+    }
+    e.preventDefault();
+    const over = document.elementFromPoint(e.clientX, e.clientY);
+    const tr = over && over.closest && over.closest("tr[data-row-id]");
+    if (!tr || tr === dragTr) return;
+    if (tr.getAttribute("data-row-cat") !== dragCat) return; // 只在同类目内挪
+    const rect = tr.getBoundingClientRect();
+    const before = e.clientY < rect.top + rect.height / 2;
+    const tbody = dragTr.parentNode;
+    tbody.insertBefore(dragTr, before ? tr : tr.nextSibling);
+  });
+  function endDrag() {
+    if (dragId == null) return;
+    clearTimeout(longTimer);
+    if (active) {
+      const ids = Array.from(document.querySelectorAll("#expense-table tr[data-row-id]")).map((tr) =>
+        Number(tr.getAttribute("data-row-id"))
+      );
+      const hidden = loadOrder().filter((id) => ids.indexOf(id) === -1);
+      saveOrder(ids.concat(hidden));
+    }
+    if (dragTr) dragTr.classList.remove("dragging");
+    dragId = dragCat = dragTr = null;
+    active = false;
+    renderExpenseTable();
+  }
+  table.addEventListener("pointerup", endDrag);
+  table.addEventListener("pointercancel", endDrag);
+}
+
 function renderHeader() {
   const set = (id, v) => {
     const el = document.getElementById(id);
@@ -1225,3 +1291,4 @@ setupExport();
 setupAttachExport();
 setupPreview();
 setupRowOps();
+setupDragReorder();
