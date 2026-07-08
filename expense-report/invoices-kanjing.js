@@ -552,6 +552,83 @@ const invoiceList = [
   "merchant": "油费",
   "amount": 625.86,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/z-001.pdf",
+  "date": "2026-06-01",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-002.pdf",
+  "date": "2026-06-01",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-003.pdf",
+  "date": "2026-06-24",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-004.pdf",
+  "date": "2026-06-24",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-005.pdf",
+  "date": "2026-06-26",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-006.pdf",
+  "date": "2026-07-01",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-007.pdf",
+  "date": "2026-07-02",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-008.pdf",
+  "date": "2026-07-02",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-009.pdf",
+  "date": "2026-07-03",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-010.pdf",
+  "date": "2026-07-03",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
+ },
+ {
+  "file": "invoices/kanjing/z-011.pdf",
+  "date": "2026-07-06",
+  "merchant": "美团",
+  "amount": null,
+  "kind": "美团开票通知"
  }
 ];
 
