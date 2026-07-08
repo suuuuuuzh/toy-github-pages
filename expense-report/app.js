@@ -32,12 +32,57 @@ function saveRemarkOverride(id, text) {
   });
 })();
 
+// ---- 人工挂发票：把发票文件路径挂到某一笔上，存本地，可挂多张 ----
+const ATTACH_KEY = "expense-attach:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
+function loadAttach() {
+  try {
+    return JSON.parse(localStorage.getItem(ATTACH_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+function saveAttach(map) {
+  localStorage.setItem(ATTACH_KEY, JSON.stringify(map));
+}
+// 某一笔当前挂着的所有发票文件（data.js 里自带的 + 本地人工挂的，去重）
+function itemInvoices(item) {
+  const files = [];
+  if (item.invoiceFile) files.push(item.invoiceFile);
+  const map = loadAttach();
+  (map[item.id] || []).forEach((f) => {
+    if (!files.includes(f)) files.push(f);
+  });
+  return files;
+}
+function attachInvoice(itemId, file) {
+  const map = loadAttach();
+  map[itemId] = map[itemId] || [];
+  if (!map[itemId].includes(file)) map[itemId].push(file);
+  saveAttach(map);
+}
+function detachInvoice(itemId, file) {
+  const map = loadAttach();
+  if (map[itemId]) {
+    map[itemId] = map[itemId].filter((f) => f !== file);
+    if (!map[itemId].length) delete map[itemId];
+  }
+  saveAttach(map);
+}
+// 发票清单里查一条的显示信息
+function invoiceMeta(file) {
+  if (typeof invoiceList === "undefined") return null;
+  return invoiceList.find((v) => v.file === file) || null;
+}
+function hasInvoice(item) {
+  return itemInvoices(item).length > 0;
+}
+
 let currentFilter = "all"; // all | invoice | none | tpiao
 
 function matchFilter(item) {
   if (currentFilter === "all") return true;
-  if (currentFilter === "invoice") return item.voucherType === "invoice";
-  if (currentFilter === "none") return item.voucherType === "none";
+  if (currentFilter === "invoice") return hasInvoice(item);
+  if (currentFilter === "none") return !hasInvoice(item) && item.voucherType !== "tpiao";
   if (currentFilter === "tpiao") return item.voucherType === "tpiao";
   return true;
 }
@@ -93,8 +138,8 @@ function voucherAction(item) {
 function renderFilterBar() {
   const counts = {
     all: expenseItems.length,
-    invoice: expenseItems.filter((i) => i.voucherType === "invoice").length,
-    none: expenseItems.filter((i) => i.voucherType === "none").length,
+    invoice: expenseItems.filter((i) => hasInvoice(i)).length,
+    none: expenseItems.filter((i) => !hasInvoice(i) && i.voucherType !== "tpiao").length,
     tpiao: expenseItems.filter((i) => i.voucherType === "tpiao").length,
   };
   const defs = [
@@ -134,10 +179,8 @@ function renderExpenseTable() {
         <th>备注（谁的票 / 早中晚饭 / 用途）</th>
         <th>日期</th>
         <th>金额（元）</th>
-        <th>凭证类型</th>
-        <th>发票类型</th>
-        <th>凭证详情</th>
-        <th>操作</th>
+        <th>凭证</th>
+        <th>发票（点「＋挂发票」选票）</th>
       </tr>
     </thead>`;
 
@@ -146,17 +189,15 @@ function renderExpenseTable() {
     rows
       .map(
         (item) => `
-      <tr class="${item.voucherType === "none" ? "row-none" : ""}">
+      <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}">
         <td>${item.id}</td>
         <td>${esc(item.category)}</td>
         <td>${esc(item.description || "-")}</td>
         <td class="remark-cell"><input class="remark-input" data-id="${item.id}" value="${esc(item.remark || "")}" placeholder="加备注…" /></td>
         <td>${esc(item.date || "-")}</td>
         <td class="amount-cell">${fmt(item.amount)}</td>
-        <td>${voucherBadge(item.voucherType)}</td>
-        <td>${voucherCategoryLabel(item)}</td>
-        <td>${voucherRefDetail(item)}</td>
-        <td>${voucherAction(item)}</td>
+        <td>${effectiveBadge(item)}</td>
+        <td class="invoice-cell">${invoiceCell(item)}</td>
       </tr>`
       )
       .join("") +
@@ -168,7 +209,7 @@ function renderExpenseTable() {
       <tr>
         <td colspan="5">${currentFilter === "all" ? "合计" : "当前视图合计"}（${rows.length} 笔）</td>
         <td class="amount-cell">${fmt(shownTotal)} 元</td>
-        <td colspan="4"></td>
+        <td colspan="2"></td>
       </tr>
     </tfoot>`;
 
@@ -182,6 +223,40 @@ function renderExpenseTable() {
       saveRemarkOverride(id, inp.value.trim());
     });
   });
+  // 挂发票 / 移除发票 按钮
+  table.querySelectorAll(".attach-btn").forEach((btn) => {
+    btn.addEventListener("click", () => openInvoicePicker(Number(btn.getAttribute("data-id"))));
+  });
+  table.querySelectorAll(".detach-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      detachInvoice(Number(btn.getAttribute("data-id")), btn.getAttribute("data-file"));
+      renderFilterBar();
+      renderExpenseTable();
+      renderSummaryCards();
+    });
+  });
+}
+
+// 凭证类型徽章：挂了发票就算有票
+function effectiveBadge(item) {
+  if (hasInvoice(item)) return '<span class="badge badge-invoice">发票</span>';
+  if (item.voucherType === "tpiao") return '<span class="badge badge-tpiao">替票</span>';
+  return '<span class="badge badge-none">无凭证</span>';
+}
+
+// 发票单元格：已挂的发票（可下载/移除）+「挂发票」按钮
+function invoiceCell(item) {
+  const files = itemInvoices(item);
+  const chips = files
+    .map((f) => {
+      const meta = invoiceMeta(f);
+      const label = meta ? (meta.merchant || "发票") + (meta.amount != null ? " ¥" + fmt(meta.amount) : "") : f.split("/").pop();
+      return `<span class="inv-chip"><a href="${esc(f)}" download target="_blank" rel="noopener">${esc(label)}</a><button class="detach-btn" data-id="${item.id}" data-file="${esc(f)}" title="移除">×</button></span>`;
+    })
+    .join("");
+  const canAttach = typeof invoiceList !== "undefined" && invoiceList.length;
+  const btn = canAttach ? `<button class="btn-outline attach-btn" data-id="${item.id}">＋挂发票</button>` : "";
+  return `<div class="inv-wrap">${chips}${btn}</div>`;
 }
 
 function renderCategoryTable() {
@@ -358,6 +433,92 @@ function setupExport() {
   });
 }
 
+// 挂发票弹窗：列出所有已托管发票，按日期/商户/金额搜索，点「选」挂到这一笔
+function openInvoicePicker(itemId) {
+  if (typeof invoiceList === "undefined") return;
+  const item = expenseItems.find((i) => i.id === itemId);
+  const already = new Set(itemInvoices(item));
+
+  let overlay = document.getElementById("inv-picker");
+  if (overlay) overlay.remove();
+  overlay = document.createElement("div");
+  overlay.id = "inv-picker";
+  overlay.className = "picker-overlay";
+  overlay.innerHTML = `
+    <div class="picker-box">
+      <div class="picker-head">
+        <div>给 <b>#${item.id} ${esc(item.description || "")}</b>（¥${fmt(item.amount)}）挂发票</div>
+        <button class="picker-close">×</button>
+      </div>
+      <input class="picker-search" placeholder="搜商户 / 日期 / 金额…（这笔金额 ${fmt(item.amount)}）" />
+      <div class="picker-list"></div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  const listBox = overlay.querySelector(".picker-list");
+  const search = overlay.querySelector(".picker-search");
+  function draw() {
+    const q = search.value.trim().toLowerCase();
+    const rows = invoiceList
+      .slice()
+      // 金额吻合的排最前，其次按日期
+      .sort((a, b) => {
+        const am = Math.abs((a.amount || 0) - item.amount) < 0.01 ? 0 : 1;
+        const bm = Math.abs((b.amount || 0) - item.amount) < 0.01 ? 0 : 1;
+        if (am !== bm) return am - bm;
+        return (a.date || "").localeCompare(b.date || "");
+      })
+      .filter((v) => {
+        if (!q) return true;
+        return ((v.merchant || "") + " " + (v.date || "") + " " + (v.amount != null ? v.amount : "") + " " + (v.kind || "")).toLowerCase().includes(q);
+      });
+    listBox.innerHTML = rows
+      .map((v) => {
+        const on = already.has(v.file);
+        const near = Math.abs((v.amount || 0) - item.amount) < 0.01 ? ' <span class="pick-near">金额吻合</span>' : "";
+        return `<div class="pick-row">
+          <div class="pick-info"><b>${esc(v.merchant || "发票")}</b>${near}<br><span class="muted">${esc(v.date || "")} · ${esc(v.kind || "")} · ${v.amount != null ? "¥" + fmt(v.amount) : "金额见文件"}</span></div>
+          <a class="btn" href="${esc(v.file)}" download target="_blank" rel="noopener">看</a>
+          <button class="btn pick-add" data-file="${esc(v.file)}" ${on ? "disabled" : ""}>${on ? "已挂" : "选"}</button>
+        </div>`;
+      })
+      .join("");
+    listBox.querySelectorAll(".pick-add").forEach((b) => {
+      b.addEventListener("click", () => {
+        attachInvoice(itemId, b.getAttribute("data-file"));
+        already.add(b.getAttribute("data-file"));
+        draw();
+        renderFilterBar();
+        renderExpenseTable();
+        renderSummaryCards();
+      });
+    });
+  }
+  // 金额吻合的发票会自动排在最前并标「金额吻合」
+  draw();
+  search.addEventListener("input", draw);
+  overlay.querySelector(".picker-close").addEventListener("click", () => overlay.remove());
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+}
+
+// 导出人工挂载映射（发我可永久写进 data 文件）
+function setupAttachExport() {
+  const btn = document.getElementById("attach-export-btn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const map = loadAttach();
+    const out = { report: reportInfo.reportTitle, attachments: map };
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "invoice-attach.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+}
+
 // 发票清单：把托管在 invoices/ 里的所有发票列出来，方便人工对应/下载
 function renderInvoiceList() {
   const box = document.getElementById("invoice-list-section");
@@ -406,3 +567,4 @@ renderCategoryTable();
 renderTpiaoTable();
 renderInvoiceList();
 setupExport();
+setupAttachExport();

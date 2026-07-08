@@ -26,10 +26,11 @@
         <h2>报销明细</h2>
         <div class="section-actions">
           <div id="filter-bar" class="filter-bar"></div>
+          <button id="attach-export-btn" class="btn-outline">导出发票挂载</button>
           <button id="export-btn" class="btn-outline">导出 data.js（含备注）</button>
         </div>
       </div>
-      <p class="muted" style="font-size:12px;margin:0 0 10px;">备注可直接点右侧格子输入（谁的票 / 那天早中晚饭 / 用途），会自动存在本浏览器；改完点「导出 data.js」把备注永久存回文件。</p>
+      <p class="muted" style="font-size:12px;margin:0 0 10px;">每笔右侧点「＋挂发票」从已托管发票里选（可挂多张，弹窗默认按这笔金额预筛）；挂好会自动存本浏览器。备注格子可写用途。改完点「导出发票挂载」把挂载结果发我，我永久写进文件。</p>
       <div style="overflow-x:auto;">
         <table id="expense-table"></table>
       </div>
