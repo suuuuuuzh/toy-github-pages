@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111318" />
+  <title>后期进度</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1 id="proj-title">后期进度</h1>
+      <p id="proj-subtitle" class="subtitle"></p>
+      <p id="proj-updated" class="updated"></p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-view="timeline">时间轴</button>
+      <button class="tab" data-view="calendar">日历</button>
+    </nav>
+
+    <main>
+      <section id="view-timeline" class="view">
+        <div id="timeline" class="timeline"></div>
+      </section>
+
+      <section id="view-calendar" class="view hidden">
+        <div class="cal-head">
+          <button id="cal-prev" class="cal-nav" aria-label="上个月">‹</button>
+          <span id="cal-label"></span>
+          <button id="cal-next" class="cal-nav" aria-label="下个月">›</button>
+        </div>
+        <div id="calendar" class="calendar"></div>
+        <div id="cal-list" class="cal-list"></div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <button id="btn-ics" class="btn">📅 添加到手机日历</button>
+      <p class="hint">
+        点一下会下载一个日历文件,导入后所有排期就进了你手机自带日历。<br />
+        想让计划变动后<b>自动更新</b>?用日历 App「订阅」这个地址:
+        <code id="ics-url"></code>
+      </p>
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

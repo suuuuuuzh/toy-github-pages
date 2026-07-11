@@ -1,0 +1,147 @@
+:root {
+  --bg: #0e0f13;
+  --card: #191b22;
+  --card-2: #21242d;
+  --line: #2c3038;
+  --text: #eef0f4;
+  --muted: #9aa1ad;
+  --accent: #f5c518;      /* 电影感的琥珀黄 */
+  --done: #3fb27f;
+  --active: #f5c518;
+  --upcoming: #6b7280;
+  --meeting: #5b9df9;
+  --delivery: #f2704a;
+  --milestone: #b07ff2;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.app { max-width: 680px; margin: 0 auto; padding: 0 16px calc(24px + env(safe-area-inset-bottom)); overflow-x: hidden; }
+
+/* ---------- header ---------- */
+.app-header { padding: calc(20px + env(safe-area-inset-top)) 4px 12px; }
+.app-header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+.subtitle { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.updated { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+
+/* ---------- tabs ---------- */
+.tabs {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; gap: 6px;
+  background: var(--bg); padding: 8px 0 12px;
+}
+.tab {
+  flex: 1; padding: 10px; border: 1px solid var(--line);
+  background: var(--card); color: var(--muted);
+  border-radius: 12px; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: .15s;
+}
+.tab.active { background: var(--accent); color: #1a1300; border-color: var(--accent); }
+
+.view.hidden { display: none; }
+
+/* ---------- timeline ---------- */
+.timeline { position: relative; padding: 6px 0 8px 4px; }
+.timeline::before {
+  content: ""; position: absolute; left: 11px; top: 12px; bottom: 12px;
+  width: 2px; background: var(--line);
+}
+.node {
+  position: relative; padding: 0 0 18px 34px;
+}
+.node .dot {
+  position: absolute; left: 4px; top: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--upcoming); border: 3px solid var(--bg); z-index: 1;
+}
+.node.done .dot { background: var(--done); }
+.node.active .dot { background: var(--active); box-shadow: 0 0 0 4px rgba(245,197,24,.18); }
+
+.node-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; padding: 12px 14px;
+}
+.node.active .node-card { border-color: var(--accent); }
+.node-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; min-width: 0; }
+.node-name { font-size: 16px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.badge {
+  font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.badge.done { background: rgba(63,178,127,.15); color: var(--done); }
+.badge.active { background: rgba(245,197,24,.15); color: var(--active); }
+.badge.upcoming { background: rgba(107,114,128,.18); color: var(--muted); }
+
+.node-dates { color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+.node-owner { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.node-note { font-size: 13.5px; margin-top: 8px; color: #d7dbe2; }
+.node-cut {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  padding: 7px 12px; border-radius: 10px; text-decoration: none;
+  background: var(--card-2); color: var(--accent); font-size: 13px; font-weight: 600;
+  border: 1px solid var(--line);
+}
+
+/* progress bar under active node */
+.node-progress { height: 5px; background: var(--card-2); border-radius: 999px; margin-top: 10px; overflow: hidden; }
+.node-progress i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+
+/* ---------- calendar ---------- */
+.cal-head { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 4px 0 12px; }
+.cal-head span { font-size: 16px; font-weight: 700; min-width: 120px; text-align: center; }
+.cal-nav {
+  width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--card); color: var(--text); font-size: 20px; cursor: pointer;
+}
+.calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-dow { text-align: center; color: var(--muted); font-size: 12px; padding: 4px 0; }
+.cal-cell {
+  aspect-ratio: 1 / 1; border-radius: 10px; background: var(--card);
+  border: 1px solid transparent; padding: 4px; position: relative;
+  display: flex; flex-direction: column;
+}
+.cal-cell.blank { background: transparent; }
+.cal-cell.today { border-color: var(--accent); }
+.cal-cell .d { font-size: 12.5px; color: var(--muted); }
+.cal-cell.instage { background: var(--card-2); }
+.cal-cell .dots { position: absolute; bottom: 5px; left: 0; right: 0; display: flex; justify-content: center; gap: 3px; }
+.cal-cell .dots i { width: 6px; height: 6px; border-radius: 50%; }
+.dot-meeting { background: var(--meeting); }
+.dot-delivery { background: var(--delivery); }
+.dot-milestone { background: var(--milestone); }
+
+.cal-list { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.cal-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
+}
+.cal-item .bar { width: 4px; align-self: stretch; border-radius: 4px; flex-shrink: 0; }
+.cal-item.meeting .bar { background: var(--meeting); }
+.cal-item.delivery .bar { background: var(--delivery); }
+.cal-item.milestone .bar { background: var(--milestone); }
+.cal-item .when { font-size: 12.5px; color: var(--muted); }
+.cal-item .what { font-size: 14.5px; font-weight: 600; margin-top: 1px; }
+.cal-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 16px; }
+
+/* ---------- footer ---------- */
+.app-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
+.btn {
+  width: 100%; padding: 14px; border-radius: 12px; border: none;
+  background: var(--accent); color: #1a1300; font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.hint { font-size: 12px; color: var(--muted); margin: 12px 2px 0; }
+.hint code {
+  display: block; margin-top: 4px; max-width: 100%;
+  overflow-wrap: anywhere; word-break: break-all;
+  background: var(--card); padding: 4px 6px; border-radius: 6px; color: #cfd4dc;
+}
