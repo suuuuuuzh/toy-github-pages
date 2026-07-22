@@ -26,11 +26,10 @@
           <button id="add-row-btn" class="btn-outline">＋添加一笔</button>
           <button id="restore-deleted-btn" class="btn-outline" style="display:none"></button>
           <button id="merge-btn" class="btn-outline" disabled>合并所选（0）</button>
-          <button id="attach-export-btn" class="btn-outline">导出发票挂载</button>
-          <button id="export-btn" class="btn-outline">导出 data.js（含备注）</button>
+          <button id="export-all-btn" class="btn-outline">导出全部改动（发我永久保存）</button>
         </div>
       </div>
-      <p class="muted" style="font-size:12px;margin:0 0 10px;">每笔右侧点「＋挂发票」从已托管发票里选（可挂多张，弹窗默认按这笔金额预筛）；挂好会自动存本浏览器。备注格子可写用途。改完点「导出发票挂载」把挂载结果发我，我永久写进文件。</p>
+      <p class="muted" style="font-size:12px;margin:0 0 10px;">说明/金额/备注等直接点格子改；每笔右侧「＋挂发票」可选库里的或本地上传。所有改动先存在本浏览器，改完点「导出全部改动」把那一个文件发我，我写进网站后所有人都能看到。</p>
       <div class="table-scroll">
         <table id="expense-table"></table>
       </div>
