@@ -1,6 +1,62 @@
 // kanjing 发票清单
 const invoiceList = [
  {
+  "file": "invoices/kanjing/up-001.pdf",
+  "date": "2026-05-18",
+  "merchant": "携程 邱涛机票行程单 北京-贵阳",
+  "amount": 1520.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-002.pdf",
+  "date": "2026-05-18",
+  "merchant": "携程 周海纳机票行程单 北京-贵阳",
+  "amount": 760.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-003.pdf",
+  "date": "2026-05-18",
+  "merchant": "电子普通发票 机票",
+  "amount": 670.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-007.pdf",
+  "date": "2026-05-22",
+  "merchant": "廿一影视 电子发票 都匀住宿",
+  "amount": 443.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-008.pdf",
+  "date": "2026-05-24",
+  "merchant": "贵州凯亚德酒店 电子发票",
+  "amount": 266.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-010.pdf",
+  "date": "2026-05-24",
+  "merchant": "廿一影视 电子发票 泰山住宿",
+  "amount": 660.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-080.pdf",
+  "date": "2026-05-28",
+  "merchant": "导演制片晚餐 电子发票",
+  "amount": 131.6,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/kanjing/up-089.pdf",
+  "date": "2026-05-28",
+  "merchant": "12306 高铁电子发票 济南-北京",
+  "amount": 223.0,
+  "kind": "发票"
+ },
+ {
   "file": "invoices/kanjing/inv-001.pdf",
   "date": "2026-05-19",
   "merchant": "北京天恒常湘餐饮有限公司",
