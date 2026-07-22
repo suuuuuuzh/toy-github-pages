@@ -94,10 +94,14 @@ function rebuildItems() {
   const mergedIds = new Set();
   merges.forEach((m) => m.ids.forEach((id) => mergedIds.add(id)));
   let list = BASE_ITEMS.filter((it) => !mergedIds.has(it.id)).map((it) => JSON.parse(JSON.stringify(it)));
-  merges.forEach((m) => list.push(JSON.parse(JSON.stringify(m.item))));
+  // 已经被我永久写进 data.js 的合并行/新增行，本地可能还留着当时的操作记录，跳过避免重复
+  const baseIds = new Set(BASE_ITEMS.map((i) => i.id));
+  merges.forEach((m) => {
+    if (!baseIds.has(m.item.id)) list.push(JSON.parse(JSON.stringify(m.item)));
+  });
   // 新增行也可能被合并进去，合并过的就别再单独列出来
   loadAdded().forEach((a) => {
-    if (!mergedIds.has(a.id)) list.push(JSON.parse(JSON.stringify(a)));
+    if (!mergedIds.has(a.id) && !baseIds.has(a.id)) list.push(JSON.parse(JSON.stringify(a)));
   });
   const deleted = new Set(loadDeleted());
   list = list.filter((it) => !deleted.has(it.id));
@@ -113,23 +117,26 @@ function rebuildItems() {
   computeNumMap();
 }
 
-// 显示用的序号：基础行沿用它自己的编号，新增行接在最大编号后面顺延（108、109…），合并行不在这里
+// 显示用的序号：普通行沿用自己的编号；新增行、以及已写进 data.js 的大编号行（原合并/新增，id>=10000）
+// 接在最大普通编号后面顺延（107、108…）。当场合并出来的行仍显示「合并」。
 let numMap = {};
 function computeNumMap() {
   numMap = {};
   let maxBase = 0;
   expenseItems.forEach((it) => {
-    if (it._added || it._merged) return;
+    if (it._merged) return;
     const n = Number(it.id);
-    if (!isNaN(n) && n > maxBase) maxBase = n;
+    if (!isNaN(n) && n < 10000 && n > maxBase) maxBase = n;
   });
-  expenseItems
-    .filter((it) => it._added)
-    .slice()
-    .sort((a, b) => Number(a.id) - Number(b.id))
-    .forEach((it, i) => {
-      numMap[it.id] = maxBase + i + 1;
-    });
+  let next = maxBase;
+  expenseItems.forEach((it) => {
+    if (it._merged) return;
+    const n = Number(it.id);
+    if (it._added || (!isNaN(n) && n >= 10000)) {
+      next += 1;
+      numMap[it.id] = next;
+    }
+  });
 }
 
 // 添加一笔空白行
@@ -1109,6 +1116,52 @@ function setupAttachExport() {
   });
 }
 
+// 一键导出全部改动：明细（含编辑/合并/删除后的最终状态）+ 发票挂载/移除 + 本地上传的文件 + 顺序等，
+// 一个文件发我即可永久写进网站，不用再分开导两次。
+function setupExportAll() {
+  const btn = document.getElementById("export-all-btn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const uploads = loadUploads();
+    const usedUploads = {};
+    const collect = (f) => {
+      if (f && f.indexOf("upload:") === 0) {
+        const id = f.slice("upload:".length);
+        if (uploads[id]) usedUploads[id] = uploads[id];
+      }
+    };
+    Object.values(loadAttach()).forEach((files) => files.forEach(collect));
+    expenseItems.forEach((it) => itemInvoices(it).forEach(collect));
+    let meta = {};
+    try {
+      meta = JSON.parse(localStorage.getItem(META_KEY) || "{}");
+    } catch (e) {}
+    const out = {
+      version: 2,
+      report: reportInfo.reportTitle,
+      exportedAt: new Date().toISOString(),
+      items: expenseItems,
+      attachments: loadAttach(),
+      detached: loadDetach(),
+      uploads: usedUploads,
+      order: loadOrder(),
+      deleted: loadDeleted(),
+      dipiao: loadDipiaoFlags(),
+      meta: meta,
+    };
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    // 文件名用英文，中文名在部分浏览器会被改成 "download"
+    const slug = (location.pathname.split("/").pop() || "report").replace(/\.html?$/, "") || "report";
+    a.download = "changes-" + slug + "-" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  });
+}
+
 // 发票清单：把托管在 invoices/ 里的所有发票列出来，方便人工对应/下载
 function renderInvoiceList() {
   const box = document.getElementById("invoice-list-section");
@@ -1350,6 +1403,7 @@ renderTpiaoTable();
 renderInvoiceList();
 setupExport();
 setupAttachExport();
+setupExportAll();
 setupPreview();
 setupRowOps();
 setupDragReorder();
