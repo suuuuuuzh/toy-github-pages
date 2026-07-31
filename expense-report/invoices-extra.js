@@ -966,5 +966,19 @@ const invoiceListExtra = [
   "merchant": "泰度餐饮-晚饭",
   "amount": 446.0,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/26312000003637374106_e325.pdf",
+  "date": "2026-06-10",
+  "merchant": "蓝瓶咖啡（中国）有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/抵票.jpg",
+  "date": null,
+  "merchant": "抵票",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
