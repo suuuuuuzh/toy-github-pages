@@ -362,10 +362,11 @@ function fileKind(f) {
     const u = uploadMeta(f);
     return (u && u.kind) || "invoice";
   }
-  // 发票库里标了「抵票/替票」的文件，按抵票算
+  // 发票库里标了「抵票/替票」的按抵票算，标了「付款截图」的按截图算
   if (typeof invoiceList !== "undefined") {
     const m = invoiceList.find((v) => v.file === f);
     if (m && (m.kind === "抵票" || m.kind === "替票")) return "dipiao";
+    if (m && (m.kind === "付款截图" || m.kind === "截图")) return "screenshot";
   }
   return "invoice";
 }
@@ -1019,16 +1020,51 @@ function openInvoicePicker(itemId) {
   const hint = overlay.querySelector(".picker-hint");
   if (!library.length) hint.textContent = "这份报销单还没有托管发票库，可用上面的「上传…」按钮直接挂本地文件（可多选）。";
 
-  // 本地上传（三种类型）
+  // 本地上传（三种类型）。有 GitHub 令牌时直接提交进仓库发票库（不占浏览器空间，所有人可见）；
+  // 没令牌才退回存浏览器 localStorage 的老方式（约 5MB 上限）。
   overlay.querySelectorAll(".upload-input").forEach((input) =>
-    input.addEventListener("change", (e) => {
+    input.addEventListener("change", async (e) => {
       const kind = input.getAttribute("data-kind");
       const kindLabel = kind === "dipiao" ? "抵票" : kind === "screenshot" ? "付款截图" : "发票/行程单";
       const filesSel = Array.from(e.target.files || []);
+      input.value = "";
+      if (!filesSel.length) return;
+      const canRepo = typeof commitFilesToLibrary !== "undefined" && (localStorage.getItem("gh-upload-token") || "").trim();
+      if (canRepo) {
+        try {
+          // 抵票/截图在文件名里带上标记，进库后类型才对
+          const prefix = kind === "dipiao" ? "抵票-" : kind === "screenshot" ? "付款截图-" : "";
+          const named = filesSel.map((f) => {
+            const name = prefix && f.name.indexOf(prefix.slice(0, -1)) === -1 ? prefix + f.name : f.name;
+            return new File([f], name, { type: f.type });
+          });
+          const names = await commitFilesToLibrary(named, (msg) => (hint.textContent = msg));
+          names.forEach((name) => {
+            const path = "invoices/extra/" + name;
+            if (typeof invoiceList !== "undefined" && !invoiceList.some((v) => v.file === path)) {
+              const meta = typeof guessInvoiceMeta !== "undefined" ? guessInvoiceMeta(name) : { merchant: name, amount: null, date: null, kind: "发票" };
+              if (kind === "dipiao") meta.kind = "抵票";
+              if (kind === "screenshot") meta.kind = "付款截图";
+              invoiceList.push({ file: path, date: meta.date, merchant: meta.merchant, amount: meta.amount, kind: meta.kind });
+            }
+            attachInvoice(itemId, path);
+            already.add(path);
+          });
+          hint.textContent = `已上传 ${names.length} 个${kindLabel}并挂上 ✓ 文件已进发票库（预览/下载约 2-3 分钟后生效）。`;
+          draw();
+          renderFilterBar();
+          renderExpenseTable();
+          renderSummaryCards();
+          renderInvoiceList();
+          return;
+        } catch (err) {
+          hint.textContent = `直传仓库失败（${err.message}），改用浏览器本地存储…`;
+        }
+      }
       let done = 0;
       filesSel.forEach((file) => {
         if (file.size > 4 * 1024 * 1024) {
-          hint.textContent = `「${file.name}」超过 4MB，太大存不进浏览器，建议打包发我托管。`;
+          hint.textContent = `「${file.name}」超过 4MB，存不进浏览器；请先在工具栏「传发票进库」配置令牌后再传，或把文件发我。`;
           return;
         }
         const reader = new FileReader();
@@ -1038,13 +1074,13 @@ function openInvoicePicker(itemId) {
             attachInvoice(itemId, ref);
             already.add(ref);
             done++;
-            hint.textContent = `已上传并挂上 ${done} 个${kindLabel}。仅存本浏览器；点「导出发票挂载」发我可永久托管。`;
+            hint.textContent = `已上传并挂上 ${done} 个${kindLabel}。仅存本浏览器；点「导出全部改动」发我可永久托管。`;
             draw();
             renderFilterBar();
             renderExpenseTable();
             renderSummaryCards();
           } catch (err) {
-            hint.textContent = "浏览器本地存储已满，无法再存；请把文件打包发我托管。";
+            hint.textContent = "浏览器本地存储已满。用工具栏「传发票进库」粘一次 GitHub 令牌，之后这里上传会直接进仓库、不占浏览器空间。";
           }
         };
         reader.readAsDataURL(file);
