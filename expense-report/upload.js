@@ -49,8 +49,9 @@ function guessInvoiceMeta(filename) {
   let date = null;
   m = stem.match(/(20\d{2})[-_.年]?(0[1-9]|1[0-2])[-_.月]?(0[1-9]|[12]\d|3[01])(?!\d)/);
   if (m) date = m[1] + "-" + m[2] + "-" + m[3];
-  const kind = /替票|抵票/.test(stem) ? "抵票" : "发票";
+  const kind = /替票|抵票/.test(stem) ? "抵票" : /截图/.test(stem) ? "付款截图" : "发票";
   let label = stem
+    .replace(/^(?:替票|抵票|付款截图|截图)[-_\s]*/, "")
     .replace(/(20\d{2})[-_.年]?(0[1-9]|1[0-2])[-_.月]?(0[1-9]|[12]\d|3[01])日?(?!\d)/g, "")
     .replace(/(^|[^\d])\d{1,6}\.\d{1,2}(?!\d)/g, "$1")
     .replace(/(?:[¥￥]|[-_（(])\d{1,6}(?:元)?[)）]?$/, "")

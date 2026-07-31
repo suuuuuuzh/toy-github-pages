@@ -44,9 +44,10 @@ def meta_from_filename(stem):
     m = re.search(r"(20\d{2})[-_.年]?(0[1-9]|1[0-2])[-_.月]?(0[1-9]|[12]\d|3[01])(?!\d)", stem)
     if m:
         date = f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-    kind = "抵票" if re.search(r"替票|抵票", stem) else "发票"
-    # 商户名 = 文件名去掉日期/金额后剩下的部分
-    label = re.sub(r"(20\d{2})[-_.年]?(0[1-9]|1[0-2])[-_.月]?(0[1-9]|[12]\d|3[01])日?(?!\d)", "", stem)
+    kind = "抵票" if re.search(r"替票|抵票", stem) else ("付款截图" if "截图" in stem else "发票")
+    # 商户名 = 文件名去掉 抵票/截图 标记和日期/金额后剩下的部分
+    label = re.sub(r"^(?:替票|抵票|付款截图|截图)[-_\s]*", "", stem)
+    label = re.sub(r"(20\d{2})[-_.年]?(0[1-9]|1[0-2])[-_.月]?(0[1-9]|[12]\d|3[01])日?(?!\d)", "", label)
     label = re.sub(r"(?<!\d)\d{1,6}\.\d{1,2}(?!\d)", "", label)
     label = re.sub(r"(?:[¥￥]|[-_（(])\d{1,6}(?:元)?[)）]?$", "", label)
     label = re.sub(r"[-_（()）\s]+$", "", re.sub(r"^[-_（()）\s]+", "", label)).strip("-_ ") or stem
