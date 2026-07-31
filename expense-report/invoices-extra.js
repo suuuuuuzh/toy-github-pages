@@ -973,5 +973,12 @@ const invoiceListExtra = [
   "merchant": "蓝瓶咖啡（中国）有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/抵票.jpg",
+  "date": null,
+  "merchant": "抵票",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
