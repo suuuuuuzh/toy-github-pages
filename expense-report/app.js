@@ -5,6 +5,15 @@
 const fmt = (n) =>
   Number(n || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+// 追加发票库（invoices-extra.js，两份报销单共用）：并进本页的发票列表，挂发票弹窗里就能选到。
+// 一键下载的 zip 是预先打包好的，只含本单原有发票，数量单独记下。
+let baseInvoiceCount = typeof invoiceList !== "undefined" ? invoiceList.length : 0;
+if (typeof invoiceListExtra !== "undefined" && typeof invoiceList !== "undefined") {
+  invoiceListExtra.forEach((v) => {
+    if (!invoiceList.some((x) => x.file === v.file)) invoiceList.push(v);
+  });
+}
+
 const esc = (s) =>
   String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -917,7 +926,7 @@ function renderSummaryCards() {
   // 一键下载所有发票（打包 zip）
   const zipBox = document.getElementById("download-all");
   if (zipBox && typeof invoiceZip !== "undefined") {
-    const count = typeof invoiceList !== "undefined" ? invoiceList.length : "";
+    const count = baseInvoiceCount || "";
     zipBox.innerHTML = `<a class="btn" href="${esc(invoiceZip)}" download>⬇ 一键下载所有发票${count ? "（" + count + " 张，zip）" : "（zip）"}</a>`;
   }
 }
