@@ -1,4 +1,5 @@
 // 追加发票库（两份报销单共用）：用户分批上传的发票，先托管在这，页面里「＋挂发票」可选
+// 本文件由 tools/gen_extra_manifest.py 自动生成：往 invoices/extra/ 传文件后 GitHub Actions 会自动更新它。
 const invoiceListExtra = [
  {
   "file": "invoices/extra/extra-001.pdf",
@@ -957,6 +958,13 @@ const invoiceListExtra = [
   "date": "2026-07-08",
   "merchant": "北京三里屯在望餐饮管理有限公司",
   "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/泰度餐饮-2026-06-09晚饭-446.00.pdf",
+  "date": "2026-06-09",
+  "merchant": "泰度餐饮-晚饭",
+  "amount": 446.0,
   "kind": "发票"
  }
 ];
