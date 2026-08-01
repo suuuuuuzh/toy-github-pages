@@ -1687,5 +1687,12 @@ const invoiceListExtra = [
   "merchant": "电子发票-2cu1212000t2w1vlw5269 1",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/电子发票-2cu1512000t2w1ycq963B 1.pdf",
+  "date": "2026-07-08",
+  "merchant": "电子发票-2cu1512000t2w1ycq963B 1",
+  "amount": null,
+  "kind": "发票"
  }
 ];
