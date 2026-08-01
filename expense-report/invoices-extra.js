@@ -1106,5 +1106,12 @@ const invoiceListExtra = [
   "merchant": "上海三快智送科技有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26527000000087512492_20260801172519.pdf",
+  "date": "2026-08-01",
+  "merchant": "贵阳全程德邦物流有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
