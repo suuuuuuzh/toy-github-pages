@@ -1988,5 +1988,12 @@ const invoiceListExtra = [
   "merchant": "0622 杭州堪景过路费",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0616 上海电影节晚饭 3人2.PNG",
+  "date": null,
+  "merchant": "0616 上海电影节晚饭 3人2",
+  "amount": null,
+  "kind": "发票"
  }
 ];
