@@ -1274,5 +1274,12 @@ const invoiceListExtra = [
   "merchant": "0527 爬山干粮",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/dzfp_26372000002509379221_济南市章丘区燕归来燕窝馆（个体工商户）_20260801181809.pdf",
+  "date": "2026-05-28",
+  "merchant": "济南市章丘区燕归来燕窝馆（个体工商户",
+  "amount": null,
+  "kind": "发票"
  }
 ];
