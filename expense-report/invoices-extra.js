@@ -1624,5 +1624,12 @@ const invoiceListExtra = [
   "merchant": "0524 堪景咖啡3人2",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-北京象鲜科技有限公司_发票金额77.47元.pdf",
+  "date": "2026-08-01",
+  "merchant": "北京象鲜科技有限公司",
+  "amount": 77.47,
+  "kind": "抵票"
  }
 ];
