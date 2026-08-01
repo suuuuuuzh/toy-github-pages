@@ -2128,5 +2128,12 @@ const invoiceListExtra = [
   "merchant": "26149126468002917603-电子发票",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1913.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1913.0,
+  "kind": "付款截图"
  }
 ];
