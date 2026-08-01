@@ -1218,5 +1218,12 @@ const invoiceListExtra = [
   "merchant": "泰安市泰山区梦梓阳饮品销售中心（个体工商户",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0527午饭补给.PNG",
+  "date": null,
+  "merchant": "0527午饭补给",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
