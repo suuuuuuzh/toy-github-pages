@@ -1169,5 +1169,26 @@ const invoiceListExtra = [
   "merchant": "Weixin Image_20260731174118_458",
   "amount": 7.0,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山 午饭 6人 1.PNG",
+  "date": null,
+  "merchant": "0528 泰山 午饭 6人 1",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山 午饭 6人 2.PNG",
+  "date": null,
+  "merchant": "0528 泰山 午饭 6人 2",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山 午饭 6人 3.PNG",
+  "date": null,
+  "merchant": "0528 泰山 午饭 6人 3",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
