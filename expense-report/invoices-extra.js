@@ -1638,5 +1638,12 @@ const invoiceListExtra = [
   "merchant": "北京天恒常湘餐饮有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-北京庆春朴门餐饮有限公司_发票金额471.00元.pdf",
+  "date": "2026-07-15",
+  "merchant": "北京庆春朴门餐饮有限公司",
+  "amount": 471.0,
+  "kind": "抵票"
  }
 ];
