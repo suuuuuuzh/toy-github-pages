@@ -1659,5 +1659,12 @@ const invoiceListExtra = [
   "merchant": "北京帅巢一九一零餐饮有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/58725ef1-578e-47a3-9e09-42ac68949b99756.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
