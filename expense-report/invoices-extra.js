@@ -1428,5 +1428,12 @@ const invoiceListExtra = [
   "merchant": "北京睿贝库餐饮服务有限公司",
   "amount": 257.0,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523 早饭4人.JPG",
+  "date": null,
+  "merchant": "0523 早饭4人",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
