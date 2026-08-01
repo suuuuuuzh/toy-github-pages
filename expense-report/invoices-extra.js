@@ -1995,5 +1995,12 @@ const invoiceListExtra = [
   "merchant": "0616 上海电影节晚饭 3人2",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0616 上海电影节晚饭 3人.PNG",
+  "date": null,
+  "merchant": "0616 上海电影节晚饭 3人",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
