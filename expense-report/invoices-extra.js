@@ -1666,5 +1666,12 @@ const invoiceListExtra = [
   "merchant": "上海三快智送科技有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-lx-sh-hk-431.jpg",
+  "date": null,
+  "merchant": "lx-sh-hk",
+  "amount": 431.0,
+  "kind": "付款截图"
  }
 ];
