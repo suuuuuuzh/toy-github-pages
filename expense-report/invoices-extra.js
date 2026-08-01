@@ -1085,5 +1085,12 @@ const invoiceListExtra = [
   "merchant": "给堪景外联制片买烟_买烟(外联",
   "amount": 530.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/爬山护具发票.jpg",
+  "date": null,
+  "merchant": "爬山护具发票",
+  "amount": null,
+  "kind": "发票"
  }
 ];
