@@ -1855,5 +1855,12 @@ const invoiceListExtra = [
   "merchant": "成都携程旅行社有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-26112000002831203711-廿一影视文化传播（上海）有限公司 1.pdf",
+  "date": "2026-07-09",
+  "merchant": "北京宁布餐饮管理有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
