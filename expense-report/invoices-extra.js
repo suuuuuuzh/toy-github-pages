@@ -1834,5 +1834,12 @@ const invoiceListExtra = [
   "merchant": "杭州北京水素机票",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1878.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1878.0,
+  "kind": "付款截图"
  }
 ];
