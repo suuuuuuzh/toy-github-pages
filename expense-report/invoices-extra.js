@@ -1848,5 +1848,12 @@ const invoiceListExtra = [
   "merchant": "0611 上海电影节咖啡 支付凭证",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-订单1128147299873063-电子普通发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "成都携程旅行社有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
