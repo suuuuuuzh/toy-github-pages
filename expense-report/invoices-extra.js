@@ -1820,5 +1820,12 @@ const invoiceListExtra = [
   "merchant": "预订服务由携程旗下上海赫程国际旅行社有限公司",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/杭州深圳，导演机票.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海华程西南国际旅行社有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
