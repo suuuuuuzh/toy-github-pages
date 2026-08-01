@@ -1316,5 +1316,12 @@ const invoiceListExtra = [
   "merchant": "上海三快智送科技有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 咖啡 3人.pdf",
+  "date": "2026-08-01",
+  "merchant": "济南瑞幸咖啡有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
