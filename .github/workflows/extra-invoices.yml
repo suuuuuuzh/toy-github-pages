@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 concurrency:
   group: extra-invoices-manifest
@@ -34,6 +35,11 @@ jobs:
             git commit -m "Auto-update extra invoice manifest"
             git pull --rebase origin main
             git push
+            # 机器人的提交不会自动触发 Pages 部署，这里主动请求一次重建
+            curl -sS -X POST \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true
           else
             echo "manifest unchanged"
           fi
