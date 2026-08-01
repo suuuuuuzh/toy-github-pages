@@ -1827,5 +1827,12 @@ const invoiceListExtra = [
   "merchant": "上海华程西南国际旅行社有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/杭州北京水素机票.pdf",
+  "date": null,
+  "merchant": "杭州北京水素机票",
+  "amount": null,
+  "kind": "发票"
  }
 ];
