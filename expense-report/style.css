@@ -138,8 +138,18 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
+/* 行底色跟「凭证」状态走：发票=绿、抵票=橙、付款截图=蓝、无凭证=红 */
 tbody tr.row-none {
   background: #fef2f2;
+}
+tbody tr.row-invoice {
+  background: #f0fdf4;
+}
+tbody tr.row-dipiao {
+  background: #fff7ed;
+}
+tbody tr.row-shot {
+  background: #eff6ff;
 }
 
 tfoot td {
@@ -400,7 +410,6 @@ tr.cat-row td { background: #eef2ff; font-weight: 700; padding: 8px 12px; border
 .merge-cb { width: 15px; height: 15px; cursor: pointer; }
 .row-op { border: 1px solid var(--color-border); background: #fff; border-radius: 5px; font-size: 11px; padding: 1px 6px; cursor: pointer; color: var(--color-muted); }
 .row-op:hover { border-color: var(--color-primary); color: var(--color-primary); }
-tr:has(.unmerge-btn) td { background: #f5f3ff; }
 
 /* 行上下移动 */
 .move-btns { display: inline-flex; flex-direction: column; line-height: 1; }
