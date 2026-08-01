@@ -32,7 +32,11 @@ async function ghApi(path, opts) {
     localStorage.removeItem(GH_TOKEN_KEY);
     throw new Error("令牌无效或没权限（已清掉，下次点会重新问你要）");
   }
-  if (!r.ok) throw new Error("GitHub 接口返回 " + r.status);
+  if (!r.ok) {
+    const e = new Error("GitHub 接口返回 " + r.status);
+    e.status = r.status;
+    throw e;
+  }
   return r.json();
 }
 
@@ -68,11 +72,10 @@ function fileToBase64(file) {
   });
 }
 
-// 一批文件一次 commit：blob → tree → commit → 更新 main
+// 一批文件一次 commit：blob → tree → commit → 更新 main。
+// 提交瞬间如果仓库正好有别的提交进来（比如自动更新清单的机器人），
+// 更新 main 会报 422 非快进，这里自动换最新基础重试几次。
 async function commitFilesToLibrary(files, onStatus) {
-  const head = await ghApi("/git/ref/heads/main");
-  const headSha = head.object.sha;
-  const headCommit = await ghApi("/git/commits/" + headSha);
   // 已有文件名，重名自动加 -2 / -3
   const existing = await ghApi("/contents/" + GH_DIR + "?ref=main");
   const taken = new Set(existing.map((f) => f.name));
@@ -91,14 +94,28 @@ async function commitFilesToLibrary(files, onStatus) {
     finalNames.push(name);
     treeItems.push({ path: GH_DIR + "/" + name, mode: "100644", type: "blob", sha: blob.sha });
   }
-  onStatus("正在提交…");
-  const tree = await ghApi("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: headCommit.tree.sha, tree: treeItems }) });
-  const commit = await ghApi("/git/commits", {
-    method: "POST",
-    body: JSON.stringify({ message: "页面直传发票 " + finalNames.length + " 张", tree: tree.sha, parents: [headSha] }),
-  });
-  await ghApi("/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
-  return finalNames;
+  for (let attempt = 1; ; attempt++) {
+    onStatus(attempt > 1 ? "仓库刚有新提交，正在重试（第 " + attempt + " 次）…" : "正在提交…");
+    const head = await ghApi("/git/ref/heads/main");
+    const headSha = head.object.sha;
+    const headCommit = await ghApi("/git/commits/" + headSha);
+    const tree = await ghApi("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: headCommit.tree.sha, tree: treeItems }) });
+    const commit = await ghApi("/git/commits", {
+      method: "POST",
+      body: JSON.stringify({ message: "页面直传发票 " + finalNames.length + " 张", tree: tree.sha, parents: [headSha] }),
+    });
+    try {
+      await ghApi("/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
+      return finalNames;
+    } catch (e) {
+      if (e.status === 422 && attempt < 4) {
+        await new Promise((r) => setTimeout(r, 1200 * attempt));
+        continue;
+      }
+      if (e.status === 422) throw new Error("仓库连续几次都在同一时间有新提交（422），稍等十几秒再点一次就好");
+      throw e;
+    }
+  }
 }
 
 function setupLibraryUpload() {
