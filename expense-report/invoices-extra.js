@@ -1841,5 +1841,12 @@ const invoiceListExtra = [
   "merchant": "IMG",
   "amount": 1878.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0611 上海电影节咖啡 支付凭证.PNG",
+  "date": null,
+  "merchant": "0611 上海电影节咖啡 支付凭证",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
