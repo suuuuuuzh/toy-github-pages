@@ -1225,5 +1225,19 @@ const invoiceListExtra = [
   "merchant": "0527午饭补给",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0527 咖啡3人 2.pdf",
+  "date": "2026-05-28",
+  "merchant": "济南市历城区茶本食品店（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0527 咖啡3人.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
