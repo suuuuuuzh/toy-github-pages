@@ -2058,5 +2058,12 @@ const invoiceListExtra = [
   "merchant": "上海赫程国际旅行社有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/住宿费抵票664.pdf",
+  "date": "2026-07-26",
+  "merchant": "山西豪庭酒店管理有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
