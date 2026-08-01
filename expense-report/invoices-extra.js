@@ -1162,5 +1162,12 @@ const invoiceListExtra = [
   "merchant": "0528 泰山上买水4",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/Weixin Image_20260731174118_458_7.png",
+  "date": null,
+  "merchant": "Weixin Image_20260731174118_458",
+  "amount": 7.0,
+  "kind": "发票"
  }
 ];
