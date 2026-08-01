@@ -1813,5 +1813,12 @@ const invoiceListExtra = [
   "merchant": "预订服务由携程旗下上海赫程国际旅行社有限公司",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-酒店水单（订单尾号5790）.pdf",
+  "date": null,
+  "merchant": "预订服务由携程旗下上海赫程国际旅行社有限公司",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
