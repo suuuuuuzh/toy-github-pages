@@ -1974,5 +1974,12 @@ const invoiceListExtra = [
   "merchant": "0619 杭州堪景晚饭3人538",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0620 杭州堪景门票3人.PNG",
+  "date": null,
+  "merchant": "0620 杭州堪景门票3人",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
