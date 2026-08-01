@@ -1078,5 +1078,12 @@ const invoiceListExtra = [
   "merchant": "0523停车费",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-给堪景外联制片买烟_买烟(外联)_530.00.jpg",
+  "date": null,
+  "merchant": "给堪景外联制片买烟_买烟(外联",
+  "amount": 530.0,
+  "kind": "付款截图"
  }
 ];
