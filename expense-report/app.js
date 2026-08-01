@@ -844,44 +844,70 @@ function renderCategoryTable() {
   box.querySelectorAll(".cat-panel table").forEach((t) => wireRowInputs(t));
 }
 
+// 抵票汇总：自动从挂载关系整理——同一张抵票文件挂在几笔上，就自动归成一行，
+// 列出面值、抵了哪几笔（按当前序号）、涉及项目。标了「抵票」但还没挂文件的也单独列出提醒。
 function renderTpiaoTable() {
-  const list = typeof tpiaoList !== "undefined" ? tpiaoList : [];
   const tbody = document.getElementById("tpiao-tbody");
   const emptyHint = document.getElementById("tpiao-empty");
   if (!tbody) return;
 
-  if (list.length === 0) {
+  // 每张抵票文件 → 用它的所有条目（保持显示顺序）
+  const byFile = {};
+  const fileOrder = [];
+  expenseItems
+    .slice()
+    .sort((a, b) => (numMap[a.id] || 0) - (numMap[b.id] || 0))
+    .forEach((it) => {
+      classifyFiles(it).dipiao.forEach((f) => {
+        if (!byFile[f]) {
+          byFile[f] = [];
+          fileOrder.push(f);
+        }
+        byFile[f].push(it);
+      });
+    });
+  const flaggedNoFile = expenseItems
+    .filter((it) => isDipiaoFlagged(it) && classifyFiles(it).dipiao.length === 0)
+    .sort((a, b) => (numMap[a.id] || 0) - (numMap[b.id] || 0));
+
+  if (!fileOrder.length && !flaggedNoFile.length) {
     tbody.innerHTML = "";
     if (emptyHint) emptyHint.style.display = "block";
     return;
   }
   if (emptyHint) emptyHint.style.display = "none";
 
-  tbody.innerHTML = list
-    .map((ticket) => {
-      const usedBy = expenseItems.filter(
-        (i) => i.voucherType === "tpiao" && (i.tpiaoIds || []).includes(ticket.id)
-      );
-      const relatedIds = usedBy.map((i) => "#" + i.id).join("、") || "-";
-      const relatedDesc =
-        usedBy.map((i) => i.category + (i.description ? "（" + i.description + "）" : "")).join("；") || "-";
-      const invoiceLabel = ticket.invoiceCategory ? "抵票-" + ticket.invoiceCategory : "-";
-      const action = ticket.file
-        ? `<a class="btn" href="${esc(ticket.file)}" download target="_blank" rel="noopener">下载凭证</a>`
-        : '<span class="muted">无扫描件</span>';
-      return `
-      <tr id="tpiao-${esc(ticket.id)}">
-        <td>${esc(ticket.id)}</td>
-        <td>${esc(invoiceLabel)}</td>
-        <td>${relatedIds}</td>
-        <td>${esc(relatedDesc)}</td>
-        <td class="amount-cell">${fmt(ticket.amount)}</td>
-        <td>${action}</td>
+  const numOf = (it) => (numMap[it.id] != null ? numMap[it.id] : it.id);
+  let faceTotal = 0;
+  const rows = fileOrder.map((f, idx) => {
+    const items = byFile[f];
+    const meta = invoiceMeta(f);
+    if (meta && meta.amount != null) faceTotal += Number(meta.amount);
+    const label = meta ? meta.merchant || "抵票" : f.split("/").pop();
+    const covered = items.reduce((s, i) => s + Number(i.amount || 0), 0);
+    return `
+      <tr>
+        <td>D${idx + 1}</td>
+        <td>${esc(label)}</td>
+        <td>${items.map((i) => "#" + numOf(i)).join("、")}</td>
+        <td>${esc(items.map((i) => i.description || i.category).join("；"))}<span class="muted">（共 ¥${fmt(covered)}）</span></td>
+        <td class="amount-cell">${meta && meta.amount != null ? fmt(meta.amount) : '<span class="muted">见文件</span>'}</td>
+        <td><a class="btn inv-list-link" href="${esc(invoiceHref(f))}" download="${esc(f.split("/").pop())}" target="_blank" rel="noopener">看 / 下载</a></td>
       </tr>`;
-    })
-    .join("");
+  });
+  const pending = flaggedNoFile.map(
+    (it) => `
+      <tr>
+        <td class="muted">待挂</td>
+        <td class="muted">已标抵票、还没挂抵票文件</td>
+        <td>#${numOf(it)}</td>
+        <td>${esc(it.description || it.category)}<span class="muted">（¥${fmt(it.amount)}）</span></td>
+        <td class="amount-cell muted">-</td>
+        <td class="muted">在该笔「＋挂发票 → 上传抵票」补上</td>
+      </tr>`
+  );
+  tbody.innerHTML = rows.join("") + pending.join("");
 
-  const faceTotal = list.reduce((s, t) => s + Number(t.amount || 0), 0);
   const foot = document.getElementById("tpiao-total-cell");
   if (foot) foot.textContent = fmt(faceTotal) + " 元";
 }
@@ -1399,6 +1425,7 @@ function renderEverything() {
   renderFilterBar();
   renderExpenseTable();
   renderCategoryTable();
+  renderTpiaoTable();
 }
 // 添加一笔 / 合并所选 按钮
 function setupRowOps() {
