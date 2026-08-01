@@ -1421,5 +1421,12 @@ const invoiceListExtra = [
   "merchant": "阿嬷的情书电影票付款凭证",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-北京睿贝库餐饮服务有限公司_发票金额257.00元.pdf",
+  "date": "2026-07-11",
+  "merchant": "北京睿贝库餐饮服务有限公司",
+  "amount": 257.0,
+  "kind": "抵票"
  }
 ];
