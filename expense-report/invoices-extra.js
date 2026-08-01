@@ -1575,5 +1575,40 @@ const invoiceListExtra = [
   "merchant": "都匀市沐茗奶茶饮品店",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1553.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1553.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26522000000482897146_贵州凯亚德酒店管理有限公司_20260525144015.pdf",
+  "date": "2026-05-25",
+  "merchant": "贵州凯亚德酒店管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/廿一影视文化传播（上海）有限公司_20260701174740_26372000003196730326.pdf",
+  "date": "2026-07-01",
+  "merchant": "廿一影视文化传播（上海）有限公司_20260701174740_26372000003196730326",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/电子发票-2cu3h12000t2w2m2h9111.pdf",
+  "date": "2026-07-08",
+  "merchant": "电子发票-2cu3h12000t2w2m2h9111",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148807874407-电子行程单-赵馨怡.pdf",
+  "date": null,
+  "merchant": "订单1128148807874407-电子行程单-赵馨怡",
+  "amount": null,
+  "kind": "发票"
  }
 ];
