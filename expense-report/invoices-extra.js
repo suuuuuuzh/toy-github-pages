@@ -2170,5 +2170,12 @@ const invoiceListExtra = [
   "merchant": "【享道出行-元-1个行程】高德打车电子行程单",
   "amount": 45.53,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1916.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1916.0,
+  "kind": "付款截图"
  }
 ];
