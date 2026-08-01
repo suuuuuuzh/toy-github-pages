@@ -2100,5 +2100,12 @@ const invoiceListExtra = [
   "merchant": "40",
   "amount": 40.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-26337000000577079618.pdf",
+  "date": "2026-07-08",
+  "merchant": "杭州茵赫餐饮管理有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
