@@ -347,6 +347,36 @@ function maybeOfferMigration() {
   });
 }
 
+// ---- 通用：把几个文本文件提交进仓库（新建报销单等用），带 422 撞车重试 ----
+function b64utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = "";
+  bytes.forEach((b) => (bin += String.fromCharCode(b)));
+  return btoa(bin);
+}
+async function commitTextFilesToRepo(files, message) {
+  return withGhLock(async () => {
+    const treeItems = [];
+    for (const f of files) {
+      const blob = await ghApi("/git/blobs", { method: "POST", body: JSON.stringify({ content: b64utf8(f.text), encoding: "base64" }) });
+      treeItems.push({ path: f.path, mode: "100644", type: "blob", sha: blob.sha });
+    }
+    for (let attempt = 1; ; attempt++) {
+      const head = await ghApi("/git/ref/heads/main");
+      const headCommit = await ghApi("/git/commits/" + head.object.sha);
+      const tree = await ghApi("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: headCommit.tree.sha, tree: treeItems }) });
+      const commit = await ghApi("/git/commits", { method: "POST", body: JSON.stringify({ message: message, tree: tree.sha, parents: [head.object.sha] }) });
+      try {
+        await ghApi("/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
+        return;
+      } catch (e) {
+        if (e.status === 422 && attempt < 4) { await new Promise((r) => setTimeout(r, 1200 * attempt)); continue; }
+        throw e;
+      }
+    }
+  });
+}
+
 function setupLibraryUpload() {
   const input = document.getElementById("lib-upload-input");
   const status = document.getElementById("lib-upload-status");
