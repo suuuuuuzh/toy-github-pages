@@ -1869,5 +1869,12 @@ const invoiceListExtra = [
   "merchant": "0612 晚饭150",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-上海电影节奶茶59.9.PNG",
+  "date": null,
+  "merchant": "上海电影节奶茶",
+  "amount": 59.9,
+  "kind": "付款截图"
  }
 ];
