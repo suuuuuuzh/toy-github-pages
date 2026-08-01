@@ -1456,5 +1456,12 @@ const invoiceListExtra = [
   "merchant": "北京茵赫餐饮管理有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0525 咖啡3人.PNG",
+  "date": null,
+  "merchant": "0525 咖啡3人",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
