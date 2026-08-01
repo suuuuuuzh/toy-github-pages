@@ -1127,5 +1127,12 @@ const invoiceListExtra = [
   "merchant": "堪景器材租赁凭证",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-贵州堪景外联红包.PNG",
+  "date": null,
+  "merchant": "贵州堪景外联红包",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
