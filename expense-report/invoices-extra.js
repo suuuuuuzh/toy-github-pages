@@ -1645,5 +1645,12 @@ const invoiceListExtra = [
   "merchant": "北京庆春朴门餐饮有限公司",
   "amount": 471.0,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-26112000002979155266-廿一影视文化传播（上海）有限公司.pdf",
+  "date": "2026-07-19",
+  "merchant": "北京艾恰餐饮服务有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
