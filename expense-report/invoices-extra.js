@@ -994,5 +994,12 @@ const invoiceListExtra = [
   "merchant": "上海市浦东新区陆家嘴街道板板扎扎餐饮店（个体工商户",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0612 咖啡.pdf",
+  "date": "2026-06-24",
+  "merchant": "上海喜创于茶餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
