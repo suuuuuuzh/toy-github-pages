@@ -1890,5 +1890,12 @@ const invoiceListExtra = [
   "merchant": "上海沃歌斯餐饮有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/上海三快智送科技有限公司_发票金额49.80元.pdf",
+  "date": "2026-08-02",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": 49.8,
+  "kind": "发票"
  }
 ];
