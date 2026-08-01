@@ -2086,5 +2086,96 @@ const invoiceListExtra = [
   "merchant": "北京滴滴出行科技有限公司",
   "amount": 46.9,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-49.56.PNG",
+  "date": null,
+  "merchant": "抵票-49.56",
+  "amount": 49.56,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-40.PNG",
+  "date": null,
+  "merchant": "40",
+  "amount": 40.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-26337000000577079618.pdf",
+  "date": "2026-07-08",
+  "merchant": "杭州茵赫餐饮管理有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单 6.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单 6",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票 3.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京滴滴出行科技有限公司",
+  "amount": 150.4,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/抵票-26149126468002917603-电子发票.pdf",
+  "date": "2026-07-26",
+  "merchant": "26149126468002917603-电子发票",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1913.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1913.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1914.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1914.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/【聚的出租车-23.72元-1个行程】高德打车电子发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "天津鞍马出行科技有限公司",
+  "amount": 23.72,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/【聚的出租车-23.72元-1个行程】高德打车电子行程单.pdf",
+  "date": null,
+  "merchant": "【聚的出租车-元-1个行程】高德打车电子行程单",
+  "amount": 23.72,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/【享道出行-45.53元-1个行程】高德打车电子发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "享道出行（上海）科技股份有限公司",
+  "amount": 45.53,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/【享道出行-45.53元-1个行程】高德打车电子行程单.pdf",
+  "date": null,
+  "merchant": "【享道出行-元-1个行程】高德打车电子行程单",
+  "amount": 45.53,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1916.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1916.0,
+  "kind": "付款截图"
  }
 ];

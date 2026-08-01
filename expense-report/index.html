@@ -14,28 +14,89 @@
         <span>报销人：<b>水素</b></span>
         <span>周期：<b>2026年5-6月</b></span>
       </div>
+      <div class="meta" id="grand-strip" style="margin-top:10px;font-size:15px;"></div>
     </header>
 
-    <section class="summary-cards">
-      <a class="card total" href="kanjing.html" style="text-decoration:none;color:inherit;display:block">
-        <div class="label">报销单 A · 堪景（贵州+山东）</div>
-        <div class="value">2026年5月</div>
-        <div class="sub">79 笔 · 合计 ¥29,529.68 · 点击查看 →</div>
-      </a>
-      <a class="card invoice" href="shanghai.html" style="text-decoration:none;color:inherit;display:block">
-        <div class="label">报销单 B · 上海+杭州</div>
-        <div class="value">2026年6月</div>
-        <div class="sub">63 笔 · 合计 ¥21,794.76 · 点击查看 →</div>
-      </a>
-    </section>
+    <section class="summary-cards" id="report-cards"></section>
+
+    <p style="margin:6px 0 0;">
+      <button id="new-sheet-btn" class="btn-outline">＋ 新建一张报销单</button>
+      <span id="new-sheet-status" class="muted" style="font-size:12px;margin-left:8px;"></span>
+    </p>
 
     <section>
       <p class="muted" style="font-size:13px;">
-        两份报销单按微信流水第 100 行的 summary 分割：5 月贵州/山东堪景一份，6 月上海/杭州一份。
-        发票放在 <code>invoices/kanjing/</code> 和 <code>invoices/shanghai/</code> 两个文件夹，页面里每笔右侧可下载对应发票。
-        另可用 <a href="import.html">从 Excel 导入</a> 工具重新生成数据。
+        所有报销单合并按<b>一次报销</b>结算，上面的合计会根据每张表的内容自动计算。
+        发票托管在网站上，每张表里可上传、挂票、下载打包。
       </p>
     </section>
   </div>
+
+  <script src="reports.js"></script>
+  <script src="upload.js"></script>
+  <script>
+    // 卡片 + 总账（预支 / 实际花销 / 差额）都从 reportRegistry 自动算
+    (function () {
+      const fmt = (n) => Number(n || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const cards = document.getElementById("report-cards");
+      const colors = ["#2563eb", "#16a34a", "#d97706", "#7c3aed", "#0891b2"];
+      cards.innerHTML = reportRegistry
+        .map(
+          (r, i) => `
+        <a class="card" href="${r.page}" style="text-decoration:none;color:inherit;display:block">
+          <div class="label">${r.title}</div>
+          <div class="value" style="color:${colors[i % colors.length]}">${r.period}</div>
+          <div class="sub">${r.count} 笔 · 合计 ¥${fmt(r.total)} · 点击查看 →</div>
+        </a>`
+        )
+        .join("");
+      const loan = reportRegistry.reduce((s, r) => s + Number(r.loan || 0), 0);
+      const total = reportRegistry.reduce((s, r) => s + Number(r.total || 0), 0);
+      const diff = total - loan;
+      document.getElementById("grand-strip").innerHTML =
+        `<span>预支合计：<b>¥${fmt(loan)}</b></span>` +
+        `<span>实际花销合计：<b>¥${fmt(total)}</b></span>` +
+        `<span>差额：<b style="color:${diff > 0 ? "#16a34a" : diff < 0 ? "#dc2626" : "inherit"}">¥${fmt(Math.abs(diff))}</b>` +
+        `<span class="muted">${diff > 0.004 ? "（应补付报销人）" : diff < -0.004 ? "（报销人退回）" : "（两清）"}</span></span>`;
+
+      // 新建报销单：直接提交一个新 data 文件 + 更新登记表（需要 GitHub 令牌）
+      const btn = document.getElementById("new-sheet-btn");
+      const status = document.getElementById("new-sheet-status");
+      btn.addEventListener("click", async () => {
+        if (!askGhToken(false)) { status.textContent = "需要 GitHub 令牌才能新建。"; return; }
+        const name = (prompt("新报销单名称（比如：7月拍摄、日常）") || "").trim();
+        if (!name) return;
+        const period = (prompt("周期（比如：2026年7月，可留空）") || "").trim();
+        const slug = "s" + Date.now().toString(36);
+        const q = (s) => s.replace(/"/g, "");
+        const dataText =
+          "// 报销单 · " + q(name) + "\n" +
+          "const reportInfo = {\n" +
+          '  reportTitle: "报销单 · ' + q(name) + '",\n' +
+          '  company: "廿一影视文化传播（上海）有限公司",\n' +
+          '  submitter: "水素",\n  project: "《竹林遗录》",\n  department: "",\n' +
+          '  period: "' + q(period) + '",\n  reportDate: "",\n  loan: 0,\n};\n\n' +
+          'const categoryOptions = ["交通费", "住宿费", "餐费", "汽车费用", "快递费", "办公用品", "器材", "业务招待费", "其他"];\n\n' +
+          "const expenseItems = [];\n\nconst tpiaoList = [];\n";
+        const newReg = reportRegistry.concat([{ slug: slug, title: "报销单 · " + q(name), period: q(period), page: "sheet.html?r=" + slug, count: 0, total: 0, loan: 0 }]);
+        const regText =
+          "// 报销单登记表：首页卡片和合计从这里来。新建报销单会自动追加；count/total 在我固化数据时更新。\n" +
+          "const reportRegistry = " + JSON.stringify(newReg, null, 1) + ";\n";
+        try {
+          status.textContent = "正在创建…";
+          await commitTextFilesToRepo(
+            [
+              { path: "expense-report/data-" + slug + ".js", text: dataText },
+              { path: "expense-report/reports.js", text: regText },
+            ],
+            "新建报销单：" + name
+          );
+          status.textContent = "已创建 ✓ 部署约需 2-3 分钟，之后刷新首页就能看到新卡片。";
+        } catch (e) {
+          status.textContent = "创建失败：" + e.message;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

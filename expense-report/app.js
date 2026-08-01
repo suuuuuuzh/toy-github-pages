@@ -1063,8 +1063,17 @@ function openInvoicePicker(itemId) {
       let repoFail = "";
       if (canRepo) {
         try {
+          // 入库前先按规范自动重命名：日期_说明_[抵票/付款截图]_实付金额
+          const stamp = (item.date || "").trim() || "无日期";
+          const base = ((item.description || item.category || "").trim().slice(0, 20)) || "凭证";
+          const kindTag = kind === "dipiao" ? "_抵票" : kind === "screenshot" ? "_付款截图" : "";
+          const renamed = filesSel.map((f, i) => {
+            const ext = (f.name.split(".").pop() || "pdf").toLowerCase();
+            const stem = (stamp + "_" + base + kindTag + "_实付" + (item.amount != null ? item.amount : "") + (filesSel.length > 1 ? "-" + (i + 1) : "")).replace(/[\\/:*?"<>|\s]+/g, "_");
+            return new File([f], stem + "." + ext, { type: f.type });
+          });
           // 立刻挂上并加入后台队列，不用等上传完成
-          const names = enqueueLibraryUpload(filesSel, kind, itemId);
+          const names = enqueueLibraryUpload(renamed, kind, itemId);
           names.forEach((name) => already.add("invoices/extra/" + name));
           hint.textContent = `已挂上 ${names.length} 个${kindLabel} ✓ 文件在后台排队上传（进度见表格上方蓝色状态行），可以继续操作。`;
           draw();
@@ -1392,7 +1401,9 @@ function renderHeader() {
       `<span>报销人：<b>${esc(reportInfo.submitter || "-")}</b></span>` +
       `<span>项目名称：<b>${esc(reportInfo.project || "-")}</b></span>` +
       `<span>报销周期：<b>${esc(reportInfo.period || "-")}</b></span>` +
-      `<span>借款金额：¥<input id="loan-input" class="loan-input" value="${reportInfo.loan != null ? reportInfo.loan : 0}" inputmode="decimal" /></span>`;
+      `<span>预支（借款）：¥<input id="loan-input" class="loan-input" value="${reportInfo.loan != null ? reportInfo.loan : 0}" inputmode="decimal" /></span>` +
+      `<span>实际花销：<b id="meta-total">-</b></span>` +
+      `<span id="meta-diff-wrap">差额：<b id="meta-diff">-</b></span>`;
     const loanInp = document.getElementById("loan-input");
     if (loanInp) {
       loanInp.addEventListener("change", () => {
@@ -1400,9 +1411,26 @@ function renderHeader() {
         reportInfo.loan = isNaN(v) ? 0 : v;
         setMeta("loan", reportInfo.loan);
         renderSummaryCards();
+        updateMetaTotals();
       });
     }
+    updateMetaTotals();
   }
+}
+// 表头的 实际花销/差额 自动跟着表格内容算：差额 = 实际花销 − 预支。
+// 正数=公司还要补给报销人，负数=报销人要退回公司。
+function updateMetaTotals() {
+  const totalEl = document.getElementById("meta-total");
+  const diffEl = document.getElementById("meta-diff");
+  if (!totalEl) return;
+  const total = expenseItems.reduce((s, i) => s + Number(i.amount || 0), 0);
+  const loan = Number(reportInfo.loan || 0);
+  const diff = total - loan;
+  totalEl.textContent = "¥" + fmt(total);
+  diffEl.innerHTML =
+    "¥" + fmt(Math.abs(diff)) +
+    (diff > 0.004 ? '<span class="muted">（应补付报销人）</span>' : diff < -0.004 ? '<span class="muted">（报销人退回）</span>' : '<span class="muted">（两清）</span>');
+  diffEl.style.color = diff > 0.004 ? "#16a34a" : diff < -0.004 ? "#dc2626" : "";
 }
 // 表头字段（借款）本地存储
 const META_KEY = "expense-meta:" + (typeof reportInfo !== "undefined" ? reportInfo.reportTitle : "default");
@@ -1427,6 +1455,7 @@ function renderEverything() {
   renderExpenseTable();
   renderCategoryTable();
   renderTpiaoTable();
+  updateMetaTotals();
 }
 // 添加一笔 / 合并所选 按钮
 function setupRowOps() {
