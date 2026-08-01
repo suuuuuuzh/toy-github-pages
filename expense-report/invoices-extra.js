@@ -1449,5 +1449,12 @@ const invoiceListExtra = [
   "merchant": "0522 堪景行程补给",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-26117000000636225049 1.pdf",
+  "date": "2026-07-08",
+  "merchant": "北京茵赫餐饮管理有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
