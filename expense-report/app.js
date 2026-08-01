@@ -757,15 +757,16 @@ function downloadName(item, file) {
   const ext = (extSrc.split(".").pop() || "").split("?")[0].toLowerCase();
   const meta = invoiceMeta(file);
   const kind = fileKind(file);
+  // 命名规则：日期_说明_[抵票/付款截图]_票面金额_实付金额
   const parts = [];
+  if (item && item.date) parts.push(item.date);
+  if (item && item.description) parts.push(item.description.slice(0, 30));
   if (kind === "dipiao") parts.push("抵票");
   else if (kind === "screenshot") parts.push("付款截图");
-  if (item && item.description) parts.push(item.description);
-  const content = (item && item.invoiceCategory) || (meta && meta.merchant) || "";
-  if (content && kind === "invoice") parts.push(content);
-  const amt = meta && meta.amount != null ? meta.amount : item && item.invoiceAmount ? item.invoiceAmount : "";
-  if (amt !== "" && kind === "invoice") parts.push(fmt(amt).replace(/,/g, ""));
-  let name = parts.join("_").replace(/[\\/:*?"<>|\s]+/g, "_").slice(0, 80);
+  const invAmt = meta && meta.amount != null ? meta.amount : item && item.invoiceAmount !== "" && item.invoiceAmount != null ? item.invoiceAmount : "";
+  if (invAmt !== "" && kind !== "screenshot") parts.push("票面" + fmt(invAmt).replace(/,/g, ""));
+  if (item && item.amount != null) parts.push("实付" + fmt(item.amount).replace(/,/g, ""));
+  let name = parts.join("_").replace(/[\\/:*?"<>|\s]+/g, "_").slice(0, 90);
   if (!name) name = file.split("/").pop().replace(/\.[^.]+$/, "");
   return name + (ext ? "." + ext : "");
 }
@@ -953,7 +954,7 @@ function renderSummaryCards() {
   // 一键下载所有发票（打包 zip）
   const zipBox = document.getElementById("download-all");
   if (zipBox && typeof invoiceZip !== "undefined") {
-    const count = baseInvoiceCount || "";
+    const count = typeof invoiceZipCount !== "undefined" ? invoiceZipCount : baseInvoiceCount || "";
     zipBox.innerHTML = `<a class="btn" href="${esc(invoiceZip)}" download>⬇ 一键下载所有发票${count ? "（" + count + " 张，zip）" : "（zip）"}</a>`;
   }
 }
