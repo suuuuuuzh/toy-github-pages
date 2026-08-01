@@ -1568,5 +1568,523 @@ const invoiceListExtra = [
   "merchant": "上海华程西南国际旅行社有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/廿一影视文化传播（上海）有限公司发票26522000000788745286.pdf",
+  "date": "2026-08-02",
+  "merchant": "都匀市沐茗奶茶饮品店",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1553.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1553.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26522000000482897146_贵州凯亚德酒店管理有限公司_20260525144015.pdf",
+  "date": "2026-05-25",
+  "merchant": "贵州凯亚德酒店管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/廿一影视文化传播（上海）有限公司_20260701174740_26372000003196730326.pdf",
+  "date": "2026-07-01",
+  "merchant": "廿一影视文化传播（上海）有限公司_20260701174740_26372000003196730326",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/电子发票-2cu3h12000t2w2m2h9111.pdf",
+  "date": "2026-07-08",
+  "merchant": "电子发票-2cu3h12000t2w2m2h9111",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148807874407-电子行程单-赵馨怡.pdf",
+  "date": null,
+  "merchant": "订单1128148807874407-电子行程单-赵馨怡",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0524 堪景咖啡3人.PNG",
+  "date": null,
+  "merchant": "0524 堪景咖啡3人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0524 堪景咖啡3人2 .PNG",
+  "date": null,
+  "merchant": "0524 堪景咖啡3人2",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-北京象鲜科技有限公司_发票金额77.47元.pdf",
+  "date": "2026-08-01",
+  "merchant": "北京象鲜科技有限公司",
+  "amount": 77.47,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-dzfp_26114000000037123126_北京天恒常湘餐饮有限公司_20260519151818.pdf",
+  "date": "2026-05-19",
+  "merchant": "北京天恒常湘餐饮有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-北京庆春朴门餐饮有限公司_发票金额471.00元.pdf",
+  "date": "2026-07-15",
+  "merchant": "北京庆春朴门餐饮有限公司",
+  "amount": 471.0,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-26112000002979155266-廿一影视文化传播（上海）有限公司.pdf",
+  "date": "2026-07-19",
+  "merchant": "北京艾恰餐饮服务有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-dzfp_26112000002815373431_廿一影视文化传播（上海）有限公司_20260802025515.pdf",
+  "date": "2026-07-08",
+  "merchant": "北京帅巢一九一零餐饮有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/58725ef1-578e-47a3-9e09-42ac68949b99756.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-lx-sh-hk-431.jpg",
+  "date": null,
+  "merchant": "lx-sh-hk",
+  "amount": 431.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-lx-sh-asia-389.jpg",
+  "date": null,
+  "merchant": "lx-sh-asia",
+  "amount": 389.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/电子发票-2cu1212000t2w1vlw5269 1.pdf",
+  "date": "2026-07-08",
+  "merchant": "电子发票-2cu1212000t2w1vlw5269 1",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/电子发票-2cu1512000t2w1ycq963B 1.pdf",
+  "date": "2026-07-08",
+  "merchant": "电子发票-2cu1512000t2w1ycq963B 1",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单(1).pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": 1.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单(2).pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": 2.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票(1).pdf",
+  "date": "2026-08-02",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 1.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票(2).pdf",
+  "date": "2026-08-02",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 2.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-滴滴出行行程报销单.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单(3）.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": 3.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单(4）.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": 4.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票(3.pdf",
+  "date": "2026-08-02",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 3.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票(4）.pdf",
+  "date": "2026-08-02",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 4.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单 2.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单 2",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "杭州滴滴出行科技有限公司",
+  "amount": 321.2,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-滴滴出行行程报销单 3.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单 3",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单 4.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单 4",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票 1.pdf",
+  "date": "2026-08-02",
+  "merchant": "杭州滴滴出行科技有限公司",
+  "amount": 56.9,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单A.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单A",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票A.pdf",
+  "date": "2026-07-08",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 82.1,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-酒店水单（订单尾号7071）.pdf",
+  "date": null,
+  "merchant": "预订服务由携程旗下上海赫程国际旅行社有限公司",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-酒店水单（订单尾号5790）.pdf",
+  "date": null,
+  "merchant": "预订服务由携程旗下上海赫程国际旅行社有限公司",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/杭州深圳，导演机票.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海华程西南国际旅行社有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/杭州北京水素机票.pdf",
+  "date": null,
+  "merchant": "杭州北京水素机票",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-IMG_1878.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1878.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0611 上海电影节咖啡 支付凭证.PNG",
+  "date": null,
+  "merchant": "0611 上海电影节咖啡 支付凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-订单1128147299873063-电子普通发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "成都携程旅行社有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-26112000002831203711-廿一影视文化传播（上海）有限公司 1.pdf",
+  "date": "2026-07-09",
+  "merchant": "北京宁布餐饮管理有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0612 晚饭150.PNG",
+  "date": null,
+  "merchant": "0612 晚饭150",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-上海电影节奶茶59.9.PNG",
+  "date": null,
+  "merchant": "上海电影节奶茶",
+  "amount": 59.9,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0614 午饭 3人 330.pdf",
+  "date": "2026-06-14",
+  "merchant": "上海沃歌斯餐饮有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0616 午饭3人353.pdf",
+  "date": "2026-06-16",
+  "merchant": "上海沃歌斯餐饮有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/上海三快智送科技有限公司_发票金额49.80元.pdf",
+  "date": "2026-08-02",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": 49.8,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003826610971_上海佳品客餐饮服务有限公司_20260802041816.pdf",
+  "date": "2026-06-17",
+  "merchant": "上海佳品客餐饮服务有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/上海电影节面包121.jpg",
+  "date": null,
+  "merchant": "上海电影节面包121",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0617午饭447.PNG",
+  "date": null,
+  "merchant": "0617午饭447",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0617午饭90.PNG",
+  "date": null,
+  "merchant": "0617午饭90",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0617 开会咖啡.PNG",
+  "date": null,
+  "merchant": "0617 开会咖啡",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0622杭州堪景午饭32.5.PNG",
+  "date": null,
+  "merchant": "0622杭州堪景午饭",
+  "amount": 32.5,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0622杭州堪景午饭46.5.PNG",
+  "date": null,
+  "merchant": "0622杭州堪景午饭",
+  "amount": 46.5,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0621 杭州堪景夜宵57.6.PNG",
+  "date": null,
+  "merchant": "0621 杭州堪景夜宵",
+  "amount": 57.6,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0615 药房 26.96.PNG",
+  "date": null,
+  "merchant": "0615 药房",
+  "amount": 26.96,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0621 午饭598.PNG",
+  "date": null,
+  "merchant": "0621 午饭598",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0619 杭州堪景晚饭3人538.PNG",
+  "date": null,
+  "merchant": "0619 杭州堪景晚饭3人538",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0620 杭州堪景门票3人.PNG",
+  "date": null,
+  "merchant": "0620 杭州堪景门票3人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0622 杭州堪景过路费.PNG",
+  "date": null,
+  "merchant": "0622 杭州堪景过路费",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0616 上海电影节晚饭 3人2.PNG",
+  "date": null,
+  "merchant": "0616 上海电影节晚饭 3人2",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0616 上海电影节晚饭 3人.PNG",
+  "date": null,
+  "merchant": "0616 上海电影节晚饭 3人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0615上海电影节午饭389.PNG",
+  "date": null,
+  "merchant": "0615上海电影节午饭389",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0614 上海电影节夜宵18.7.PNG",
+  "date": null,
+  "merchant": "0614 上海电影节夜宵",
+  "amount": 18.7,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0614 上海电影节晚饭498.jpg",
+  "date": null,
+  "merchant": "0614 上海电影节晚饭498",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0613 上海电影节咖啡 33.PNG",
+  "date": null,
+  "merchant": "0613 上海电影节咖啡 33",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-发票68.12.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京盒马网络科技有限公司",
+  "amount": 68.12,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-发票506.1.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京盒马网络科技有限公司",
+  "amount": 506.1,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-发票579.46.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京盒马网络科技有限公司",
+  "amount": 579.46,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-携程酒店订单电子发票（订单尾号2283）.pdf",
+  "date": "2026-07-28",
+  "merchant": "上海赫程国际旅行社有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/住宿费抵票664.pdf",
+  "date": "2026-07-26",
+  "merchant": "山西豪庭酒店管理有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-发票25.png",
+  "date": null,
+  "merchant": "发票25",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-咖啡集合109.5.PNG",
+  "date": null,
+  "merchant": "咖啡集合",
+  "amount": 109.5,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-滴滴电子发票46.9.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京滴滴出行科技有限公司",
+  "amount": 46.9,
+  "kind": "抵票"
  }
 ];

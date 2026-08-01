@@ -885,3 +885,4 @@ const invoiceList = [
 ];
 
 const invoiceZip = "invoices/shanghai-all.zip";
+const invoiceZipCount = 102;
