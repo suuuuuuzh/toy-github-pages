@@ -1267,5 +1267,12 @@ const invoiceListExtra = [
   "merchant": "上海三快智送科技有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0527 爬山干粮.PNG",
+  "date": null,
+  "merchant": "0527 爬山干粮",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
