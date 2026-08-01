@@ -1792,5 +1792,19 @@ const invoiceListExtra = [
   "merchant": "杭州滴滴出行科技有限公司",
   "amount": 56.9,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单A.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单A",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票A.pdf",
+  "date": "2026-07-08",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 82.1,
+  "kind": "发票"
  }
 ];
