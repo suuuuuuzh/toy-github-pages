@@ -1253,5 +1253,19 @@ const invoiceListExtra = [
   "merchant": "济南顾得赛商贸有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 爬山装备 3.pdf",
+  "date": "2026-05-30",
+  "merchant": "济南顾得赛商贸有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 爬山装备4.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
