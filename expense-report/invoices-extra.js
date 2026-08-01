@@ -1960,5 +1960,12 @@ const invoiceListExtra = [
   "merchant": "0615 药房",
   "amount": 26.96,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0621 午饭598.PNG",
+  "date": null,
+  "merchant": "0621 午饭598",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
