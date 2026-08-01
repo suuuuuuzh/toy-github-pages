@@ -1953,5 +1953,12 @@ const invoiceListExtra = [
   "merchant": "0621 杭州堪景夜宵",
   "amount": 57.6,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0615 药房 26.96.PNG",
+  "date": null,
+  "merchant": "0615 药房",
+  "amount": 26.96,
+  "kind": "付款截图"
  }
 ];
