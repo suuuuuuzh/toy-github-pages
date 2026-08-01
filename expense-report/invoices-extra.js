@@ -1001,5 +1001,12 @@ const invoiceListExtra = [
   "merchant": "上海喜创于茶餐饮管理有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/北京印象城徽巷里餐饮发展有限公司_发票金额23.90元.pdf",
+  "date": "2026-07-28",
+  "merchant": "北京印象城徽巷里餐饮发展有限公司",
+  "amount": 23.9,
+  "kind": "发票"
  }
 ];
