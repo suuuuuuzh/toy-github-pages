@@ -1897,5 +1897,12 @@ const invoiceListExtra = [
   "merchant": "上海三快智送科技有限公司",
   "amount": 49.8,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003826610971_上海佳品客餐饮服务有限公司_20260802041816.pdf",
+  "date": "2026-06-17",
+  "merchant": "上海佳品客餐饮服务有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
