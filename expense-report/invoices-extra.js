@@ -1568,5 +1568,12 @@ const invoiceListExtra = [
   "merchant": "上海华程西南国际旅行社有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/廿一影视文化传播（上海）有限公司发票26522000000788745286.pdf",
+  "date": "2026-08-02",
+  "merchant": "都匀市沐茗奶茶饮品店",
+  "amount": null,
+  "kind": "发票"
  }
 ];
