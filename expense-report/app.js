@@ -123,30 +123,11 @@ function rebuildItems() {
   });
   expenseItems.length = 0;
   list.forEach((x) => expenseItems.push(x));
-  computeNumMap();
 }
 
-// 显示用的序号：普通行沿用自己的编号；新增行、以及已写进 data.js 的大编号行（原合并/新增，id>=10000）
-// 接在最大普通编号后面顺延（107、108…）。当场合并出来的行仍显示「合并」。
+// 显示用的序号 = 当前排列顺序（1、2、3…），每次渲染时按显示顺序重算，
+// 拖动排序/删除/合并后自动重排，不保留原始编号。
 let numMap = {};
-function computeNumMap() {
-  numMap = {};
-  let maxBase = 0;
-  expenseItems.forEach((it) => {
-    if (it._merged) return;
-    const n = Number(it.id);
-    if (!isNaN(n) && n < 10000 && n > maxBase) maxBase = n;
-  });
-  let next = maxBase;
-  expenseItems.forEach((it) => {
-    if (it._merged) return;
-    const n = Number(it.id);
-    if (it._added || (!isNaN(n) && n >= 10000)) {
-      next += 1;
-      numMap[it.id] = next;
-    }
-  });
-}
 
 // 添加一笔空白行
 function addBlankRow() {
@@ -555,6 +536,18 @@ function renderExpenseTable() {
     .map((i) => i.id);
   ensureOrder(defaultSorted);
 
+  // 序号按当前显示顺序 1、2、3… 重排（不受筛选影响，筛选视图里序号保持和全部视图一致）
+  numMap = {};
+  let seq = 0;
+  Array.from(new Set(expenseItems.map((r) => r.category)))
+    .sort((a, b) => prio(a) - prio(b))
+    .forEach((cat) => {
+      expenseItems
+        .filter((r) => r.category === cat)
+        .sort((a, b) => orderRank(a.id) - orderRank(b.id))
+        .forEach((it) => (numMap[it.id] = ++seq));
+    });
+
   const cats = Array.from(new Set(rows.map((r) => r.category))).sort((a, b) => prio(a) - prio(b));
   let body = "<tbody>";
   cats.forEach((cat) => {
@@ -593,7 +586,8 @@ function catSelect(item) {
 function rowHtml(item) {
   const isMerged = item._merged;
   const isAdded = item._added;
-  const num = isMerged ? "合并" : numMap[item.id] != null ? numMap[item.id] : item.id;
+  // 合并出来的行也按位置给序号，「合并」身份靠拆开按钮识别
+  const num = numMap[item.id] != null ? numMap[item.id] : item.id;
   // 新增行也能勾选合并；删除按钮用它专属的 del-added-btn（直接删掉，不进「已删除」）
   const delBtn = isAdded
     ? `<button class="del-row-btn del-added-btn" data-id="${item.id}" title="删除这一新增行">✕</button>`
