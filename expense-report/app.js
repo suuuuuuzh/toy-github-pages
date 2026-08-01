@@ -1038,29 +1038,14 @@ function openInvoicePicker(itemId) {
       // 没配令牌就当场弹框要一次（取消则退回浏览器本地存储的老方式）
       let ghToken = (localStorage.getItem("gh-upload-token") || "").trim();
       if (!ghToken && typeof askGhToken !== "undefined") ghToken = askGhToken(false);
-      const canRepo = typeof commitFilesToLibrary !== "undefined" && ghToken;
+      const canRepo = typeof enqueueLibraryUpload !== "undefined" && ghToken;
       let repoFail = "";
       if (canRepo) {
         try {
-          // 抵票/截图在文件名里带上标记，进库后类型才对
-          const prefix = kind === "dipiao" ? "抵票-" : kind === "screenshot" ? "付款截图-" : "";
-          const named = filesSel.map((f) => {
-            const name = prefix && f.name.indexOf(prefix.slice(0, -1)) === -1 ? prefix + f.name : f.name;
-            return new File([f], name, { type: f.type });
-          });
-          const names = await commitFilesToLibrary(named, (msg) => (hint.textContent = msg));
-          names.forEach((name) => {
-            const path = "invoices/extra/" + name;
-            if (typeof invoiceList !== "undefined" && !invoiceList.some((v) => v.file === path)) {
-              const meta = typeof guessInvoiceMeta !== "undefined" ? guessInvoiceMeta(name) : { merchant: name, amount: null, date: null, kind: "发票" };
-              if (kind === "dipiao") meta.kind = "抵票";
-              if (kind === "screenshot") meta.kind = "付款截图";
-              invoiceList.push({ file: path, date: meta.date, merchant: meta.merchant, amount: meta.amount, kind: meta.kind });
-            }
-            attachInvoice(itemId, path);
-            already.add(path);
-          });
-          hint.textContent = `已上传 ${names.length} 个${kindLabel}并挂上 ✓ 文件已进发票库（预览/下载约 2-3 分钟后生效）。`;
+          // 立刻挂上并加入后台队列，不用等上传完成
+          const names = enqueueLibraryUpload(filesSel, kind, itemId);
+          names.forEach((name) => already.add("invoices/extra/" + name));
+          hint.textContent = `已挂上 ${names.length} 个${kindLabel} ✓ 文件在后台排队上传（进度见表格上方蓝色状态行），可以继续操作。`;
           draw();
           renderFilterBar();
           renderExpenseTable();
@@ -1068,9 +1053,8 @@ function openInvoicePicker(itemId) {
           renderInvoiceList();
           return;
         } catch (err) {
-          // fetch 网络失败是 TypeError（如 Failed to fetch）：多半是当前网络连不上 api.github.com
-          repoFail = err instanceof TypeError ? "这个网络连不上 GitHub 接口（api.github.com 被挡），开代理/换网络再试" : err.message;
-          hint.textContent = `直传仓库失败：${repoFail}，改用浏览器本地存储…`;
+          repoFail = err.message;
+          hint.textContent = `挂载没存上：${repoFail}`;
         }
       }
       let done = 0;

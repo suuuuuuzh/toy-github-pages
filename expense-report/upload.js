@@ -1,6 +1,7 @@
-// ---- 页面直传发票库：把文件直接提交进 GitHub 仓库的 invoices/extra/，
-// 需要报销人自己的 GitHub 令牌（只存本机浏览器），提交后 Actions 会自动更新清单并重新部署。
-// 依赖 app.js 里的全局：invoiceList / renderInvoiceList。 ----
+// ---- 页面直传发票库（后台队列版）----
+// 选完文件立刻挂上、立刻能继续操作；真正的提交在后台排队一批批进行，
+// 多次选择会自动排队，进度显示在表格上方的蓝色状态行。
+// 依赖 app.js 里的全局：invoiceList / renderInvoiceList / attachInvoice / loadAttach / saveAttach 等。
 const GH_REPO = "suuuuuuzh/toy-github-pages";
 const GH_DIR = "expense-report/invoices/extra";
 const GH_TOKEN_KEY = "gh-upload-token";
@@ -72,27 +73,99 @@ function fileToBase64(file) {
   });
 }
 
-// 一批文件一次 commit：blob → tree → commit → 更新 main。
-// 提交瞬间如果仓库正好有别的提交进来（比如自动更新清单的机器人），
-// 更新 main 会报 422 非快进，这里自动换最新基础重试几次。
-async function commitFilesToLibrary(files, onStatus) {
-  // 已有文件名，重名自动加 -2 / -3
+// GitHub 提交互斥锁：后台队列和搬家共用，保证同一时间只有一个提交在进行
+let ghChain = Promise.resolve();
+function withGhLock(fn) {
+  const p = ghChain.then(fn);
+  ghChain = p.catch(() => {});
+  return p;
+}
+
+// ---- 后台上传队列 ----
+const uploadJobs = []; // { files: [{file, name}], kind, itemId, tries }
+let uploadingNow = false;
+let currentJobMsg = "";
+const failedJobs = [];
+
+function libTakenNames() {
+  const s = new Set();
+  if (typeof invoiceList !== "undefined") invoiceList.forEach((v) => s.add(v.file.split("/").pop()));
+  uploadJobs.forEach((j) => j.files.forEach((f) => s.add(f.name)));
+  failedJobs.forEach((j) => j.files.forEach((f) => s.add(f.name)));
+  return s;
+}
+
+function pickUploadName(orig, kind, taken) {
+  const prefix = kind === "dipiao" ? "抵票-" : kind === "screenshot" ? "付款截图-" : "";
+  let name = orig.replace(/[\\/:*?"<>|]/g, "-");
+  if (prefix && name.indexOf(prefix.slice(0, -1)) === -1) name = prefix + name;
+  const dot = name.lastIndexOf(".");
+  const stem = dot > 0 ? name.slice(0, dot) : name;
+  const ext = dot > 0 ? name.slice(dot) : "";
+  for (let n = 2; taken.has(name); n++) name = stem + "-" + n + ext;
+  taken.add(name);
+  return name;
+}
+
+// 路径改名时同步修正发票库和挂载记录（极少发生：别的设备恰好占了同名）
+function renameLibraryPath(oldPath, newPath) {
+  if (typeof invoiceList !== "undefined") {
+    const v = invoiceList.find((x) => x.file === oldPath);
+    if (v) v.file = newPath;
+  }
+  if (typeof loadAttach !== "undefined") {
+    const at = loadAttach();
+    let changed = false;
+    Object.keys(at).forEach((k) => {
+      at[k] = at[k].map((f) => (f === oldPath ? ((changed = true), newPath) : f));
+    });
+    if (changed) saveAttach(at);
+  }
+}
+
+// 立刻挂上并排队。返回最终文件名数组（同名自动加 -2/-3）。
+function enqueueLibraryUpload(fileList, kind, itemId) {
+  const taken = libTakenNames();
+  const files = Array.from(fileList).map((f) => ({ file: f, name: pickUploadName(f.name, kind, taken) }));
+  files.forEach((en) => {
+    const path = "invoices/extra/" + en.name;
+    if (typeof invoiceList !== "undefined" && !invoiceList.some((v) => v.file === path)) {
+      const meta = guessInvoiceMeta(en.name);
+      if (kind === "dipiao") meta.kind = "抵票";
+      if (kind === "screenshot") meta.kind = "付款截图";
+      invoiceList.push({ file: path, date: meta.date, merchant: meta.merchant, amount: meta.amount, kind: meta.kind });
+    }
+    if (itemId != null) attachInvoice(itemId, path);
+  });
+  uploadJobs.push({ files: files, kind: kind, itemId: itemId, tries: 0 });
+  updateQueueStatus();
+  runUploadWorker();
+  return files.map((f) => f.name);
+}
+
+// 一批文件一次 commit；422（提交撞车）自动换最新基础重试
+async function commitJob(job, onStatus) {
+  // 远端同名检查（防止覆盖别的设备刚传的同名文件）
   const existing = await ghApi("/contents/" + GH_DIR + "?ref=main");
-  const taken = new Set(existing.map((f) => f.name));
+  const remote = new Set(existing.map((f) => f.name));
+  job.files.forEach((en) => {
+    if (remote.has(en.name)) {
+      const dot = en.name.lastIndexOf(".");
+      const stem = dot > 0 ? en.name.slice(0, dot) : en.name;
+      const ext = dot > 0 ? en.name.slice(dot) : "";
+      let name = en.name;
+      for (let n = 2; remote.has(name); n++) name = stem + "-" + n + ext;
+      renameLibraryPath("invoices/extra/" + en.name, "invoices/extra/" + name);
+      en.name = name;
+    }
+    remote.add(en.name);
+  });
   const treeItems = [];
-  const finalNames = [];
-  for (let i = 0; i < files.length; i++) {
-    onStatus("正在上传 " + (i + 1) + "/" + files.length + "：" + files[i].name);
-    const b64 = await fileToBase64(files[i]);
+  for (let i = 0; i < job.files.length; i++) {
+    onStatus("正在上传 " + (i + 1) + "/" + job.files.length + "：" + job.files[i].name);
+    const b64 = await fileToBase64(job.files[i].file);
     const blob = await ghApi("/git/blobs", { method: "POST", body: JSON.stringify({ content: b64, encoding: "base64" }) });
-    let name = files[i].name.replace(/[\\/:*?"<>|]/g, "-");
-    const dot = name.lastIndexOf(".");
-    const stem = dot > 0 ? name.slice(0, dot) : name;
-    const ext = dot > 0 ? name.slice(dot) : "";
-    for (let n = 2; taken.has(name); n++) name = stem + "-" + n + ext;
-    taken.add(name);
-    finalNames.push(name);
-    treeItems.push({ path: GH_DIR + "/" + name, mode: "100644", type: "blob", sha: blob.sha });
+    treeItems.push({ path: GH_DIR + "/" + job.files[i].name, mode: "100644", type: "blob", sha: blob.sha });
   }
   for (let attempt = 1; ; attempt++) {
     onStatus(attempt > 1 ? "仓库刚有新提交，正在重试（第 " + attempt + " 次）…" : "正在提交…");
@@ -102,24 +175,104 @@ async function commitFilesToLibrary(files, onStatus) {
     const tree = await ghApi("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: headCommit.tree.sha, tree: treeItems }) });
     const commit = await ghApi("/git/commits", {
       method: "POST",
-      body: JSON.stringify({ message: "页面直传发票 " + finalNames.length + " 张", tree: tree.sha, parents: [headSha] }),
+      body: JSON.stringify({ message: "页面直传发票 " + job.files.length + " 张", tree: tree.sha, parents: [headSha] }),
     });
     try {
       await ghApi("/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: commit.sha }) });
-      return finalNames;
+      return;
     } catch (e) {
-      if (e.status === 422 && attempt < 4) {
+      if (e.status === 422 && attempt < 5) {
         await new Promise((r) => setTimeout(r, 1200 * attempt));
         continue;
       }
-      if (e.status === 422) throw new Error("仓库连续几次都在同一时间有新提交（422），稍等十几秒再点一次就好");
       throw e;
     }
   }
 }
 
-// ---- 一键搬家：把浏览器 localStorage 里暂存的旧上传（base64，约5MB上限，很容易满）
-// 全部提交进仓库发票库，改写所有引用，然后清空本地腾出空间。 ----
+async function runUploadWorker() {
+  if (uploadingNow) return;
+  uploadingNow = true;
+  while (uploadJobs.length) {
+    const job = uploadJobs[0];
+    try {
+      await withGhLock(() =>
+        commitJob(job, (msg) => {
+          currentJobMsg = msg;
+          updateQueueStatus();
+        })
+      );
+      uploadJobs.shift();
+      currentJobMsg = "";
+      updateQueueStatus();
+      if (typeof renderInvoiceList === "function") renderInvoiceList();
+    } catch (e) {
+      job.tries = (job.tries || 0) + 1;
+      if (job.tries < 3) {
+        currentJobMsg = "这批没传上（" + e.message + "），" + 5 * job.tries + " 秒后自动重试…";
+        updateQueueStatus();
+        await new Promise((r) => setTimeout(r, 5000 * job.tries));
+      } else {
+        uploadJobs.shift();
+        failedJobs.push(job);
+        currentJobMsg = "";
+        updateQueueStatus();
+      }
+    }
+  }
+  uploadingNow = false;
+  updateQueueStatus();
+}
+
+function updateQueueStatus() {
+  const status = document.getElementById("lib-upload-status");
+  if (!status) return;
+  const pending = uploadJobs.reduce((s, j) => s + j.files.length, 0);
+  const parts = [];
+  if (pending) parts.push("后台上传中：还剩 " + pending + " 个文件" + (currentJobMsg ? "（" + currentJobMsg + "）" : "…"));
+  else if (uploadingNow) parts.push(currentJobMsg || "正在收尾…");
+  if (failedJobs.length) {
+    const n = failedJobs.reduce((s, j) => s + j.files.length, 0);
+    parts.push('有 ' + n + ' 个文件多次上传失败 <a href="#" id="retry-failed-link" style="font-weight:600">点这里重试</a>');
+  }
+  if (!parts.length) {
+    if (status.dataset.hadQueue === "1") {
+      status.textContent = "全部上传完成 ✓（预览/下载约 2-3 分钟后生效）";
+      status.dataset.hadQueue = "";
+      setTimeout(() => {
+        if (!uploadJobs.length && !failedJobs.length && !uploadingNow) maybeOfferMigration();
+      }, 8000);
+    } else {
+      maybeOfferMigration();
+    }
+    return;
+  }
+  status.dataset.hadQueue = "1";
+  status.innerHTML = parts.join(" · ");
+  const retry = document.getElementById("retry-failed-link");
+  if (retry)
+    retry.addEventListener("click", (e) => {
+      e.preventDefault();
+      while (failedJobs.length) {
+        const j = failedJobs.shift();
+        j.tries = 0;
+        uploadJobs.push(j);
+      }
+      updateQueueStatus();
+      runUploadWorker();
+    });
+}
+
+// 离开页面前如果还有没传完的，提醒一下（不拦死，用户可选择留下）
+window.addEventListener("beforeunload", (e) => {
+  if (uploadJobs.length || uploadingNow) {
+    e.preventDefault();
+    e.returnValue = "还有发票在后台上传，关掉会丢失，确定离开？";
+  }
+});
+
+// ---- 一键搬家：把浏览器 localStorage 里暂存的旧上传全部提交进仓库发票库，
+// 改写所有引用，然后清空本地腾出空间。 ----
 async function migrateLocalUploads(onStatus) {
   const uploads = typeof loadUploads !== "undefined" ? loadUploads() : {};
   const entries = Object.keys(uploads).map((id) => [id, uploads[id]]);
@@ -129,20 +282,20 @@ async function migrateLocalUploads(onStatus) {
   }
   onStatus("正在读取本地暂存的 " + entries.length + " 个文件…");
   const files = [];
+  const taken = libTakenNames();
   for (let i = 0; i < entries.length; i++) {
     const meta = entries[i][1];
-    const prefix = meta.kind === "dipiao" ? "抵票-" : meta.kind === "screenshot" ? "付款截图-" : "";
     let name = meta.name || "upload-" + entries[i][0] + ".pdf";
-    if (prefix && name.indexOf(prefix.slice(0, -1)) === -1) name = prefix + name;
+    name = pickUploadName(name, meta.kind, taken);
     const res = await fetch(meta.data);
     const blob = await res.blob();
-    files.push(new File([blob], name, { type: blob.type || "application/octet-stream" }));
+    files.push({ file: new File([blob], name, { type: blob.type || "application/octet-stream" }), name: name });
   }
-  const names = await commitFilesToLibrary(files, onStatus);
+  const job = { files: files, kind: "invoice", itemId: null, tries: 0 };
+  await withGhLock(() => commitJob(job, onStatus));
   const refMap = {};
-  entries.forEach((en, i) => (refMap["upload:" + en[0]] = "invoices/extra/" + names[i]));
+  entries.forEach((en, i) => (refMap["upload:" + en[0]] = "invoices/extra/" + files[i].name));
   const swap = (f) => refMap[f] || f;
-  // 改写挂载记录和合并行里存的引用
   const attach = typeof loadAttach !== "undefined" ? loadAttach() : {};
   Object.keys(attach).forEach((k) => (attach[k] = attach[k].map(swap)));
   const merges = typeof loadMerges !== "undefined" ? loadMerges() : [];
@@ -156,19 +309,18 @@ async function migrateLocalUploads(onStatus) {
   saveUploads({});
   saveAttach(attach);
   if (typeof saveMerges !== "undefined") saveMerges(merges);
-  // 加进本页发票库并重画
-  names.forEach((name, i) => {
-    const path = "invoices/extra/" + name;
+  files.forEach((en, i) => {
+    const path = "invoices/extra/" + en.name;
     const kind = entries[i][1].kind === "dipiao" ? "抵票" : entries[i][1].kind === "screenshot" ? "付款截图" : "发票";
     if (typeof invoiceList !== "undefined" && !invoiceList.some((v) => v.file === path)) {
-      const meta = guessInvoiceMeta(name);
+      const meta = guessInvoiceMeta(en.name);
       invoiceList.push({ file: path, date: meta.date, merchant: meta.merchant, amount: meta.amount, kind: kind });
     }
   });
   if (typeof rebuildItems !== "undefined") rebuildItems();
   if (typeof renderEverything === "function") renderEverything();
   if (typeof renderInvoiceList === "function") renderInvoiceList();
-  onStatus("已把 " + names.length + " 个文件搬进仓库、本地空间已腾空 ✓ 一切挂载关系保持不变（预览约 2-3 分钟后生效）。");
+  onStatus("已把 " + files.length + " 个文件搬进仓库、本地空间已腾空 ✓ 一切挂载关系保持不变（预览约 2-3 分钟后生效）。");
 }
 
 function maybeOfferMigration() {
@@ -199,7 +351,7 @@ function setupLibraryUpload() {
   const input = document.getElementById("lib-upload-input");
   const status = document.getElementById("lib-upload-status");
   if (!input) return;
-  input.addEventListener("change", async (e) => {
+  input.addEventListener("change", (e) => {
     const files = Array.from(e.target.files || []);
     input.value = "";
     if (!files.length) return;
@@ -207,21 +359,10 @@ function setupLibraryUpload() {
       status.textContent = "没有令牌，传不了；也可以把文件发我来托管。";
       return;
     }
-    try {
-      const names = await commitFilesToLibrary(files, (msg) => (status.textContent = msg));
-      // 先把它们立刻加进本页的发票库（正式部署要等 2-3 分钟，但现在就能挂）
-      names.forEach((name) => {
-        const path = "invoices/extra/" + name;
-        if (typeof invoiceList !== "undefined" && !invoiceList.some((v) => v.file === path)) {
-          const meta = guessInvoiceMeta(name);
-          invoiceList.push({ file: path, date: meta.date, merchant: meta.merchant, amount: meta.amount, kind: meta.kind });
-        }
-      });
-      renderInvoiceList();
-      status.textContent = "已提交 " + names.length + " 张 ✓ 现在就能在「＋挂发票」里选到；正式生效（可预览/下载）约需 2-3 分钟。";
-    } catch (err) {
-      status.textContent = "上传失败：" + err.message + "（在中国大陆连不上 GitHub 接口时也会这样；可换网络重试，或把文件发我）";
-    }
+    const names = enqueueLibraryUpload(files, "invoice", null);
+    if (typeof renderInvoiceList === "function") renderInvoiceList();
+    status.textContent = "已加入后台上传队列（" + names.length + " 个）——现在就能在「＋挂发票」里选到，可继续操作。";
+    setTimeout(updateQueueStatus, 800);
   });
 }
 
