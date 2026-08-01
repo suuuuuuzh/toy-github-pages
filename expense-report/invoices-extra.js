@@ -1876,5 +1876,12 @@ const invoiceListExtra = [
   "merchant": "上海电影节奶茶",
   "amount": 59.9,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0614 午饭 3人 330.pdf",
+  "date": "2026-06-14",
+  "merchant": "上海沃歌斯餐饮有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
