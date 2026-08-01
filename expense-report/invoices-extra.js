@@ -1862,5 +1862,12 @@ const invoiceListExtra = [
   "merchant": "北京宁布餐饮管理有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0612 晚饭150.PNG",
+  "date": null,
+  "merchant": "0612 晚饭150",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
