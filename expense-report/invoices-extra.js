@@ -2121,5 +2121,12 @@ const invoiceListExtra = [
   "merchant": "北京滴滴出行科技有限公司",
   "amount": 150.4,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/抵票-26149126468002917603-电子发票.pdf",
+  "date": "2026-07-26",
+  "merchant": "26149126468002917603-电子发票",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
