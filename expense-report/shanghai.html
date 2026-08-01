@@ -19,19 +19,21 @@
     <div id="download-all" style="margin:0 0 20px;"></div>
 
     <section>
-      <div class="section-head">
-        <h2>明细</h2>
-        <div class="section-actions">
-          <div id="filter-bar" class="filter-bar"></div>
-          <label class="btn-outline upload-lbl">📤 传发票进库<input type="file" id="lib-upload-input" accept=".pdf,.png,.jpg,.jpeg,.ofd,image/*" multiple hidden /></label>
-          <button id="add-row-btn" class="btn-outline">＋添加一笔</button>
-          <button id="restore-deleted-btn" class="btn-outline" style="display:none"></button>
-          <button id="merge-btn" class="btn-outline" disabled>合并所选（0）</button>
-          <button id="export-all-btn" class="btn-outline">导出全部改动（发我永久保存）</button>
+      <div class="sticky-tools">
+        <div class="section-head">
+          <h2>明细</h2>
+          <div class="section-actions">
+            <div id="filter-bar" class="filter-bar"></div>
+            <label class="btn-outline upload-lbl">📤 传发票进库<input type="file" id="lib-upload-input" accept=".pdf,.png,.jpg,.jpeg,.ofd,image/*" multiple hidden /></label>
+            <button id="add-row-btn" class="btn-outline">＋添加一笔</button>
+            <button id="restore-deleted-btn" class="btn-outline" style="display:none"></button>
+            <button id="merge-btn" class="btn-outline" disabled>合并所选（0）</button>
+            <button id="export-all-btn" class="btn-outline">导出全部改动（发我永久保存）</button>
+          </div>
         </div>
+        <p class="muted" id="lib-upload-status" style="font-size:12px;margin:4px 0 0;color:#2563eb;"></p>
       </div>
       <p class="muted" style="font-size:12px;margin:0 0 10px;">说明/金额/备注等直接点格子改；每笔右侧「＋挂发票」可选库里的或本地上传；「传发票进库」可把手里的发票文件直接传到网站的发票库（建议文件名写成 商户-日期-金额.pdf）。改动先存在本浏览器，改完点「导出全部改动」发我永久保存。</p>
-      <p class="muted" id="lib-upload-status" style="font-size:12px;margin:0 0 10px;color:#2563eb;"></p>
       <div class="table-scroll">
         <table id="expense-table"></table>
       </div>
