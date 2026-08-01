@@ -1029,7 +1029,10 @@ function openInvoicePicker(itemId) {
       const filesSel = Array.from(e.target.files || []);
       input.value = "";
       if (!filesSel.length) return;
-      const canRepo = typeof commitFilesToLibrary !== "undefined" && (localStorage.getItem("gh-upload-token") || "").trim();
+      // 没配令牌就当场弹框要一次（取消则退回浏览器本地存储的老方式）
+      let ghToken = (localStorage.getItem("gh-upload-token") || "").trim();
+      if (!ghToken && typeof askGhToken !== "undefined") ghToken = askGhToken(false);
+      const canRepo = typeof commitFilesToLibrary !== "undefined" && ghToken;
       if (canRepo) {
         try {
           // 抵票/截图在文件名里带上标记，进库后类型才对
