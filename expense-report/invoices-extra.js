@@ -1204,5 +1204,19 @@ const invoiceListExtra = [
   "merchant": "北京昀庭餐饮文化管理有限公司",
   "amount": 485.0,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/7bd62477-151e-4954-88a6-01b407d7699d756.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/84ff0f1a-7b30-492e-8571-ae62d216952f596.pdf",
+  "date": "2026-05-28",
+  "merchant": "泰安市泰山区梦梓阳饮品销售中心（个体工商户",
+  "amount": null,
+  "kind": "发票"
  }
 ];
