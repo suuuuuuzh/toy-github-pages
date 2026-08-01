@@ -2156,5 +2156,19 @@ const invoiceListExtra = [
   "merchant": "【聚的出租车-元-1个行程】高德打车电子行程单",
   "amount": 23.72,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/【享道出行-45.53元-1个行程】高德打车电子发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "享道出行（上海）科技股份有限公司",
+  "amount": 45.53,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/【享道出行-45.53元-1个行程】高德打车电子行程单.pdf",
+  "date": null,
+  "merchant": "【享道出行-元-1个行程】高德打车电子行程单",
+  "amount": 45.53,
+  "kind": "发票"
  }
 ];
