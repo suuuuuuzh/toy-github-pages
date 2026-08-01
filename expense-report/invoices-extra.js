@@ -1015,5 +1015,19 @@ const invoiceListExtra = [
   "merchant": "上海焯彩餐饮管理有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003684761146_廿一影视文化传播（上海）有限公司_20260612083517.pdf",
+  "date": "2026-06-12",
+  "merchant": "上海长庭酒店管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/结账单20260612.pdf",
+  "date": "2026-06-12",
+  "merchant": "结账单",
+  "amount": null,
+  "kind": "发票"
  }
 ];
