@@ -1694,5 +1694,33 @@ const invoiceListExtra = [
   "merchant": "电子发票-2cu1512000t2w1ycq963B 1",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单(1).pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": 1.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单(2).pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单",
+  "amount": 2.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票(1).pdf",
+  "date": "2026-08-02",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 1.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票(2).pdf",
+  "date": "2026-08-02",
+  "merchant": "上海滴滴畅行科技有限公司",
+  "amount": 2.0,
+  "kind": "发票"
  }
 ];
