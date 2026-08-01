@@ -1190,5 +1190,12 @@ const invoiceListExtra = [
   "merchant": "0528 泰山 午饭 6人 3",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0527 泰山爬山干粮 6人.png",
+  "date": null,
+  "merchant": "0527 泰山爬山干粮 6人",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
