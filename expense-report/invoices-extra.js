@@ -1386,5 +1386,12 @@ const invoiceListExtra = [
   "merchant": "0522 午饭、水",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/dzfp_26522000000480381541_贵州黔邺超市有限公司_20260802013105.pdf",
+  "date": "2026-05-25",
+  "merchant": "贵州黔邺超市有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
