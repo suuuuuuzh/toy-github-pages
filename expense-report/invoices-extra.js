@@ -980,5 +980,12 @@ const invoiceListExtra = [
   "merchant": "抵票",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003622353511_泰州泰度餐饮管理有限公司上海长宁第一分公司_20260801162210.pdf",
+  "date": "2026-06-09",
+  "merchant": "泰州泰度餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
