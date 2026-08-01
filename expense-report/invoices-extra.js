@@ -1029,5 +1029,12 @@ const invoiceListExtra = [
   "merchant": "结账单",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/抵票-7498fb6be95ebed3435e8b68f38be3eb.jpg",
+  "date": null,
+  "merchant": "7498fb6be95ebed3435e8b68f38be3eb",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
