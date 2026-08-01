@@ -2030,5 +2030,12 @@ const invoiceListExtra = [
   "merchant": "0613 上海电影节咖啡 33",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-发票68.12.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京盒马网络科技有限公司",
+  "amount": 68.12,
+  "kind": "抵票"
  }
 ];
