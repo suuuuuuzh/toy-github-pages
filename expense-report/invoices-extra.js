@@ -1120,5 +1120,12 @@ const invoiceListExtra = [
   "merchant": "胶片购买凭证",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-堪景器材租赁凭证.PNG",
+  "date": null,
+  "merchant": "堪景器材租赁凭证",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
