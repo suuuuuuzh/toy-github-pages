@@ -1113,5 +1113,12 @@ const invoiceListExtra = [
   "merchant": "贵阳全程德邦物流有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-胶片购买凭证.PNG",
+  "date": null,
+  "merchant": "胶片购买凭证",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
