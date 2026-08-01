@@ -2072,5 +2072,12 @@ const invoiceListExtra = [
   "merchant": "发票25",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-咖啡集合109.5.PNG",
+  "date": null,
+  "merchant": "咖啡集合",
+  "amount": 109.5,
+  "kind": "付款截图"
  }
 ];
