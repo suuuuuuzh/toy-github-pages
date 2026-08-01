@@ -2086,5 +2086,12 @@ const invoiceListExtra = [
   "merchant": "北京滴滴出行科技有限公司",
   "amount": 46.9,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-49.56.PNG",
+  "date": null,
+  "merchant": "抵票-49.56",
+  "amount": 49.56,
+  "kind": "抵票"
  }
 ];
