@@ -1281,5 +1281,12 @@ const invoiceListExtra = [
   "merchant": "济南市章丘区燕归来燕窝馆（个体工商户",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0526 早饭付款凭证.png",
+  "date": null,
+  "merchant": "0526 早饭付款凭证",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
