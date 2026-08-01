@@ -1883,5 +1883,12 @@ const invoiceListExtra = [
   "merchant": "上海沃歌斯餐饮有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0616 午饭3人353.pdf",
+  "date": "2026-06-16",
+  "merchant": "上海沃歌斯餐饮有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
