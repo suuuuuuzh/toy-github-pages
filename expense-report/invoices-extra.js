@@ -1302,5 +1302,19 @@ const invoiceListExtra = [
   "merchant": "0524 晚饭3人",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0524 夜宵 3人 2.pdf",
+  "date": "2026-05-29",
+  "merchant": "观山湖区枝头鲜果水果店（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0524 夜宵 3人 3.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
