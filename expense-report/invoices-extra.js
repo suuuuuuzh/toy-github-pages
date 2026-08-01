@@ -1197,5 +1197,12 @@ const invoiceListExtra = [
   "merchant": "0527 泰山爬山干粮 6人",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-北京昀庭餐饮文化管理有限公司_发票金额485.00元.pdf",
+  "date": "2026-07-18",
+  "merchant": "北京昀庭餐饮文化管理有限公司",
+  "amount": 485.0,
+  "kind": "抵票"
  }
 ];
