@@ -1680,5 +1680,12 @@ const invoiceListExtra = [
   "merchant": "lx-sh-asia",
   "amount": 389.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/电子发票-2cu1212000t2w1vlw5269 1.pdf",
+  "date": "2026-07-08",
+  "merchant": "电子发票-2cu1212000t2w1vlw5269 1",
+  "amount": null,
+  "kind": "发票"
  }
 ];
