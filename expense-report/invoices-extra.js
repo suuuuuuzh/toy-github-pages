@@ -2142,5 +2142,19 @@ const invoiceListExtra = [
   "merchant": "IMG",
   "amount": 1914.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/【聚的出租车-23.72元-1个行程】高德打车电子发票.pdf",
+  "date": "2026-08-02",
+  "merchant": "天津鞍马出行科技有限公司",
+  "amount": 23.72,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/【聚的出租车-23.72元-1个行程】高德打车电子行程单.pdf",
+  "date": null,
+  "merchant": "【聚的出租车-元-1个行程】高德打车电子行程单",
+  "amount": 23.72,
+  "kind": "发票"
  }
 ];
