@@ -1358,5 +1358,12 @@ const invoiceListExtra = [
   "merchant": "0521 夜宵3人 2",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 早饭4人.jpg",
+  "date": null,
+  "merchant": "0522 早饭4人",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
