@@ -1288,5 +1288,12 @@ const invoiceListExtra = [
   "merchant": "0526 早饭付款凭证",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0526 晚饭发票.png",
+  "date": null,
+  "merchant": "0526 晚饭发票",
+  "amount": null,
+  "kind": "发票"
  }
 ];
