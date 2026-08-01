@@ -597,7 +597,7 @@ function rowHtml(item) {
     : `<input type="checkbox" class="merge-cb" data-id="${item.id}" ${selectedForMerge.has(item.id) ? "checked" : ""} title="勾选后可与其他行合并" />${delBtn}`;
   const grip = `<span class="drag-grip" data-id="${item.id}" title="按住拖动，可在同类目内调整顺序">⠿</span>`;
   return `
-      <tr class="${hasInvoice(item) ? "" : item.voucherType === "none" ? "row-none" : ""}" data-row-id="${item.id}" data-row-cat="${esc(item.category)}">
+      <tr class="${hasInvoice(item) ? "row-invoice" : hasDipiao(item) ? "row-dipiao" : hasScreenshot(item) ? "row-shot" : "row-none"}" data-row-id="${item.id}" data-row-cat="${esc(item.category)}">
         <td><div class="num-cell">${grip}${opBtn}<span>${num}</span></div></td>
         <td>${catSelect(item)}</td>
         <td class="desc-cell"><input class="desc-input" data-id="${item.id}" value="${esc(item.description || "")}" placeholder="这笔花在哪…" /></td>
