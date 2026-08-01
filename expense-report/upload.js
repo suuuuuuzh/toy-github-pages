@@ -118,6 +118,83 @@ async function commitFilesToLibrary(files, onStatus) {
   }
 }
 
+// ---- 一键搬家：把浏览器 localStorage 里暂存的旧上传（base64，约5MB上限，很容易满）
+// 全部提交进仓库发票库，改写所有引用，然后清空本地腾出空间。 ----
+async function migrateLocalUploads(onStatus) {
+  const uploads = typeof loadUploads !== "undefined" ? loadUploads() : {};
+  const entries = Object.keys(uploads).map((id) => [id, uploads[id]]);
+  if (!entries.length) {
+    onStatus("本地没有暂存的上传。");
+    return;
+  }
+  onStatus("正在读取本地暂存的 " + entries.length + " 个文件…");
+  const files = [];
+  for (let i = 0; i < entries.length; i++) {
+    const meta = entries[i][1];
+    const prefix = meta.kind === "dipiao" ? "抵票-" : meta.kind === "screenshot" ? "付款截图-" : "";
+    let name = meta.name || "upload-" + entries[i][0] + ".pdf";
+    if (prefix && name.indexOf(prefix.slice(0, -1)) === -1) name = prefix + name;
+    const res = await fetch(meta.data);
+    const blob = await res.blob();
+    files.push(new File([blob], name, { type: blob.type || "application/octet-stream" }));
+  }
+  const names = await commitFilesToLibrary(files, onStatus);
+  const refMap = {};
+  entries.forEach((en, i) => (refMap["upload:" + en[0]] = "invoices/extra/" + names[i]));
+  const swap = (f) => refMap[f] || f;
+  // 改写挂载记录和合并行里存的引用
+  const attach = typeof loadAttach !== "undefined" ? loadAttach() : {};
+  Object.keys(attach).forEach((k) => (attach[k] = attach[k].map(swap)));
+  const merges = typeof loadMerges !== "undefined" ? loadMerges() : [];
+  merges.forEach((m) => {
+    if (m.item) {
+      m.item.invoiceFile = swap(m.item.invoiceFile || "");
+      m.item.invoiceFiles = (m.item.invoiceFiles || []).map(swap);
+    }
+  });
+  // 先清掉大块头腾出空间，再写小数据
+  saveUploads({});
+  saveAttach(attach);
+  if (typeof saveMerges !== "undefined") saveMerges(merges);
+  // 加进本页发票库并重画
+  names.forEach((name, i) => {
+    const path = "invoices/extra/" + name;
+    const kind = entries[i][1].kind === "dipiao" ? "抵票" : entries[i][1].kind === "screenshot" ? "付款截图" : "发票";
+    if (typeof invoiceList !== "undefined" && !invoiceList.some((v) => v.file === path)) {
+      const meta = guessInvoiceMeta(name);
+      invoiceList.push({ file: path, date: meta.date, merchant: meta.merchant, amount: meta.amount, kind: kind });
+    }
+  });
+  if (typeof rebuildItems !== "undefined") rebuildItems();
+  if (typeof renderEverything === "function") renderEverything();
+  if (typeof renderInvoiceList === "function") renderInvoiceList();
+  onStatus("已把 " + names.length + " 个文件搬进仓库、本地空间已腾空 ✓ 一切挂载关系保持不变（预览约 2-3 分钟后生效）。");
+}
+
+function maybeOfferMigration() {
+  const status = document.getElementById("lib-upload-status");
+  if (!status) return;
+  const ups = typeof loadUploads !== "undefined" ? loadUploads() : {};
+  const n = Object.keys(ups).length;
+  if (!n) return;
+  status.innerHTML =
+    "浏览器里还暂存着 " + n + " 个早期上传的文件，占满了本地空间。" +
+    '<a href="#" id="migrate-uploads-link" style="font-weight:600">点这里一键搬进仓库发票库并腾出空间</a>';
+  const link = document.getElementById("migrate-uploads-link");
+  link.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!askGhToken(false)) {
+      status.textContent = "需要先配置 GitHub 令牌才能搬（重新点会再问你要）。";
+      return;
+    }
+    try {
+      await migrateLocalUploads((msg) => (status.textContent = msg));
+    } catch (err) {
+      status.textContent = "搬家失败：" + err.message + "。原数据未动，可再试一次。";
+    }
+  });
+}
+
 function setupLibraryUpload() {
   const input = document.getElementById("lib-upload-input");
   const status = document.getElementById("lib-upload-status");
@@ -149,3 +226,4 @@ function setupLibraryUpload() {
 }
 
 setupLibraryUpload();
+maybeOfferMigration();

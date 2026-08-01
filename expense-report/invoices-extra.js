@@ -1479,9 +1479,93 @@ const invoiceListExtra = [
   "kind": "发票"
  },
  {
-  "file": "invoices/extra/廿一影视文化传播（上海）有限公司发票26522000000788745286.pdf",
-  "date": "2026-08-02",
-  "merchant": "都匀市沐茗奶茶饮品店",
+  "file": "invoices/extra/IMG_1541.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1541.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1542.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1542.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1543.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1543.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1544.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1544.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1545.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1545.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1546.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1546.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1550.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1550.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/MjYzNzcwMDAwMDAzMzQyNDYxOTlfMTc3OTk4NjE1MDAwMA==.pdf",
+  "date": null,
+  "merchant": "廿⼀影视⽂化传播（上海）有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26524000000051845731_花溪区孟关牛牛顺鲜牛馆_20260521182036.pdf",
+  "date": "2026-05-21",
+  "merchant": "dzfp_26524000000051845731_花溪区孟关牛牛顺鲜牛馆_20260521182036",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26524000000057008746_贵阳茶山上餐饮管理有限公司悦然时光分公司_20260722235613.pdf",
+  "date": "2026-05-30",
+  "merchant": "贵阳茶山上餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148051438183-电子行程单-邱涛.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海华程西南国际旅行社有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148052403495-电子行程单-周海纳.pdf",
+  "date": null,
+  "merchant": "订单1128148052403495-电子行程单-周海纳",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148054669095-电子普通发票.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海华程西南国际旅行社有限公司",
   "amount": null,
   "kind": "发票"
  }
