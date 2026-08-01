@@ -1673,5 +1673,12 @@ const invoiceListExtra = [
   "merchant": "lx-sh-hk",
   "amount": 431.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-lx-sh-asia-389.jpg",
+  "date": null,
+  "merchant": "lx-sh-asia",
+  "amount": 389.0,
+  "kind": "付款截图"
  }
 ];
