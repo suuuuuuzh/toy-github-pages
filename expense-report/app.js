@@ -1033,6 +1033,7 @@ function openInvoicePicker(itemId) {
       let ghToken = (localStorage.getItem("gh-upload-token") || "").trim();
       if (!ghToken && typeof askGhToken !== "undefined") ghToken = askGhToken(false);
       const canRepo = typeof commitFilesToLibrary !== "undefined" && ghToken;
+      let repoFail = "";
       if (canRepo) {
         try {
           // 抵票/截图在文件名里带上标记，进库后类型才对
@@ -1061,7 +1062,9 @@ function openInvoicePicker(itemId) {
           renderInvoiceList();
           return;
         } catch (err) {
-          hint.textContent = `直传仓库失败（${err.message}），改用浏览器本地存储…`;
+          // fetch 网络失败是 TypeError（如 Failed to fetch）：多半是当前网络连不上 api.github.com
+          repoFail = err instanceof TypeError ? "这个网络连不上 GitHub 接口（api.github.com 被挡），开代理/换网络再试" : err.message;
+          hint.textContent = `直传仓库失败：${repoFail}，改用浏览器本地存储…`;
         }
       }
       let done = 0;
@@ -1083,7 +1086,9 @@ function openInvoicePicker(itemId) {
             renderExpenseTable();
             renderSummaryCards();
           } catch (err) {
-            hint.textContent = "浏览器本地存储已满。用工具栏「传发票进库」粘一次 GitHub 令牌，之后这里上传会直接进仓库、不占浏览器空间。";
+            hint.textContent = repoFail
+              ? "直传仓库失败：" + repoFail + "。且浏览器本地存储已满，这张暂时传不了。"
+              : "浏览器本地存储已满。用工具栏「传发票进库」粘一次 GitHub 令牌，之后这里上传会直接进仓库、不占浏览器空间。";
           }
         };
         reader.readAsDataURL(file);
