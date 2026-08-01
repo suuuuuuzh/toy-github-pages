@@ -1393,5 +1393,12 @@ const invoiceListExtra = [
   "merchant": "贵州黔邺超市有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 堪景行程干粮.PNG",
+  "date": null,
+  "merchant": "0522 堪景行程干粮",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
