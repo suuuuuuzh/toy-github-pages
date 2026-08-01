@@ -2051,5 +2051,12 @@ const invoiceListExtra = [
   "merchant": "北京盒马网络科技有限公司",
   "amount": 579.46,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-携程酒店订单电子发票（订单尾号2283）.pdf",
+  "date": "2026-07-28",
+  "merchant": "上海赫程国际旅行社有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
