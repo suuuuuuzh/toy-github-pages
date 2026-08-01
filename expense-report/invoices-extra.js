@@ -1904,5 +1904,12 @@ const invoiceListExtra = [
   "merchant": "上海佳品客餐饮服务有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/上海电影节面包121.jpg",
+  "date": null,
+  "merchant": "上海电影节面包121",
+  "amount": null,
+  "kind": "发票"
  }
 ];
