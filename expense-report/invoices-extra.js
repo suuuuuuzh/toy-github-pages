@@ -2037,5 +2037,12 @@ const invoiceListExtra = [
   "merchant": "北京盒马网络科技有限公司",
   "amount": 68.12,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-发票506.1.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京盒马网络科技有限公司",
+  "amount": 506.1,
+  "kind": "抵票"
  }
 ];
