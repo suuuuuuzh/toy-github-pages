@@ -1092,5 +1092,19 @@ const invoiceListExtra = [
   "merchant": "爬山护具发票",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 药 发票.pdf",
+  "date": "2026-05-28",
+  "merchant": "北京同仁堂（济南）药店有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 药配送费 发票.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
