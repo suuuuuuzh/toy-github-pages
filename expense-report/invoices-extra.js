@@ -1008,5 +1008,12 @@ const invoiceListExtra = [
   "merchant": "北京印象城徽巷里餐饮发展有限公司",
   "amount": 23.9,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003721506391_廿一影视文化传播（上海）有限公司_20260801163204.pdf",
+  "date": "2026-06-13",
+  "merchant": "上海焯彩餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
