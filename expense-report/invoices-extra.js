@@ -1631,5 +1631,12 @@ const invoiceListExtra = [
   "merchant": "北京象鲜科技有限公司",
   "amount": 77.47,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-dzfp_26114000000037123126_北京天恒常湘餐饮有限公司_20260519151818.pdf",
+  "date": "2026-05-19",
+  "merchant": "北京天恒常湘餐饮有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
