@@ -1652,5 +1652,12 @@ const invoiceListExtra = [
   "merchant": "北京艾恰餐饮服务有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-dzfp_26112000002815373431_廿一影视文化传播（上海）有限公司_20260802025515.pdf",
+  "date": "2026-07-08",
+  "merchant": "北京帅巢一九一零餐饮有限公司",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
