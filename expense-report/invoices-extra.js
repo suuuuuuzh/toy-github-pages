@@ -2065,5 +2065,12 @@ const invoiceListExtra = [
   "merchant": "山西豪庭酒店管理有限公司",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/抵票-发票25.png",
+  "date": null,
+  "merchant": "发票25",
+  "amount": null,
+  "kind": "抵票"
  }
 ];
