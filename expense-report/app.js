@@ -291,7 +291,12 @@ function loadAttach() {
   }
 }
 function saveAttach(map) {
-  localStorage.setItem(ATTACH_KEY, JSON.stringify(map));
+  try {
+    localStorage.setItem(ATTACH_KEY, JSON.stringify(map));
+  } catch (e) {
+    alert("浏览器本地空间满了，这次挂载没存上。\n点表格上方蓝色提示里的「搬家」链接腾出空间，或清除本站浏览数据后重新粘一次令牌。");
+    throw e;
+  }
 }
 // 某一笔当前挂着的所有发票文件（data.js 里自带的 + 本地人工挂的，去重）
 function itemInvoices(item) {
@@ -405,7 +410,8 @@ function loadDipiaoFlags() {
   }
 }
 function isDipiaoFlagged(item) {
-  return loadDipiaoFlags().indexOf(item.id) !== -1;
+  // dipiaoFlag 是我固化进 data.js 的标记；本地点的标记存 localStorage
+  return loadDipiaoFlags().indexOf(item.id) !== -1 || !!item.dipiaoFlag;
 }
 function toggleDipiaoFlag(id) {
   const arr = loadDipiaoFlags();

@@ -980,5 +980,593 @@ const invoiceListExtra = [
   "merchant": "抵票",
   "amount": null,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003622353511_泰州泰度餐饮管理有限公司上海长宁第一分公司_20260801162210.pdf",
+  "date": "2026-06-09",
+  "merchant": "泰州泰度餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0611 咖啡 发票.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海市浦东新区陆家嘴街道板板扎扎餐饮店（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0612 咖啡.pdf",
+  "date": "2026-06-24",
+  "merchant": "上海喜创于茶餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/北京印象城徽巷里餐饮发展有限公司_发票金额23.90元.pdf",
+  "date": "2026-07-28",
+  "merchant": "北京印象城徽巷里餐饮发展有限公司",
+  "amount": 23.9,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003721506391_廿一影视文化传播（上海）有限公司_20260801163204.pdf",
+  "date": "2026-06-13",
+  "merchant": "上海焯彩餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26312000003684761146_廿一影视文化传播（上海）有限公司_20260612083517.pdf",
+  "date": "2026-06-12",
+  "merchant": "上海长庭酒店管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/结账单20260612.pdf",
+  "date": "2026-06-12",
+  "merchant": "结账单",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/抵票-7498fb6be95ebed3435e8b68f38be3eb.jpg",
+  "date": null,
+  "merchant": "7498fb6be95ebed3435e8b68f38be3eb",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/trans.pdf",
+  "date": null,
+  "merchant": "trans",
+  "amount": 128.21,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0520停车费.png",
+  "date": null,
+  "merchant": "0520停车费",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0520停车费2.png",
+  "date": null,
+  "merchant": "0520停车费2",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522停车费.png",
+  "date": null,
+  "merchant": "0522停车费",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523 停车费.png",
+  "date": null,
+  "merchant": "0523 停车费",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523停车费.png",
+  "date": null,
+  "merchant": "0523停车费",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-给堪景外联制片买烟_买烟(外联)_530.00.jpg",
+  "date": null,
+  "merchant": "给堪景外联制片买烟_买烟(外联",
+  "amount": 530.0,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/爬山护具发票.jpg",
+  "date": null,
+  "merchant": "爬山护具发票",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 药 发票.pdf",
+  "date": "2026-05-28",
+  "merchant": "北京同仁堂（济南）药店有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 药配送费 发票.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26527000000087512492_20260801172519.pdf",
+  "date": "2026-08-01",
+  "merchant": "贵阳全程德邦物流有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-胶片购买凭证.PNG",
+  "date": null,
+  "merchant": "胶片购买凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-堪景器材租赁凭证.PNG",
+  "date": null,
+  "merchant": "堪景器材租赁凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-贵州堪景外联红包.PNG",
+  "date": null,
+  "merchant": "贵州堪景外联红包",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山上买水1.PNG",
+  "date": null,
+  "merchant": "0528 泰山上买水1",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山上买水2.PNG",
+  "date": null,
+  "merchant": "0528 泰山上买水2",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山上买水3.PNG",
+  "date": null,
+  "merchant": "0528 泰山上买水3",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山上买水4.PNG",
+  "date": null,
+  "merchant": "0528 泰山上买水4",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/Weixin Image_20260731174118_458_7.png",
+  "date": null,
+  "merchant": "Weixin Image_20260731174118_458",
+  "amount": 7.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山 午饭 6人 1.PNG",
+  "date": null,
+  "merchant": "0528 泰山 午饭 6人 1",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山 午饭 6人 2.PNG",
+  "date": null,
+  "merchant": "0528 泰山 午饭 6人 2",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0528 泰山 午饭 6人 3.PNG",
+  "date": null,
+  "merchant": "0528 泰山 午饭 6人 3",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0527 泰山爬山干粮 6人.png",
+  "date": null,
+  "merchant": "0527 泰山爬山干粮 6人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-北京昀庭餐饮文化管理有限公司_发票金额485.00元.pdf",
+  "date": "2026-07-18",
+  "merchant": "北京昀庭餐饮文化管理有限公司",
+  "amount": 485.0,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/7bd62477-151e-4954-88a6-01b407d7699d756.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/84ff0f1a-7b30-492e-8571-ae62d216952f596.pdf",
+  "date": "2026-05-28",
+  "merchant": "泰安市泰山区梦梓阳饮品销售中心（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0527午饭补给.PNG",
+  "date": null,
+  "merchant": "0527午饭补给",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0527 咖啡3人 2.pdf",
+  "date": "2026-05-28",
+  "merchant": "济南市历城区茶本食品店（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0527 咖啡3人.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 爬山装备 1.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 爬山装备 2.pdf",
+  "date": "2026-05-30",
+  "merchant": "济南顾得赛商贸有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 爬山装备 3.pdf",
+  "date": "2026-05-30",
+  "merchant": "济南顾得赛商贸有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 爬山装备4.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0527 爬山干粮.PNG",
+  "date": null,
+  "merchant": "0527 爬山干粮",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/dzfp_26372000002509379221_济南市章丘区燕归来燕窝馆（个体工商户）_20260801181809.pdf",
+  "date": "2026-05-28",
+  "merchant": "济南市章丘区燕归来燕窝馆（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0526 早饭付款凭证.png",
+  "date": null,
+  "merchant": "0526 早饭付款凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0526 晚饭发票.png",
+  "date": null,
+  "merchant": "0526 晚饭发票",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0524 晚饭3人.jpeg",
+  "date": null,
+  "merchant": "0524 晚饭3人",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0524 夜宵 3人 2.pdf",
+  "date": "2026-05-29",
+  "merchant": "观山湖区枝头鲜果水果店（个体工商户",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0524 夜宵 3人 3.pdf",
+  "date": "2026-05-28",
+  "merchant": "上海三快智送科技有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0526 咖啡 3人.pdf",
+  "date": "2026-08-01",
+  "merchant": "济南瑞幸咖啡有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0520 晚饭 3人 付款凭证.jpg",
+  "date": null,
+  "merchant": "0520 晚饭 3人 付款凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0521 早饭 4人 付款凭证.PNG",
+  "date": null,
+  "merchant": "0521 早饭 4人 付款凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0521 午饭 4人 付款凭证.PNG",
+  "date": null,
+  "merchant": "0521 午饭 4人 付款凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0521 夜宵3人 1.jpg",
+  "date": null,
+  "merchant": "0521 夜宵3人 1",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0521 夜宵3人 2.jpg",
+  "date": null,
+  "merchant": "0521 夜宵3人 2",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 早饭4人.jpg",
+  "date": null,
+  "merchant": "0522 早饭4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 晚饭 4人.jpg",
+  "date": null,
+  "merchant": "0522 晚饭 4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/0522 晚饭3人.png",
+  "date": null,
+  "merchant": "0522 晚饭3人",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 午饭、水 .jpg",
+  "date": null,
+  "merchant": "0522 午饭、水",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/dzfp_26522000000480381541_贵州黔邺超市有限公司_20260802013105.pdf",
+  "date": "2026-05-25",
+  "merchant": "贵州黔邺超市有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 堪景行程干粮.PNG",
+  "date": null,
+  "merchant": "0522 堪景行程干粮",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523 晚饭 4人.PNG",
+  "date": null,
+  "merchant": "0523 晚饭 4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523 午饭 4人.PNG",
+  "date": null,
+  "merchant": "0523 午饭 4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-阿嬷的情书电影票付款凭证.PNG",
+  "date": null,
+  "merchant": "阿嬷的情书电影票付款凭证",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-北京睿贝库餐饮服务有限公司_发票金额257.00元.pdf",
+  "date": "2026-07-11",
+  "merchant": "北京睿贝库餐饮服务有限公司",
+  "amount": 257.0,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523 早饭4人.JPG",
+  "date": null,
+  "merchant": "0523 早饭4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0523 午饭 4人.JPG",
+  "date": null,
+  "merchant": "0523 午饭 4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0522 堪景行程补给.PNG",
+  "date": null,
+  "merchant": "0522 堪景行程补给",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/抵票-26117000000636225049 1.pdf",
+  "date": "2026-07-08",
+  "merchant": "北京茵赫餐饮管理有限公司",
+  "amount": null,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0525 咖啡3人.PNG",
+  "date": null,
+  "merchant": "0525 咖啡3人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/付款截图-0524 早饭4人.PNG",
+  "date": null,
+  "merchant": "0524 早饭4人",
+  "amount": null,
+  "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/dzfp_26524000000058058986_云岩区乔治咖啡文昌店_20260802013648.pdf",
+  "date": "2026-05-30",
+  "merchant": "云岩区乔治咖啡文昌店",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1541.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1541.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1542.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1542.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1543.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1543.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1544.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1544.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1545.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1545.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1546.JPG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1546.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/IMG_1550.PNG",
+  "date": null,
+  "merchant": "IMG",
+  "amount": 1550.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/MjYzNzcwMDAwMDAzMzQyNDYxOTlfMTc3OTk4NjE1MDAwMA==.pdf",
+  "date": null,
+  "merchant": "廿⼀影视⽂化传播（上海）有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26524000000051845731_花溪区孟关牛牛顺鲜牛馆_20260521182036.pdf",
+  "date": "2026-05-21",
+  "merchant": "dzfp_26524000000051845731_花溪区孟关牛牛顺鲜牛馆_20260521182036",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/dzfp_26524000000057008746_贵阳茶山上餐饮管理有限公司悦然时光分公司_20260722235613.pdf",
+  "date": "2026-05-30",
+  "merchant": "贵阳茶山上餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148051438183-电子行程单-邱涛.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海华程西南国际旅行社有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148052403495-电子行程单-周海纳.pdf",
+  "date": null,
+  "merchant": "订单1128148052403495-电子行程单-周海纳",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/订单1128148054669095-电子普通发票.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海华程西南国际旅行社有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
