@@ -987,5 +987,12 @@ const invoiceListExtra = [
   "merchant": "泰州泰度餐饮管理有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/0611 咖啡 发票.pdf",
+  "date": "2026-07-01",
+  "merchant": "上海市浦东新区陆家嘴街道板板扎扎餐饮店（个体工商户",
+  "amount": null,
+  "kind": "发票"
  }
 ];
