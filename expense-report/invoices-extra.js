@@ -1323,5 +1323,12 @@ const invoiceListExtra = [
   "merchant": "济南瑞幸咖啡有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/付款截图-0520 晚饭 3人 付款凭证.jpg",
+  "date": null,
+  "merchant": "0520 晚饭 3人 付款凭证",
+  "amount": null,
+  "kind": "付款截图"
  }
 ];
