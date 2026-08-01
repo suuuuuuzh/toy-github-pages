@@ -1447,6 +1447,15 @@ renderInvoiceList();
 setupExport();
 setupAttachExport();
 setupExportAll();
+// 工具栏吸顶后，表头要钉在它下面：实时把工具栏高度写进 --tools-h（状态行文字变化/换行都会自动跟上）
+(function setupStickyTools() {
+  const tools = document.querySelector(".sticky-tools");
+  if (!tools) return;
+  const set = () => document.documentElement.style.setProperty("--tools-h", tools.offsetHeight + "px");
+  if (window.ResizeObserver) new ResizeObserver(set).observe(tools);
+  window.addEventListener("resize", set);
+  set();
+})();
 setupPreview();
 setupRowOps();
 setupDragReorder();
