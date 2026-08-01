@@ -1470,5 +1470,12 @@ const invoiceListExtra = [
   "merchant": "0524 早饭4人",
   "amount": null,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/dzfp_26524000000058058986_云岩区乔治咖啡文昌店_20260802013648.pdf",
+  "date": "2026-05-30",
+  "merchant": "云岩区乔治咖啡文昌店",
+  "amount": null,
+  "kind": "发票"
  }
 ];
