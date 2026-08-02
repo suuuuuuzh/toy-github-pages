@@ -2177,5 +2177,19 @@ const invoiceListExtra = [
   "merchant": "IMG",
   "amount": 1916.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/滴滴出行行程报销单 上海机场.pdf",
+  "date": null,
+  "merchant": "滴滴出行行程报销单 上海机场",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/滴滴电子发票 上海机场.pdf",
+  "date": "2026-08-02",
+  "merchant": "北京滴滴出行科技有限公司",
+  "amount": 158.1,
+  "kind": "发票"
  }
 ];
