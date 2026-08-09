@@ -2205,5 +2205,19 @@ const invoiceListExtra = [
   "merchant": "石家庄贵东餐饮管理有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-04_水素高铁往返，北京-石家庄_实付0-1.pdf",
+  "date": "2026-08-04",
+  "merchant": "水素高铁往返，北京-石家庄_实付0",
+  "amount": 1.0,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-04_水素高铁往返，北京-石家庄_实付0-2.pdf",
+  "date": "2026-08-04",
+  "merchant": "水素高铁往返，北京-石家庄_实付0",
+  "amount": 2.0,
+  "kind": "发票"
  }
 ];
