@@ -57,6 +57,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "闲鱼 订单5126173704369015515（二手平台，无发票）",
   },
+  {
+    id: 4,
+    category: "住宿费",
+    description: "堪景期间酒店住宿（汇总）",
+    date: "2026-08-10",
+    amount: 1158.1,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "华住酒店集团，微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10。后续堪景酒店费用继续累加到本条",
+  },
 ];
 
 const tpiaoList = [];
