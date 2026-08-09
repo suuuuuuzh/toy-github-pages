@@ -24,6 +24,11 @@
       <span id="new-sheet-status" class="muted" style="font-size:12px;margin-left:8px;"></span>
     </p>
 
+    <section id="archived-section" style="display:none;margin-top:18px;">
+      <button id="archived-toggle" class="cat-head"><span class="cat-caret">▸</span><span class="cat-name">已结算归档</span><span class="cat-meta" id="archived-meta"></span></button>
+      <div id="archived-cards" class="summary-cards" style="display:none;margin-top:10px;"></div>
+    </section>
+
     <section>
       <p class="muted" style="font-size:13px;">
         所有报销单合并按<b>一次报销</b>结算，上面的合计会根据每张表的内容自动计算。
@@ -40,18 +45,35 @@
       const fmt = (n) => Number(n || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const cards = document.getElementById("report-cards");
       const colors = ["#2563eb", "#16a34a", "#d97706", "#7c3aed", "#0891b2"];
-      cards.innerHTML = reportRegistry
-        .map(
-          (r, i) => `
-        <a class="card" href="${r.page}" style="text-decoration:none;color:inherit;display:block">
-          <div class="label">${r.title}</div>
-          <div class="value" style="color:${colors[i % colors.length]}">${r.period}</div>
+      const card = (r, i, dim) => `
+        <a class="card" href="${r.page}" style="text-decoration:none;color:inherit;display:block${dim ? ";opacity:.72" : ""}">
+          <div class="label">${r.title}${dim ? ' <span class="muted">· 已结算</span>' : ""}</div>
+          <div class="value" style="color:${dim ? "#64748b" : colors[i % colors.length]}">${r.period}</div>
           <div class="sub">${r.count} 笔 · 合计 ¥${fmt(r.total)} · 点击查看 →</div>
-        </a>`
-        )
-        .join("");
-      const loan = reportRegistry.reduce((s, r) => s + Number(r.loan || 0), 0);
-      const total = reportRegistry.reduce((s, r) => s + Number(r.total || 0), 0);
+        </a>`;
+      const active = reportRegistry.filter((r) => !r.archived);
+      const archived = reportRegistry.filter((r) => r.archived);
+      cards.innerHTML = active.map((r, i) => card(r, i, false)).join("");
+
+      // 已结算的收进折叠区，不计入上面的总账
+      if (archived.length) {
+        const sec = document.getElementById("archived-section");
+        sec.style.display = "block";
+        const archTotal = archived.reduce((s, r) => s + Number(r.total || 0), 0);
+        document.getElementById("archived-meta").textContent =
+          archived.length + " 张 · 合计 ¥" + fmt(archTotal);
+        const box = document.getElementById("archived-cards");
+        box.innerHTML = archived.map((r, i) => card(r, i, true)).join("");
+        const tog = document.getElementById("archived-toggle");
+        tog.addEventListener("click", () => {
+          const open = box.style.display !== "none";
+          box.style.display = open ? "none" : "grid";
+          tog.querySelector(".cat-caret").textContent = open ? "▸" : "▾";
+        });
+      }
+
+      const loan = active.reduce((s, r) => s + Number(r.loan || 0), 0);
+      const total = active.reduce((s, r) => s + Number(r.total || 0), 0);
       const diff = total - loan;
       document.getElementById("grand-strip").innerHTML =
         `<span>预支合计：<b>¥${fmt(loan)}</b></span>` +
@@ -78,7 +100,7 @@
           '  period: "' + q(period) + '",\n  reportDate: "",\n  loan: 0,\n};\n\n' +
           'const categoryOptions = ["交通费", "住宿费", "餐费", "汽车费用", "快递费", "办公用品", "器材", "业务招待费", "其他"];\n\n' +
           "const expenseItems = [];\n\nconst tpiaoList = [];\n";
-        const newReg = reportRegistry.concat([{ slug: slug, title: "报销单 · " + q(name), period: q(period), page: "sheet.html?r=" + slug, count: 0, total: 0, loan: 0 }]);
+        const newReg = reportRegistry.concat([{ slug: slug, title: "报销单 · " + q(name), period: q(period), page: "sheet.html?r=" + slug, count: 0, total: 0, loan: 0, archived: false }]);
         const regText =
           "// 报销单登记表：首页卡片和合计从这里来。新建报销单会自动追加；count/total 在我固化数据时更新。\n" +
           "const reportRegistry = " + JSON.stringify(newReg, null, 1) + ";\n";

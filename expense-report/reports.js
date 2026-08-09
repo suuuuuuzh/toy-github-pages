@@ -1,4 +1,4 @@
-// 报销单登记表：首页卡片和合计从这里来。新建报销单会自动追加；count/total 在我固化数据时更新。
+// 报销单登记表：首页卡片和合计从这里来。archived: true = 已结算，收进首页下方的折叠区，不计入总账。
 const reportRegistry = [
  {
   "slug": "kanjing",
@@ -7,7 +7,8 @@ const reportRegistry = [
   "page": "kanjing.html",
   "count": 81,
   "total": 29703.8,
-  "loan": 5000
+  "loan": 5000,
+  "archived": true
  },
  {
   "slug": "shanghai",
@@ -16,7 +17,8 @@ const reportRegistry = [
   "page": "shanghai.html",
   "count": 70,
   "total": 23360.77,
-  "loan": 0
+  "loan": 0,
+  "archived": true
  },
  {
   "slug": "daily",
@@ -25,7 +27,8 @@ const reportRegistry = [
   "page": "sheet.html?r=daily",
   "count": 0,
   "total": 0,
-  "loan": 0
+  "loan": 0,
+  "archived": false
  },
  {
   "slug": "hz08",
@@ -34,7 +37,8 @@ const reportRegistry = [
   "page": "sheet.html?r=hz08",
   "count": 3,
   "total": 2115.18,
-  "loan": 0
+  "loan": 0,
+  "archived": false
  },
  {
   "slug": "yff",
@@ -43,6 +47,7 @@ const reportRegistry = [
   "page": "sheet.html?r=yff",
   "count": 3,
   "total": 727.7,
-  "loan": 0
+  "loan": 0,
+  "archived": false
  }
 ];
