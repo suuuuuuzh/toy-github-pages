@@ -20,9 +20,18 @@ const reportRegistry = [
  },
  {
   "slug": "daily",
-  "title": "报销单 C · 日常",
-  "period": "日常零散报销",
+  "title": "报销单 C · 水素日常行程",
+  "period": "日常行程",
   "page": "sheet.html?r=daily",
+  "count": 0,
+  "total": 0,
+  "loan": 0
+ },
+ {
+  "slug": "hz08",
+  "title": "报销单 D · 杭州八月堪景",
+  "period": "2026年8月",
+  "page": "sheet.html?r=hz08",
   "count": 0,
   "total": 0,
   "loan": 0
