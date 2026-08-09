@@ -1498,6 +1498,64 @@ renderInvoiceList();
 setupExport();
 setupAttachExport();
 setupExportAll();
+
+// ---- 待办提示条：显示 reminders.js 里属于本报销单的提醒，可一键导出到手机日历/提醒事项 ----
+function renderReminders() {
+  const box = document.getElementById("reminder-bar");
+  if (!box || typeof reminderList === "undefined") return;
+  const slug = (location.search.match(/[?&]r=([\w-]+)/) || [])[1] ||
+    (location.pathname.split("/").pop() || "").replace(/\.html$/, "");
+  const mine = reminderList.filter((r) => !r.done && (r.scope === "all" || r.scope === slug));
+  if (!mine.length) {
+    box.innerHTML = "";
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  box.innerHTML = mine
+    .map((r) => {
+      const over = r.due && r.due <= today;
+      return `<div class="reminder-item${over ? " due" : ""}">
+        <span>⏳ ${esc(r.text)}${r.due ? `<span class="muted">（${esc(r.due)}${over ? " 已到期" : ""}）</span>` : ""}</span>
+        <a class="btn-outline reminder-ics" href="#" data-id="${esc(r.id)}">加到手机提醒</a>
+      </div>`;
+    })
+    .join("");
+  box.querySelectorAll(".reminder-ics").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const r = mine.find((x) => x.id === a.getAttribute("data-id"));
+      if (!r) return;
+      const d = (r.due || today).replace(/-/g, "");
+      const ics = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//expense-report//reminder//CN",
+        "BEGIN:VEVENT",
+        "UID:" + r.id + "@expense-report",
+        "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
+        "DTSTART;VALUE=DATE:" + d,
+        "SUMMARY:" + r.text.replace(/[\n,;]/g, " "),
+        "DESCRIPTION:来自报销单网站 " + location.href.replace(/[\n,;]/g, " "),
+        "BEGIN:VALARM",
+        "TRIGGER:PT0S",
+        "ACTION:DISPLAY",
+        "DESCRIPTION:" + r.text.replace(/[\n,;]/g, " "),
+        "END:VALARM",
+        "END:VEVENT",
+        "END:VCALENDAR",
+      ].join("\r\n");
+      const blob = new Blob([ics], { type: "text/calendar" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "reminder-" + r.id + ".ics";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(link.href);
+    })
+  );
+}
+renderReminders();
 // 工具栏吸顶后，表头要钉在它下面：实时把工具栏高度写进 --tools-h（状态行文字变化/换行都会自动跟上）
 (function setupStickyTools() {
   const tools = document.querySelector(".sticky-tools");
