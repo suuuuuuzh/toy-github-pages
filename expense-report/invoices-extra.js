@@ -2198,5 +2198,12 @@ const invoiceListExtra = [
   "merchant": "蕉下户外驱蚊器+3支驱蚊液（堪景户外用）_付款截图_实付",
   "amount": 98.88,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/2026-08-04_青年电影周晚饭，2人_实付250.pdf",
+  "date": "2026-08-04",
+  "merchant": "石家庄贵东餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
