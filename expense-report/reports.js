@@ -35,5 +35,14 @@ const reportRegistry = [
   "count": 3,
   "total": 2115.18,
   "loan": 0
+ },
+ {
+  "slug": "yff",
+  "title": "报销单 E · 青年电影周",
+  "period": "青年电影周",
+  "page": "sheet.html?r=yff",
+  "count": 0,
+  "total": 0,
+  "loan": 0
  }
 ];
