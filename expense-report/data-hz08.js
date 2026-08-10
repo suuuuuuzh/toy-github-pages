@@ -11,13 +11,14 @@ const reportInfo = {
 };
 
 const categoryOptions = [
-  "交通费", "住宿费", "餐费", "汽车费用", "快递费", "办公用品", "器材", "业务招待费", "其他",
+  "堪景覆景器材费", "一般交通（打车）", "勘景车辆", "勘景燃料费", "过路过桥费", "停车费",
+  "勘景餐饮", "覆景餐饮", "杂费（水饮/补给/门票）", "酒店", "差旅", "创意阐述", "脚本绘制费", "前期杂支",
 ];
 
 const expenseItems = [
   {
     id: 1,
-    category: "交通费",
+    category: "差旅",
     description: "8/9 邱、赵、水三人高铁，北京-杭州",
     date: "2026-08-09",
     amount: 2004,
@@ -31,7 +32,7 @@ const expenseItems = [
   },
   {
     id: 2,
-    category: "其他",
+    category: "杂费（水饮/补给/门票）",
     description: "驱蚊水喷雾 3瓶（堪景户外用）",
     date: "2026-08-09",
     amount: 12.3,
@@ -45,7 +46,7 @@ const expenseItems = [
   },
   {
     id: 3,
-    category: "其他",
+    category: "杂费（水饮/补给/门票）",
     description: "蕉下户外驱蚊器+3支驱蚊液（堪景户外用）",
     date: "2026-08-09",
     amount: 98.88,
@@ -59,21 +60,24 @@ const expenseItems = [
   },
   {
     id: 4,
-    category: "住宿费",
+    category: "酒店",
     description: "堪景期间酒店住宿（汇总）",
     date: "2026-08-10",
-    amount: 1158.1,
+    amount: 1141.1,
     voucherType: "invoice",
     invoiceFile: "invoices/extra/2026-08-10_堪景酒店住宿两晚_付款截图_1158.10.png",
-    invoiceFiles: ["invoices/extra/2026-08-10_堪景酒店住宿两晚_付款截图_1158.10.png"],
+    invoiceFiles: [
+      "invoices/extra/2026-08-10_堪景酒店住宿两晚_付款截图_1158.10.png",
+      "invoices/extra/2026-08-10_堪景酒店退款17元_付款截图_17.00.png",
+    ],
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 华住酒店集团，微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10。后续堪景酒店费用继续累加到本条。发票到时候一起开",
+    remark: "[水素] 华住酒店集团（桔子杭州文体中心西溪湿地酒店），微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10，酒店减免退款 17.00，实际 1141.10。后续堪景酒店费用继续累加到本条。发票到时候一起开",
   },
   {
     id: 5,
-    category: "餐费",
+    category: "勘景餐饮",
     description: "8/10 水素高铁上午饭",
     date: "2026-08-10",
     amount: 30,
@@ -87,7 +91,7 @@ const expenseItems = [
   },
   {
     id: 6,
-    category: "交通费",
+    category: "一般交通（打车）",
     description: "8/10 打车 到高铁站",
     date: "2026-08-10",
     amount: 33.6,
@@ -101,7 +105,7 @@ const expenseItems = [
   },
   {
     id: 7,
-    category: "餐费",
+    category: "勘景餐饮",
     description: "8/10 堪景晚饭 3人",
     date: "2026-08-10",
     amount: 126.94,
@@ -115,7 +119,7 @@ const expenseItems = [
   },
   {
     id: 8,
-    category: "其他",
+    category: "杂费（水饮/补给/门票）",
     description: "堪景补给：饮用水、湿巾、电解质水",
     date: "2026-08-10",
     amount: 80.41,
@@ -129,7 +133,7 @@ const expenseItems = [
   },
   {
     id: 9,
-    category: "交通费",
+    category: "一般交通（打车）",
     description: "8/10 打车 高铁站-酒店",
     date: "2026-08-10",
     amount: 27.4,
@@ -143,7 +147,7 @@ const expenseItems = [
   },
   {
     id: 10,
-    category: "汽车费用",
+    category: "勘景车辆",
     description: "堪景租车 8/11-8/13（含保险）",
     date: "2026-08-11",
     amount: 387.9,
