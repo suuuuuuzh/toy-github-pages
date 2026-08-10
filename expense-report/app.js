@@ -789,6 +789,36 @@ function invoiceCell(item) {
   return `<div class="inv-wrap">${chips}${btn}${dipiaoToggle}</div>`;
 }
 
+// ---- 预算对照：类目名对应预算科目时，显示 预算/剩余，超支标红 ----
+function currentSheetSlug() {
+  return (
+    (location.search.match(/[?&]r=([\w-]+)/) || [])[1] ||
+    (location.pathname.split("/").pop() || "").replace(/\.html$/, "")
+  );
+}
+function budgetSection() {
+  if (typeof budgetForSheet === "undefined") return null;
+  return budgetForSheet(currentSheetSlug());
+}
+function budgetOf(cat) {
+  const sec = budgetSection();
+  if (!sec) return null;
+  const it = sec.items.filter((i) => i.name === cat)[0];
+  return it ? it.amount : null;
+}
+function budgetMeta(cat, spent) {
+  const b = budgetOf(cat);
+  if (b == null || b === 0) return "";
+  const left = b - spent;
+  return ` <span class="budget-tag${left < 0 ? " over" : ""}">预算 ¥${fmt(b)} · ${left < 0 ? "超支 ¥" + fmt(-left) : "剩余 ¥" + fmt(left)}</span>`;
+}
+function budgetGrandMeta(grand) {
+  const sec = budgetSection();
+  if (!sec) return "";
+  const left = sec.total - grand;
+  return ` <span class="budget-tag${left < 0 ? " over" : ""}">本单预算 ¥${fmt(sec.total)} · ${left < 0 ? "超支 ¥" + fmt(-left) : "剩余 ¥" + fmt(left)}</span>`;
+}
+
 const expandedCats = new Set();
 function renderCategoryTable() {
   const box = document.getElementById("category-accordion");
@@ -828,11 +858,11 @@ function renderCategoryTable() {
           <button class="cat-head${open ? " open" : ""}" data-cat="${esc(g.cat)}">
             <span class="cat-caret">${open ? "▾" : "▸"}</span>
             <span class="cat-name">${esc(g.cat)}</span>
-            <span class="cat-meta">${g.items.length} 笔 · ¥${fmt(sum)}</span>
+            <span class="cat-meta">${g.items.length} 笔 · ¥${fmt(sum)}${budgetMeta(g.cat, sum)}</span>
           </button>${panel}</div>`;
       })
       .join("") +
-    `<div class="cat-grand">合计：¥${fmt(grand)}（${expenseItems.length} 笔）</div>`;
+    `<div class="cat-grand">合计：¥${fmt(grand)}（${expenseItems.length} 笔）${budgetGrandMeta(grand)}</div>`;
 
   box.querySelectorAll(".cat-head").forEach((btn) =>
     btn.addEventListener("click", () => {
@@ -1427,6 +1457,21 @@ function updateMetaTotals() {
   const loan = Number(reportInfo.loan || 0);
   const diff = total - loan;
   totalEl.textContent = "¥" + fmt(total);
+  // 有预算的表：在表头加一条「预算 / 已花 / 剩余」
+  const sec = typeof budgetSection === "function" ? budgetSection() : null;
+  const wrap = document.getElementById("meta-diff-wrap");
+  if (sec && wrap && !document.getElementById("meta-budget")) {
+    const span = document.createElement("span");
+    span.id = "meta-budget";
+    wrap.parentNode.insertBefore(span, wrap.nextSibling);
+  }
+  const bEl = document.getElementById("meta-budget");
+  if (bEl && sec) {
+    const left = sec.total - total;
+    bEl.innerHTML =
+      `预算（${esc(sec.code)} ${esc(sec.name)}）：<b>¥${fmt(sec.total)}</b>` +
+      `　<b style="color:${left < 0 ? "#dc2626" : "#16a34a"}">${left < 0 ? "超支 ¥" + fmt(-left) : "剩余 ¥" + fmt(left)}</b>`;
+  }
   diffEl.innerHTML =
     "¥" + fmt(Math.abs(diff)) +
     (diff > 0.004 ? '<span class="muted">（应补付报销人）</span>' : diff < -0.004 ? '<span class="muted">（报销人退回）</span>' : '<span class="muted">（两清）</span>');
