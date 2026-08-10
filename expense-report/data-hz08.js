@@ -27,7 +27,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "中铁网络 12306",
+    remark: "[水素] 中铁网络 12306",
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "1688 绿壹(龙岩)生物技术 订单5127359942201006333，寄杭州桔子酒店前台",
+    remark: "[水素] 1688 绿壹(龙岩)生物技术 订单5127359942201006333，寄杭州桔子酒店前台",
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "闲鱼 订单5126173704369015515（二手平台，无发票）",
+    remark: "[水素] 闲鱼 订单5126173704369015515（二手平台，无发票）",
   },
   {
     id: 4,
@@ -69,7 +69,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "华住酒店集团，微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10。后续堪景酒店费用继续累加到本条。发票到时候一起开",
+    remark: "[水素] 华住酒店集团，微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10。后续堪景酒店费用继续累加到本条。发票到时候一起开",
   },
   {
     id: 5,
@@ -83,7 +83,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "发票已收到，待整理上传",
+    remark: "[水素] 发票已收到，待整理上传",
   },
   {
     id: 6,
@@ -97,7 +97,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "打车费，以后整体一起开发票",
+    remark: "[水素] 打车费，以后整体一起开发票",
   },
 ];
 
