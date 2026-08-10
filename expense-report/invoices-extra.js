@@ -2303,5 +2303,12 @@ const invoiceListExtra = [
   "merchant": "堪景租车含保险_付款截图",
   "amount": 387.9,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/2026-08-10_堪景酒店退款17元_付款截图_17.00.png",
+  "date": "2026-08-10",
+  "merchant": "堪景酒店退款17元_付款截图",
+  "amount": 17.0,
+  "kind": "付款截图"
  }
 ];
