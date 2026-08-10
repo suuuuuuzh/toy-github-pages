@@ -125,7 +125,21 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 天猫超市 3件：水 19.89 + 农夫山泉电解质水 50.16 + 得宝湿巾 10.36，共减 68.38 后实付 80.41",
+    remark: "[水素] 天猫超市 3件：水 19.89 + 农夫山泉电解质水 50.16 + 得宝湿巾 10.36，共减 68.38 后实付 80.41。可开发票，待开",
+  },
+  {
+    id: 9,
+    category: "交通费",
+    description: "8/10 打车 高铁站-酒店",
+    date: "2026-08-10",
+    amount: 27.4,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 滴滴，可整合开发票",
   },
 ];
 
