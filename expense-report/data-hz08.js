@@ -142,6 +142,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 滴滴，可整合开发票",
   },
+  {
+    id: 10,
+    category: "汽车费用",
+    description: "堪景租车 8/11-8/13（含保险）",
+    date: "2026-08-11",
+    amount: 387.9,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-11_堪景租车含保险_付款截图_387.90.png",
+    invoiceFiles: ["invoices/extra/2026-08-11_堪景租车含保险_付款截图_387.90.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 滴滴租车，微信支付，8/10 下单。费用含保险。付款截图已存，发票待开",
+  },
 ];
 
 const tpiaoList = [];

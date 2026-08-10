@@ -2268,5 +2268,40 @@ const invoiceListExtra = [
   "merchant": "堪景补给水湿巾电解质水_付款截图",
   "amount": 80.41,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/2026-08-04_青年电影周路演夜宵、水_实付46.37.pdf",
+  "date": "2026-08-04",
+  "merchant": "青年电影周路演夜宵、水_实付",
+  "amount": 46.37,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-05_青年电影周路演早饭+咖啡_2人_实付47.1.pdf",
+  "date": "2026-08-05",
+  "merchant": "青年电影周路演早饭+咖啡_2人_实付",
+  "amount": 47.1,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-05_青年电影周路演晚饭2人_抵票_实付86.5.pdf",
+  "date": "2026-08-05",
+  "merchant": "青年电影周路演晚饭2人_抵票_实付",
+  "amount": 86.5,
+  "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/2026-08-10_8_10_水素高铁上午饭_实付30.pdf",
+  "date": "2026-08-10",
+  "merchant": "北京京铁列车服务有限公司",
+  "amount": null,
+  "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-11_堪景租车含保险_付款截图_387.90.png",
+  "date": "2026-08-11",
+  "merchant": "堪景租车含保险_付款截图",
+  "amount": 387.9,
+  "kind": "付款截图"
  }
 ];
