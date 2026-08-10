@@ -2275,5 +2275,12 @@ const invoiceListExtra = [
   "merchant": "青年电影周路演夜宵、水_实付",
   "amount": 46.37,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-05_青年电影周路演早饭+咖啡_2人_实付47.1.pdf",
+  "date": "2026-08-05",
+  "merchant": "青年电影周路演早饭+咖啡_2人_实付",
+  "amount": 47.1,
+  "kind": "发票"
  }
 ];
