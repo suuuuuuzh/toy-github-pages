@@ -7,7 +7,7 @@ const reportInfo = {
   department: "",
   period: "2026年8月（杭州堪景）",
   reportDate: "",
-  loan: 0,
+  loan: 100000,
 };
 
 const categoryOptions = [
@@ -69,7 +69,35 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "华住酒店集团，微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10。后续堪景酒店费用继续累加到本条",
+    remark: "华住酒店集团，微信零钱通支付。8/10-8/12 两晚 2间房 3人：573.30 + 584.80 = 1158.10。后续堪景酒店费用继续累加到本条。发票到时候一起开",
+  },
+  {
+    id: 5,
+    category: "餐费",
+    description: "8/10 水素高铁上午饭",
+    date: "2026-08-10",
+    amount: 30,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "发票已收到，待上传",
+  },
+  {
+    id: 6,
+    category: "交通费",
+    description: "8/10 打车 到高铁站",
+    date: "2026-08-10",
+    amount: 33.6,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "滴滴出行，待在滴滴 App 里开发票",
   },
 ];
 

@@ -35,9 +35,9 @@ const reportRegistry = [
   "title": "报销单 D · 杭州八月堪景",
   "period": "2026年8月",
   "page": "sheet.html?r=hz08",
-  "count": 4,
-  "total": 3273.28,
-  "loan": 0,
+  "count": 6,
+  "total": 3336.88,
+  "loan": 100000,
   "archived": false
  },
  {
