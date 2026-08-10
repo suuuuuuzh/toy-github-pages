@@ -2268,5 +2268,12 @@ const invoiceListExtra = [
   "merchant": "堪景补给水湿巾电解质水_付款截图",
   "amount": 80.41,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/2026-08-04_青年电影周路演夜宵、水_实付46.37.pdf",
+  "date": "2026-08-04",
+  "merchant": "青年电影周路演夜宵、水_实付",
+  "amount": 46.37,
+  "kind": "发票"
  }
 ];
