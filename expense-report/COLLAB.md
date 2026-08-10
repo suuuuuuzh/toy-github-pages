@@ -1,18 +1,18 @@
 # 两个人一起记同一张报销单
 
-适用于：水素 + 另一位制片，两人各自用自己的 AI，往**同一张报销单**里记账。
-本文件同时写给人和 AI 看。对方的 AI 直接读这个文件即可。
+适用于：水素 + Lexie 两位制片，各自用自己的 AI，往**同一张报销单**里记账。
+本文件同时写给人和 AI 看。Lexie 的 AI 直接读这个文件即可。
 
 ---
 
 ## 一、一次性设置（水素做，5 分钟）
 
-1. 打开仓库 <https://github.com/suuuuuuzh/toy-github-pages>
+1. 水素打开仓库 <https://github.com/suuuuuuzh/toy-github-pages>
 2. **Settings → Collaborators and teams → Add people**
-3. 填对方的 GitHub 用户名或邮箱，权限选 **Write**（写权限，能直接推送，不用走 PR）
-4. 对方在邮箱里点 **Accept invitation**
+3. 填 Lexie 的 GitHub 用户名或邮箱，权限选 **Write**（写权限，能直接推送，不用走 PR）
+4. Lexie 在邮箱里点 **Accept invitation**
 
-对方没有 GitHub 账号的话，先去 <https://github.com/signup> 注册一个，再回到第 3 步。
+Lexie 没有 GitHub 账号的话，先去 <https://github.com/signup> 注册一个，再回到第 3 步。
 
 设置完，两人对这个仓库的权限完全相同，网站还是同一个：
 <https://suuuuuuzh.github.io/toy-github-pages/expense-report/>
@@ -54,8 +54,8 @@
 
 规则：
 
-- 署名放最前，格式 `[名字] `，后面接正常备注
-- **谁付的钱谁署名**。如果是 A 记账、B 垫付，写成 `[水素] 垫付：制片B｜…`
+- 署名放最前，只有两种：`[水素] ` 和 `[Lexie] `，后面接正常备注
+- **谁付的钱谁署名**。如果是一个人记账、另一个人垫付，写成 `[水素] 垫付：Lexie｜…`
 - 网页上"备注"这一列直接可见可编辑，所以在手机上也一眼能看出是谁的
 
 这样标记有两层保险：备注里的署名（人看得见），加上 git 提交记录（机器看得见，`git log` 能查到每一笔是谁的账号推的）。
@@ -130,7 +130,7 @@ node -e '
 git pull
 # ...改文件...
 git add expense-report/data-hz08.js expense-report/reports.js
-git commit -m "记账：[名字] 8/11 午饭 186"
+git commit -m "记账：[Lexie] 8/11 午饭 186"
 git push
 ```
 
@@ -142,15 +142,13 @@ git push
 
 ## 九、直接甩给对方 AI 的一段话
 
-> 你是电影项目《竹林遗录》的报销记账助手，和另一位制片（水素）共用同一个 GitHub 仓库
+> 你是 Lexie 的报销记账助手。Lexie 是电影项目《竹林遗录》的制片，和另一位制片水素共用同一个 GitHub 仓库
 > `suuuuuuzh/toy-github-pages` 记账，网站是 <https://suuuuuuzh.github.io/toy-github-pages/expense-report/>。
 > 记账前先读 `expense-report/COLLAB.md`，严格按里面的规则执行：
 > 所有堪景花销记进 `expense-report/data-hz08.js` 的 `expenseItems`，id 取当前最大 +1，
-> 备注一律以 `[我的名字] ` 开头署名，同步更新 `reports.js` 里 hz08 的 count 和 total。
+> 备注一律以 `[Lexie] ` 开头署名（水素的条目署 `[水素]`，不要动），同步更新 `reports.js` 里 hz08 的 count 和 total。
 > 每次动手前先 `git pull`，改完立刻 `git push` 到 main。
 > 不要新建报销单，不要改动其他代码。
-
-把「我的名字」换成她的名字。
 
 ---
 
