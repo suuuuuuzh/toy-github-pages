@@ -63,9 +63,9 @@ const expenseItems = [
     description: "堪景期间酒店住宿（汇总）",
     date: "2026-08-10",
     amount: 1158.1,
-    voucherType: "none",
-    invoiceFile: "",
-    invoiceFiles: [],
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-10_堪景酒店住宿两晚_付款截图_1158.10.png",
+    invoiceFiles: ["invoices/extra/2026-08-10_堪景酒店住宿两晚_付款截图_1158.10.png"],
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
@@ -83,7 +83,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "发票已收到，待上传",
+    remark: "发票已收到，待整理上传",
   },
   {
     id: 6,
@@ -97,7 +97,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "滴滴出行，待在滴滴 App 里开发票",
+    remark: "打车费，以后整体一起开发票",
   },
 ];
 
