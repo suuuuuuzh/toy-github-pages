@@ -2296,5 +2296,12 @@ const invoiceListExtra = [
   "merchant": "北京京铁列车服务有限公司",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-11_堪景租车含保险_付款截图_387.90.png",
+  "date": "2026-08-11",
+  "merchant": "堪景租车含保险_付款截图",
+  "amount": 387.9,
+  "kind": "付款截图"
  }
 ];

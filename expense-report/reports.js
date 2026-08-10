@@ -32,11 +32,11 @@ const reportRegistry = [
  },
  {
   "slug": "hz08",
-  "title": "报销单 D · 堪景（杭州八月）",
+  "title": "报销单 D · 杭州八月堪景",
   "period": "2026年8月",
   "page": "sheet.html?r=hz08",
-  "count": 9,
-  "total": 3571.63,
+  "count": 10,
+  "total": 3959.53,
   "loan": 100000,
   "archived": false
  },
@@ -47,16 +47,6 @@ const reportRegistry = [
   "page": "sheet.html?r=yff",
   "count": 3,
   "total": 727.7,
-  "loan": 0,
-  "archived": false
- },
- {
-  "slug": "shoot",
-  "title": "报销单 F · 拍摄",
-  "period": "拍摄期",
-  "page": "sheet.html?r=shoot",
-  "count": 0,
-  "total": 0,
   "loan": 0,
   "archived": false
  }

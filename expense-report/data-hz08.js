@@ -11,14 +11,13 @@ const reportInfo = {
 };
 
 const categoryOptions = [
-  "堪景覆景器材费", "一般交通（打车）", "勘景车辆", "勘景燃料费", "过路过桥费", "停车费",
-  "勘景餐饮", "覆景餐饮", "杂费（水饮/补给/门票）", "酒店", "差旅", "创意阐述", "脚本绘制费", "前期杂支",
+  "交通费", "住宿费", "餐费", "汽车费用", "快递费", "办公用品", "器材", "业务招待费", "其他",
 ];
 
 const expenseItems = [
   {
     id: 1,
-    category: "差旅",
+    category: "交通费",
     description: "8/9 邱、赵、水三人高铁，北京-杭州",
     date: "2026-08-09",
     amount: 2004,
@@ -32,7 +31,7 @@ const expenseItems = [
   },
   {
     id: 2,
-    category: "杂费（水饮/补给/门票）",
+    category: "其他",
     description: "驱蚊水喷雾 3瓶（堪景户外用）",
     date: "2026-08-09",
     amount: 12.3,
@@ -46,7 +45,7 @@ const expenseItems = [
   },
   {
     id: 3,
-    category: "杂费（水饮/补给/门票）",
+    category: "其他",
     description: "蕉下户外驱蚊器+3支驱蚊液（堪景户外用）",
     date: "2026-08-09",
     amount: 98.88,
@@ -60,7 +59,7 @@ const expenseItems = [
   },
   {
     id: 4,
-    category: "酒店",
+    category: "住宿费",
     description: "堪景期间酒店住宿（汇总）",
     date: "2026-08-10",
     amount: 1158.1,
@@ -74,7 +73,7 @@ const expenseItems = [
   },
   {
     id: 5,
-    category: "勘景餐饮",
+    category: "餐费",
     description: "8/10 水素高铁上午饭",
     date: "2026-08-10",
     amount: 30,
@@ -88,7 +87,7 @@ const expenseItems = [
   },
   {
     id: 6,
-    category: "一般交通（打车）",
+    category: "交通费",
     description: "8/10 打车 到高铁站",
     date: "2026-08-10",
     amount: 33.6,
@@ -102,7 +101,7 @@ const expenseItems = [
   },
   {
     id: 7,
-    category: "勘景餐饮",
+    category: "餐费",
     description: "8/10 堪景晚饭 3人",
     date: "2026-08-10",
     amount: 126.94,
@@ -116,7 +115,7 @@ const expenseItems = [
   },
   {
     id: 8,
-    category: "杂费（水饮/补给/门票）",
+    category: "其他",
     description: "堪景补给：饮用水、湿巾、电解质水",
     date: "2026-08-10",
     amount: 80.41,
@@ -130,7 +129,7 @@ const expenseItems = [
   },
   {
     id: 9,
-    category: "一般交通（打车）",
+    category: "交通费",
     description: "8/10 打车 高铁站-酒店",
     date: "2026-08-10",
     amount: 27.4,
@@ -141,6 +140,20 @@ const expenseItems = [
     invoiceAmount: "",
     tpiaoIds: [],
     remark: "[水素] 滴滴，可整合开发票",
+  },
+  {
+    id: 10,
+    category: "汽车费用",
+    description: "堪景租车 8/11-8/13（含保险）",
+    date: "2026-08-11",
+    amount: 387.9,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-11_堪景租车含保险_付款截图_387.90.png",
+    invoiceFiles: ["invoices/extra/2026-08-11_堪景租车含保险_付款截图_387.90.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 滴滴租车，微信支付，8/10 下单。费用含保险。付款截图已存，发票待开",
   },
 ];
 
