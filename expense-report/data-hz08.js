@@ -113,6 +113,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 美团，微信支付。付款截图已存，发票待开",
   },
+  {
+    id: 8,
+    category: "其他",
+    description: "堪景补给：饮用水、湿巾、电解质水",
+    date: "2026-08-01",
+    amount: 80.41,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-01_堪景补给水湿巾电解质水_付款截图_80.41.png",
+    invoiceFiles: ["invoices/extra/2026-08-01_堪景补给水湿巾电解质水_付款截图_80.41.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 天猫超市 3件：水 19.89 + 农夫山泉电解质水 50.16 + 得宝湿巾 10.36，共减 68.38 后实付 80.41",
+  },
 ];
 
 const tpiaoList = [];
