@@ -2289,5 +2289,12 @@ const invoiceListExtra = [
   "merchant": "青年电影周路演晚饭2人_抵票_实付",
   "amount": 86.5,
   "kind": "抵票"
+ },
+ {
+  "file": "invoices/extra/2026-08-10_8_10_水素高铁上午饭_实付30.pdf",
+  "date": "2026-08-10",
+  "merchant": "北京京铁列车服务有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
