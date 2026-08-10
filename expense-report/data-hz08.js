@@ -99,6 +99,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 打车费，以后整体一起开发票",
   },
+  {
+    id: 7,
+    category: "餐费",
+    description: "8/10 堪景晚饭 3人",
+    date: "2026-08-10",
+    amount: 126.94,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-10_堪景晚饭3人_付款截图_126.94.png",
+    invoiceFiles: ["invoices/extra/2026-08-10_堪景晚饭3人_付款截图_126.94.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 美团，微信支付。付款截图已存，发票待开",
+  },
 ];
 
 const tpiaoList = [];

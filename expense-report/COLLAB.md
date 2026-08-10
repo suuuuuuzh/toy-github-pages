@@ -98,9 +98,10 @@ Lexie 没有 GitHub 账号的话，先去 <https://github.com/signup> 注册一�
 
 ```bash
 node -e '
-  eval(require("fs").readFileSync("expense-report/data-hz08.js","utf8"));
-  const n=expenseItems.length, t=expenseItems.reduce((s,i)=>s+i.amount,0);
-  console.log("笔数", n, "合计", t.toFixed(2));
+  const src = require("fs").readFileSync("expense-report/data-hz08.js","utf8");
+  const items = eval(src + "\n;expenseItems");
+  const t = items.reduce((s,i)=>s+i.amount,0);
+  console.log("笔数", items.length, "合计", t.toFixed(2));
 '
 ```
 
