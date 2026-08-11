@@ -1,7 +1,7 @@
-// 报销单 · 日常运营 —— SuperNova Studio
+// 报销单 · 日常运营 —— supernova studio
 const reportInfo = {
   reportTitle: "报销单 · 日常运营",
-  company: "SuperNova Studio",
+  company: "supernova studio",
   submitter: "水素",
   project: "留学业务",
   department: "",
