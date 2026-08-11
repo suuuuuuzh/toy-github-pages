@@ -185,7 +185,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 联合大厦 TC，微信零钱通支付。发票待开",
+    remark: "[水素] 停管家-浙M***1D-联合大厦-出口扫码，南都物业服务集团，零钱通 8/11 18:56。交易单号 45000000360202608115591681699。发票待开",
   },
   {
     id: 13,
@@ -213,7 +213,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 乃法，微信零钱通支付。发票待开",
+    remark: "[水素] 扫码付给「乃法」，零钱通 8/11 13:37，付款留言「0811 午饭 三人」。转账单号 10001073012026081101222805234623。发票待开",
   },
   {
     id: 15,
@@ -227,7 +227,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 长乐林场观光车（林雨堂），微信零钱通支付。发票待开",
+    remark: "[水素] 杭州长乐林雨堂文化旅游有限公司（长乐林场观光车），零钱通 8/11 16:10。交易单号 45000000319202608111737881630。发票待开",
   },
   {
     id: 16,
@@ -241,7 +241,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 杭州长乐林雨堂文化旅游，微信零钱通支付。发票待开",
+    remark: "[水素] 浙M0K81D-杭州长乐森林公园停车场，杭州长乐林雨堂文化旅游有限公司，零钱通 8/11 16:54。交易单号 45000000316202608113599752683。发票待开",
   },
   {
     id: 17,
@@ -269,7 +269,7 @@ const expenseItems = [
     invoiceCategory: "",
     invoiceAmount: "",
     tpiaoIds: [],
-    remark: "[水素] 杭州都市高速公路，微信零钱通支付。发票待开",
+    remark: "[水素] 浙江高速：龙门古镇站-仙宅，杭州都市高速公路有限公司，零钱通 8/11 15:55。交易单号 42000003114202608110995659172。发票待开",
   },
   {
     id: 19,
