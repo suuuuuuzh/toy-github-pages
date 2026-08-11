@@ -2310,5 +2310,12 @@ const invoiceListExtra = [
   "merchant": "堪景酒店退款17元_付款截图",
   "amount": 17.0,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/2026-08-11_8_11_堪景晚饭_3人_实付442.pdf",
+  "date": "2026-08-11",
+  "merchant": "杭州市西湖区大柚作为餐饮店（个体工商户",
+  "amount": null,
+  "kind": "发票"
  }
 ];
