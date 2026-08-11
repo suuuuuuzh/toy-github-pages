@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>报销单</title>
+  <title>SuperNova Studio · 报销单</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>报销单</h1>
+      <h1>SuperNova Studio · 报销单</h1>
       <div class="meta">
         <span>报销人：<b>水素</b></span>
-        <span>周期：<b>2026年5-6月</b></span>
+        <span>业务：<b>留学</b></span>
       </div>
       <div class="meta" id="grand-strip" style="margin-top:10px;font-size:15px;"></div>
     </header>
@@ -96,10 +96,10 @@
           "// 报销单 · " + q(name) + "\n" +
           "const reportInfo = {\n" +
           '  reportTitle: "报销单 · ' + q(name) + '",\n' +
-          '  company: "廿一影视文化传播（上海）有限公司",\n' +
-          '  submitter: "水素",\n  project: "《竹林遗录》",\n  department: "",\n' +
+          '  company: "SuperNova Studio",\n' +
+          '  submitter: "水素",\n  project: "留学业务",\n  department: "",\n' +
           '  period: "' + q(period) + '",\n  reportDate: "",\n  loan: 0,\n};\n\n' +
-          'const categoryOptions = ["交通费", "住宿费", "餐费", "汽车费用", "快递费", "办公用品", "器材", "业务招待费", "其他"];\n\n' +
+          'const categoryOptions = ["交通费", "住宿费", "餐费", "差旅费", "市场推广", "广告投放", "办公用品", "软件订阅", "场地租赁", "业务招待费", "快递费", "外包/顾问费", "活动/展会", "其他"];\n\n' +
           "const expenseItems = [];\n\nconst tpiaoList = [];\n";
         const newReg = reportRegistry.concat([{ slug: slug, title: "报销单 · " + q(name), period: q(period), page: "sheet.html?r=" + slug, count: 0, total: 0, loan: 0, archived: false }]);
         const regText =
@@ -109,8 +109,8 @@
           status.textContent = "正在创建…";
           await commitTextFilesToRepo(
             [
-              { path: "expense-report/data-" + slug + ".js", text: dataText },
-              { path: "expense-report/reports.js", text: regText },
+              { path: "supernova/data-" + slug + ".js", text: dataText },
+              { path: "supernova/reports.js", text: regText },
             ],
             "新建报销单：" + name
           );
