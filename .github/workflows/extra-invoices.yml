@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "expense-report/invoices/extra/**"
+      - "supernova/invoices/extra/**"
   workflow_dispatch:
 
 permissions:
@@ -24,14 +25,16 @@ jobs:
           ref: main
       - name: Install PyMuPDF (best-effort PDF metadata)
         run: pip install --quiet pymupdf || true
-      - name: Regenerate invoices-extra.js
-        run: python3 expense-report/tools/gen_extra_manifest.py
-      - name: Commit manifest if changed
+      - name: Regenerate invoice manifests
         run: |
-          if ! git diff --quiet -- expense-report/invoices-extra.js; then
+          python3 expense-report/tools/gen_extra_manifest.py
+          python3 supernova/tools/gen_extra_manifest.py
+      - name: Commit manifests if changed
+        run: |
+          if ! git diff --quiet -- expense-report/invoices-extra.js supernova/invoices-extra.js; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add expense-report/invoices-extra.js
+            git add expense-report/invoices-extra.js supernova/invoices-extra.js
             git commit -m "Auto-update extra invoice manifest"
             git pull --rebase origin main
             git push

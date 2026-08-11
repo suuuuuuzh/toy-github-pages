@@ -1,0 +1,468 @@
+:root {
+  --color-primary: #2563eb;
+  --color-invoice: #16a34a;
+  --color-tpiao: #d97706;
+  --color-none: #dc2626;
+  --color-border: #e2e8f0;
+  --color-bg: #f8fafc;
+  --color-text: #1e293b;
+  --color-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+header {
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  margin: 0 0 12px;
+  font-size: 26px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.meta b {
+  color: var(--color-text);
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.card .label {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.card .value {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.card .sub {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 4px;
+}
+
+.card.total .value { color: var(--color-primary); }
+.card.invoice .value { color: var(--color-invoice); }
+.card.tpiao .value { color: var(--color-tpiao); }
+.card.none .value { color: var(--color-none); }
+
+section {
+  margin-bottom: 36px;
+}
+
+section h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+/* 主明细表：滚动时表头一直吸附在页面顶部。
+   table 上的 overflow:hidden 会拦截 sticky，这里去掉。 */
+#expense-table { overflow: visible; }
+/* 工具栏（筛选/传发票/合并/导出）也吸顶，表头钉在它下面（高度由 app.js 量好写进 --tools-h） */
+.sticky-tools {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--color-bg);
+  padding: 8px 0 6px;
+  margin: -8px 0 4px;
+}
+/* 表格比容器宽时，把吸顶背景往右延伸，盖住露出来的行 */
+.sticky-tools::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  background: var(--color-bg);
+}
+#expense-table thead th {
+  position: sticky;
+  top: var(--tools-h, 0px);
+  z-index: 20;
+  box-shadow: inset 0 -1px 0 var(--color-border), 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+/* 桌面端不设 overflow，页面滚动时表头才能吸顶；窄屏才允许横向滚动 */
+.table-scroll { overflow-x: visible; }
+@media (max-width: 900px) {
+  .table-scroll { overflow-x: auto; }
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 行底色跟「凭证」状态走：发票=绿、抵票=橙、付款截图=蓝、无凭证=红 */
+tbody tr.row-none {
+  background: #fef2f2;
+}
+tbody tr.row-invoice {
+  background: #f0fdf4;
+}
+tbody tr.row-dipiao {
+  background: #fff7ed;
+}
+tbody tr.row-shot {
+  background: #eff6ff;
+}
+
+tfoot td {
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+.amount-cell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge-invoice { background: var(--color-invoice); }
+.badge-tpiao { background: var(--color-tpiao); }
+.badge-none { background: var(--color-none); }
+
+.btn {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn.disabled {
+  background: #cbd5e1;
+  pointer-events: none;
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+.empty-hint {
+  color: var(--color-muted);
+  font-size: 14px;
+  padding: 8px 0;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .btn {
+    display: none;
+  }
+}
+
+/* 明细表头部：标题 + 筛选/导出 */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.section-head h2 { margin: 0; }
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* 筛选视图按钮 */
+.filter-bar {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.filter-btn:hover { border-color: var(--color-primary); }
+.filter-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.filter-btn .cnt {
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-outline {
+  border: 1px solid var(--color-primary);
+  background: #fff;
+  color: var(--color-primary);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-outline:hover { background: #eff6ff; }
+
+/* 可编辑备注 */
+.remark-cell { min-width: 160px; }
+.remark-input {
+  width: 100%;
+  min-width: 140px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fffef8;
+}
+.remark-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: #fff;
+}
+
+/* 发票单元格：已挂发票 chip + 挂发票按钮 */
+.inv-wrap { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.inv-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px;
+  padding: 2px 6px; font-size: 12px; max-width: 220px;
+}
+.inv-chip a { color: var(--color-invoice); text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inv-chip .detach-btn {
+  border: none; background: transparent; color: var(--color-muted);
+  cursor: pointer; font-size: 14px; line-height: 1; padding: 0 2px;
+}
+.inv-chip .detach-btn:hover { color: var(--color-none); }
+
+/* 挂发票弹窗 */
+.picker-overlay {
+  position: fixed; inset: 0; background: rgba(15,23,42,0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+}
+.picker-box {
+  background: #fff; border-radius: 12px; width: min(560px, 100%);
+  max-height: 80vh; display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.picker-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px; border-bottom: 1px solid var(--color-border); font-size: 14px;
+}
+.picker-close { border: none; background: transparent; font-size: 22px; cursor: pointer; color: var(--color-muted); }
+.picker-search {
+  margin: 12px 16px; padding: 8px 12px; border: 1px solid var(--color-border);
+  border-radius: 8px; font-size: 14px; font-family: inherit;
+}
+.picker-list { overflow-y: auto; padding: 0 16px 16px; }
+.pick-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--color-border);
+}
+.pick-info { flex: 1; font-size: 13px; }
+.pick-near {
+  background: var(--color-invoice); color: #fff; border-radius: 999px;
+  padding: 1px 8px; font-size: 11px; margin-left: 6px;
+}
+.pick-add[disabled] { background: #cbd5e1; pointer-events: none; }
+
+.picker-tools { display: flex; gap: 8px; align-items: center; margin: 12px 16px 6px; }
+.picker-tools .picker-search { margin: 0; flex: 1; }
+.upload-lbl { cursor: pointer; white-space: nowrap; }
+.picker-hint { padding: 0 16px; font-size: 12px; min-height: 16px; }
+
+/* 可编辑单元格 */
+.desc-input, .date-input, .amt-input, .cat-input {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fffef8;
+}
+.desc-input { min-width: 180px; font-weight: 500; }
+.amt-input { text-align: right; font-variant-numeric: tabular-nums; }
+.date-input { min-width: 96px; }
+.cat-input { background: #fff; border-color: var(--color-border); }
+.desc-input:hover, .date-input:hover, .amt-input:hover { border-color: var(--color-border); }
+.desc-input:focus, .date-input:focus, .amt-input:focus, .cat-input:focus {
+  outline: none; border-color: var(--color-primary); background: #fff;
+}
+
+/* 借款输入 */
+.loan-input { width: 90px; border: 1px solid var(--color-border); border-radius: 6px; padding: 2px 6px; font-size: 14px; font-family: inherit; text-align: right; }
+.loan-input:focus { outline: none; border-color: var(--color-primary); }
+
+/* 发票内容 / 发票金额输入 */
+.invcat-input, .invamt-input { width: 100%; min-width: 72px; border: 1px solid transparent; border-radius: 6px; padding: 4px 6px; font-size: 13px; font-family: inherit; background: #fffef8; }
+.invamt-input { text-align: right; font-variant-numeric: tabular-nums; }
+.invcat-input:hover, .invamt-input:hover { border-color: var(--color-border); }
+.invcat-input:focus, .invamt-input:focus { outline: none; border-color: var(--color-primary); background: #fff; }
+
+/* 类目手风琴 */
+#category-accordion { display: flex; flex-direction: column; gap: 8px; }
+.cat-group { border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; background: #fff; }
+.cat-head { width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #fff; border: none; cursor: pointer; font-size: 15px; text-align: left; }
+.cat-head:hover { background: #f8fafc; }
+.cat-head.open { background: #f1f5f9; border-bottom: 1px solid var(--color-border); }
+.cat-caret { color: var(--color-muted); width: 14px; }
+.cat-name { font-weight: 600; flex: 1; }
+.cat-meta { color: var(--color-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.cat-panel { padding: 8px 12px 14px; }
+.cat-panel table { font-size: 13px; }
+.cat-grand { text-align: right; font-weight: 700; padding: 8px 16px 0; font-variant-numeric: tabular-nums; }
+
+/* 付款截图徽章 */
+.badge-shot { background: #64748b; }
+/* 凭证 chip 类型标签 */
+.chip-tag { display:inline-block; font-size:10px; padding:0 5px; border-radius:4px; color:#fff; margin-right:3px; }
+.tag-dipiao { background: var(--color-tpiao); }
+.tag-shot { background: #64748b; }
+.inv-chip.chip-dipiao { background:#fff7ed; border-color:#fed7aa; }
+.inv-chip.chip-dipiao a { color: var(--color-tpiao); }
+.inv-chip.chip-shot { background:#f1f5f9; border-color:#cbd5e1; }
+.inv-chip.chip-shot a { color:#475569; }
+.upload-lbl { font-size:12px; }
+
+/* 主表内的类目分隔行 */
+tr.cat-row td { background: #eef2ff; font-weight: 700; padding: 8px 12px; border-top: 2px solid #c7d2fe; }
+.cat-row-name { color: var(--color-primary); font-size: 14px; }
+.cat-row-meta { color: var(--color-muted); font-weight: 500; font-size: 12px; margin-left: 10px; font-variant-numeric: tabular-nums; }
+
+/* 抵票 on/off 开关 */
+.dipiao-toggle { border: 1px solid var(--color-tpiao); background: #fff; color: var(--color-tpiao); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.dipiao-toggle.on { background: var(--color-tpiao); color: #fff; }
+
+/* 发票悬停预览 */
+#inv-preview { position: fixed; z-index: 200; width: 300px; height: 320px; background: #fff; border: 1px solid var(--color-border); border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); overflow: hidden; pointer-events: none; }
+#inv-preview img { width: 100%; height: 100%; object-fit: contain; background: #f8fafc; }
+#inv-preview iframe { width: 100%; height: 100%; border: 0; }
+#inv-preview .prev-none { padding: 20px; font-size: 13px; color: var(--color-muted); }
+
+/* 序号列：合并勾选/操作 */
+.num-cell { display: flex; align-items: center; gap: 6px; }
+.merge-cb { width: 15px; height: 15px; cursor: pointer; }
+.row-op { border: 1px solid var(--color-border); background: #fff; border-radius: 5px; font-size: 11px; padding: 1px 6px; cursor: pointer; color: var(--color-muted); }
+.row-op:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+/* 行上下移动 */
+.move-btns { display: inline-flex; flex-direction: column; line-height: 1; }
+.move-btns button { border: none; background: transparent; color: var(--color-muted); cursor: pointer; font-size: 9px; padding: 0; height: 10px; }
+.move-btns button:hover { color: var(--color-primary); }
+
+/* 删除单行按钮 */
+.del-row-btn { border: none; background: transparent; color: #ef4444; cursor: pointer; font-size: 15px; font-weight: 700; padding: 0 3px; line-height: 1; }
+.del-row-btn:hover { color: var(--color-none); }
+
+/* 拖动手柄 */
+.drag-grip { cursor: grab; color: #94a3b8; font-size: 15px; touch-action: none; user-select: none; padding: 0 2px; }
+.drag-grip:active { cursor: grabbing; }
+tr.dragging td { background: #dbeafe !important; opacity: 0.9; }
+tr.dragging { box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+
+/* 合并后高亮闪一下 */
+tr.flash td { animation: flashbg 2s ease; }
+@keyframes flashbg { 0%,40% { background: #fde68a; } 100% { background: transparent; } }
+
+/* 待办提示条 */
+#reminder-bar { margin: 0 0 14px; }
+.reminder-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+  padding: 10px 14px; margin-bottom: 8px; font-size: 14px;
+}
+.reminder-item.due { background: #fef2f2; border-color: #fecaca; }
+.reminder-item .btn-outline { padding: 4px 10px; font-size: 12px; white-space: nowrap; }
+
+/* 预算对照标签 */
+.budget-tag {
+  display: inline-block; margin-left: 8px; padding: 1px 8px;
+  background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 999px;
+  font-size: 12px; color: #1d4ed8; font-weight: 500;
+}
+.budget-tag.over { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
