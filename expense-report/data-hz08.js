@@ -285,6 +285,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 浙江周大福创建公路，微信零钱通支付。发票待开",
   },
+  {
+    id: 20,
+    category: "勘景餐饮",
+    description: "8/12 堪景咖啡",
+    date: "2026-08-12",
+    amount: 30.52,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-12_堪景咖啡_付款截图_30.52.png",
+    invoiceFiles: ["invoices/extra/2026-08-12_堪景咖啡_付款截图_30.52.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 美团，微信支付。付款截图已存，发票待开",
+  },
 ];
 
 const tpiaoList = [];

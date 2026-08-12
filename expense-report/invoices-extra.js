@@ -2317,5 +2317,12 @@ const invoiceListExtra = [
   "merchant": "杭州市西湖区大柚作为餐饮店（个体工商户",
   "amount": null,
   "kind": "发票"
+ },
+ {
+  "file": "invoices/extra/2026-08-12_堪景咖啡_付款截图_30.52.png",
+  "date": "2026-08-12",
+  "merchant": "堪景咖啡_付款截图",
+  "amount": 30.52,
+  "kind": "付款截图"
  }
 ];
