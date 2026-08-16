@@ -650,6 +650,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 宁波梅山保税港区乐知餐饮管理有限公司杭州分公司，微信零钱通支付。次日堪景路上补给。发票待开",
   },
+  {
+    id: 46,
+    category: "勘景餐饮",
+    description: "8/13 奶茶 3杯",
+    date: "2026-08-13",
+    amount: 54.5,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 喜茶三笔：19.00 + 16.50 + 19.00 = 54.50，微信零钱通支付。两笔 19.00 为不同杯，非重复。发票待开",
+  },
 ];
 
 const tpiaoList = [];
