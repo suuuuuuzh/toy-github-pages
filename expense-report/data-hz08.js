@@ -328,6 +328,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 美团外卖两单：张记肠粉店-广式生滚粥（西溪银泰店）113.10（6件）+ 面总管（西溪天街店）19.73（2件）= 132.83。发票待开",
   },
+  {
+    id: 23,
+    category: "勘景燃料费",
+    description: "8/16 堪景加油",
+    date: "2026-08-16",
+    amount: 305.91,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-16_堪景加油_付款截图_305.91.png",
+    invoiceFiles: ["invoices/extra/2026-08-16_堪景加油_付款截图_305.91.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 中国石化销售股份有限公司浙江石油分公司，微信支付。发票待开",
+  },
 ];
 
 const tpiaoList = [];
