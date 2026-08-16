@@ -510,6 +510,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 美团，微信零钱通支付。发票待开",
   },
+  {
+    id: 36,
+    category: "勘景餐饮",
+    description: "8/14 堪景晚饭 3人",
+    date: "2026-08-14",
+    amount: 93.7,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 美团，微信余额支付。发票待开",
+  },
 ];
 
 const tpiaoList = [];
