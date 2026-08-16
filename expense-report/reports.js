@@ -36,7 +36,7 @@ const reportRegistry = [
   "period": "2026年8月",
   "page": "sheet.html?r=hz08",
   "count": 36,
-  "total": 8066.89,
+  "total": 9024.89,
   "loan": 100000,
   "archived": false
  },
