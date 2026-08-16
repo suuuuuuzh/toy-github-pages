@@ -59,5 +59,15 @@ const reportRegistry = [
   "total": 0,
   "loan": 0,
   "archived": false
+ },
+ {
+  "slug": "prep",
+  "title": "报销单 G · 短片筹备",
+  "period": "筹备期",
+  "page": "sheet.html?r=prep",
+  "count": 0,
+  "total": 0,
+  "loan": 0,
+  "archived": false
  }
 ];
