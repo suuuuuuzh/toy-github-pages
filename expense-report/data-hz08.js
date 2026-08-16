@@ -303,7 +303,7 @@ const expenseItems = [
   {
     id: 21,
     category: "勘景餐饮",
-    description: "8/16 咖啡两杯（SOFTCAFE）",
+    description: "8/16 早咖啡 2人（SOFTCAFE）",
     date: "2026-08-16",
     amount: 38.6,
     voucherType: "invoice",
