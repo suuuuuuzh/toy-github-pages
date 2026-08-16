@@ -314,6 +314,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 美团外卖 SOFTCAFE 两单：葡萄冰奶拿铁 19.80 + 栗子金桂拿铁 18.80 = 38.60。发票待开",
   },
+  {
+    id: 22,
+    category: "勘景餐饮",
+    description: "8/15 堪景晚饭 3人",
+    date: "2026-08-15",
+    amount: 132.83,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-15_堪景晚饭3人_付款截图_132.83.png",
+    invoiceFiles: ["invoices/extra/2026-08-15_堪景晚饭3人_付款截图_132.83.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 美团外卖两单：张记肠粉店-广式生滚粥（西溪银泰店）113.10（6件）+ 面总管（西溪天街店）19.73（2件）= 132.83。发票待开",
+  },
 ];
 
 const tpiaoList = [];
