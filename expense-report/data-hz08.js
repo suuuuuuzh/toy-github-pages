@@ -440,6 +440,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 美团，微信余额支付。发票待开",
   },
+  {
+    id: 31,
+    category: "过路过桥费",
+    description: "8/15 堪景高速费（浙江杭徽高速）",
+    date: "2026-08-15",
+    amount: 23,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 浙江杭徽高速公路，微信零钱通支付。发票待开",
+  },
 ];
 
 const tpiaoList = [];
