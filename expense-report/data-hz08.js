@@ -300,6 +300,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 美团，微信支付。付款截图已存，发票待开",
   },
+  {
+    id: 21,
+    category: "勘景餐饮",
+    description: "8/16 咖啡两杯（SOFTCAFE）",
+    date: "2026-08-16",
+    amount: 38.6,
+    voucherType: "invoice",
+    invoiceFile: "invoices/extra/2026-08-16_堪景咖啡两杯_付款截图_38.60.png",
+    invoiceFiles: ["invoices/extra/2026-08-16_堪景咖啡两杯_付款截图_38.60.png"],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 美团外卖 SOFTCAFE 两单：葡萄冰奶拿铁 19.80 + 栗子金桂拿铁 18.80 = 38.60。发票待开",
+  },
 ];
 
 const tpiaoList = [];
