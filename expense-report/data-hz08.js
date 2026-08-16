@@ -664,6 +664,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 喜茶三笔：19.00 + 16.50 + 19.00 = 54.50，微信零钱通支付。两笔 19.00 为不同杯，非重复。发票待开",
   },
+  {
+    id: 47,
+    category: "勘景餐饮",
+    description: "8/13 堪景晚饭",
+    date: "2026-08-13",
+    amount: 154,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 杭州四粒豆子餐饮管理有限公司，微信零钱通支付 8/13 18:20。发票待开",
+  },
 ];
 
 const tpiaoList = [];
