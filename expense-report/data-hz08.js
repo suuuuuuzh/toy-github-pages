@@ -580,6 +580,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 杭长高速，微信零钱通支付。发票待开",
   },
+  {
+    id: 41,
+    category: "勘景餐饮",
+    description: "8/14 早饭咖啡",
+    date: "2026-08-14",
+    amount: 42.5,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 美团，微信零钱通支付。待核：与 id35（8/15 早饭咖啡 42.50，同为美团）金额商户一致，需确认是两天各一单还是同一笔。发票待开",
+  },
 ];
 
 const tpiaoList = [];
