@@ -678,6 +678,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 杭州四粒豆子餐饮管理有限公司，微信零钱通支付 8/13 18:20。发票待开",
   },
+  {
+    id: 48,
+    category: "过路过桥费",
+    description: "8/13 堪景高速费（杭长高速）",
+    date: "2026-08-13",
+    amount: 16,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 杭长高速，微信零钱通支付 8/13 17:53。发票待开",
+  },
 ];
 
 const tpiaoList = [];
