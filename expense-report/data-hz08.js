@@ -636,6 +636,20 @@ const expenseItems = [
     tpiaoIds: [],
     remark: "[水素] 杭州天目里，微信零钱通支付。发票待开",
   },
+  {
+    id: 45,
+    category: "杂费（水饮/补给/门票）",
+    description: "8/13 面包（第二天堪景补给）",
+    date: "2026-08-13",
+    amount: 54,
+    voucherType: "none",
+    invoiceFile: "",
+    invoiceFiles: [],
+    invoiceCategory: "",
+    invoiceAmount: "",
+    tpiaoIds: [],
+    remark: "[水素] 宁波梅山保税港区乐知餐饮管理有限公司杭州分公司，微信零钱通支付。次日堪景路上补给。发票待开",
+  },
 ];
 
 const tpiaoList = [];
