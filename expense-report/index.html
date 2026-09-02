@@ -42,8 +42,29 @@
   <script src="upload.js"></script>
   <script>
     // 卡片 + 总账（预支 / 实际花销 / 差额）都从 reportRegistry 自动算
-    (function () {
+    (async function () {
       const fmt = (n) => Number(n || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      // 笔数/合计实时从各 data-<slug>.js 读，reports.js 里的数字只作兜底。
+      // 这样记账会话只改自己那张表的数据文件，永远不用动 reports.js，也就不会互相覆盖。
+      await Promise.all(
+        reportRegistry.map(async (r) => {
+          try {
+            const res = await fetch("data-" + r.slug + ".js", { cache: "no-store" });
+            if (!res.ok) return;
+            const txt = await res.text();
+            const mod = new Function(txt + "; return { reportInfo: reportInfo, expenseItems: expenseItems };")();
+            r.count = mod.expenseItems.length;
+            r.total = Math.round(mod.expenseItems.reduce((s, i) => s + Number(i.amount || 0), 0) * 100) / 100;
+            if (mod.reportInfo) {
+              if (mod.reportInfo.loan != null) r.loan = mod.reportInfo.loan;
+              if (mod.reportInfo.period) r.period = mod.reportInfo.period;
+            }
+          } catch (e) {
+            /* 读不到就用 reports.js 里的兜底数字 */
+          }
+        })
+      );
       const cards = document.getElementById("report-cards");
       const colors = ["#2563eb", "#16a34a", "#d97706", "#7c3aed", "#0891b2"];
       const card = (r, i, dim) => `
