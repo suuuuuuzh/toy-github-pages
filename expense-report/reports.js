@@ -1,4 +1,5 @@
-// 报销单登记表：首页卡片和合计从这里来。archived: true = 已结算，收进首页下方的折叠区，不计入总账。
+// 报销单登记表：只维护 slug / 标题 / 周期 / 页面 / 借款 / 归档。
+// 笔数和合计由首页直接读各 data-*.js 实时算出，不用手工填，也就不会被记账会话覆写。
 const reportRegistry = [
  {
   "slug": "kanjing",
@@ -55,6 +56,26 @@ const reportRegistry = [
   "title": "报销单 F · 拍摄",
   "period": "拍摄期",
   "page": "sheet.html?r=shoot",
+  "count": 0,
+  "total": 0,
+  "loan": 0,
+  "archived": false
+ },
+ {
+  "slug": "prep",
+  "title": "报销单 G · 短片筹备",
+  "period": "筹备期",
+  "page": "sheet.html?r=prep",
+  "count": 0,
+  "total": 0,
+  "loan": 0,
+  "archived": false
+ },
+ {
+  "slug": "tiff",
+  "title": "报销单 H · TIFF 多伦多电影节",
+  "period": "TIFF",
+  "page": "sheet.html?r=tiff",
   "count": 0,
   "total": 0,
   "loan": 0,
