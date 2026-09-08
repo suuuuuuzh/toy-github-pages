@@ -11,10 +11,10 @@
     <header>
       <h1>报销单</h1>
       <div class="meta">
-        <span>报销人：<b>水素</b></span>
+        <span>报销人：<b id="who">水素</b></span>
         <span>周期：<b>2026年5-6月</b></span>
       </div>
-      <div class="meta" id="grand-strip" style="margin-top:10px;font-size:15px;"></div>
+      <div id="grand-strip" style="margin-top:10px;display:grid;gap:6px;"></div>
     </header>
 
     <section class="summary-cards" id="report-cards"></section>
@@ -59,6 +59,7 @@
             if (mod.reportInfo) {
               if (mod.reportInfo.loan != null) r.loan = mod.reportInfo.loan;
               if (mod.reportInfo.period) r.period = mod.reportInfo.period;
+              if (mod.reportInfo.submitter) r.submitter = mod.reportInfo.submitter;
             }
           } catch (e) {
             /* 读不到就用 reports.js 里的兜底数字 */
@@ -94,14 +95,25 @@
         });
       }
 
-      const loan = active.reduce((s, r) => s + Number(r.loan || 0), 0);
-      const total = active.reduce((s, r) => s + Number(r.total || 0), 0);
-      const diff = total - loan;
-      document.getElementById("grand-strip").innerHTML =
-        `<span>预支合计：<b>¥${fmt(loan)}</b></span>` +
-        `<span>实际花销合计：<b>¥${fmt(total)}</b></span>` +
-        `<span>差额：<b style="color:${diff > 0 ? "#16a34a" : diff < 0 ? "#dc2626" : "inherit"}">¥${fmt(Math.abs(diff))}</b>` +
-        `<span class="muted">${diff > 0.004 ? "（应补付报销人）" : diff < -0.004 ? "（报销人退回）" : "（两清）"}</span></span>`;
+      // 总账按报销人分开算：每张表的报销人来自它数据文件里的 submitter，
+      // 一个人就一行，几个人几行（各自的预支/实花/差额互不掺和）
+      const defaultName = (typeof siteConfig !== "undefined" && siteConfig.defaultSubmitter) || "";
+      const people = [];
+      active.forEach((r) => { const p = r.submitter || defaultName; if (!people.includes(p)) people.push(p); });
+      document.getElementById("who").textContent = people.join(" / ") || defaultName;
+      document.getElementById("grand-strip").innerHTML = people.map((p) => {
+        const mine = active.filter((r) => (r.submitter || defaultName) === p);
+        const loan = mine.reduce((s, r) => s + Number(r.loan || 0), 0);
+        const total = mine.reduce((s, r) => s + Number(r.total || 0), 0);
+        const diff = total - loan;
+        return `<div class="meta" style="font-size:15px;">` +
+          (people.length > 1 ? `<span><b>${p}</b></span>` : "") +
+          `<span>预支合计：<b>¥${fmt(loan)}</b></span>` +
+          `<span>实际花销合计：<b>¥${fmt(total)}</b></span>` +
+          `<span>差额：<b style="color:${diff > 0 ? "#16a34a" : diff < 0 ? "#dc2626" : "inherit"}">¥${fmt(Math.abs(diff))}</b>` +
+          `<span class="muted">${diff > 0.004 ? "（应补付报销人）" : diff < -0.004 ? "（报销人退回）" : "（两清）"}</span></span>` +
+          `</div>`;
+      }).join("");
 
       // 新建报销单：直接提交一个新 data 文件 + 更新登记表（需要 GitHub 令牌）
       const btn = document.getElementById("new-sheet-btn");

@@ -80,5 +80,25 @@ const reportRegistry = [
   "total": 0,
   "loan": 0,
   "archived": false
+ },
+ {
+  "slug": "shoot-lexie",
+  "title": "报销单 I · 拍摄（Lexie）",
+  "period": "拍摄期",
+  "page": "sheet.html?r=shoot-lexie",
+  "count": 0,
+  "total": 0,
+  "loan": 0,
+  "archived": false
+ },
+ {
+  "slug": "prep-lexie",
+  "title": "报销单 J · 短片筹备（Lexie）",
+  "period": "筹备期",
+  "page": "sheet.html?r=prep-lexie",
+  "count": 0,
+  "total": 0,
+  "loan": 0,
+  "archived": false
  }
 ];

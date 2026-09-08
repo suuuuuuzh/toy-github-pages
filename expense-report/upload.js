@@ -11,10 +11,11 @@ function askGhToken(forceAsk) {
   let t = (localStorage.getItem(GH_TOKEN_KEY) || "").trim();
   if (t && !forceAsk) return t;
   t = (prompt(
-    "第一次用「传发票进库」需要粘贴你的 GitHub 令牌（github_pat_ 开头，只保存在这台设备的浏览器里）。\n\n" +
+    "第一次用「传发票进库」需要粘贴你的 GitHub 令牌（github_pat_ 或 ghp_ 开头，只保存在这台设备的浏览器里）。\n\n" +
       "创建方法：登录 GitHub → 打开 github.com/settings/personal-access-tokens/new\n" +
       "· Repository access 选 Only select repositories → 勾 toy-github-pages\n" +
       "· Permissions → Contents → Read and write\n" +
+      "· 不是仓库主人（协作者）的话：改用 github.com/settings/tokens/new 的经典令牌，勾 repo 即可\n" +
       "· Generate 后把令牌整段复制粘到这里",
     t || ""
   ) || "").trim();
