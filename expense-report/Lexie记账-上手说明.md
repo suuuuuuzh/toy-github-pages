@@ -85,7 +85,7 @@ Claude App 登录同一个账号 → **Code**（代码）板块 → 打开这个
 - `expense-report/data-prep-lexie.js`  =「报销单 J · 短片筹备（Lexie）」 网址 `sheet.html?r=prep-lexie`
 
 除这两个文件和她的发票文件外什么都不改：不碰 `supernova/`（另一家公司）；不碰 `data-shoot.js` /
-`data-prep.js` / `data-hz08.js` / `data-daily.js` 等其他 data 文件（那是水素的表，她自己的会话在维护）；
+`data-hz08.js` / `data-daily.js` 等其他 data 文件（那是水素的表，她自己的会话在维护）；
 不动 `reports.js`（首页的笔数和合计是页面实时从各数据文件算出来的）；不改 `app.js` 等代码；
 不新建报销单；不重构。
 
