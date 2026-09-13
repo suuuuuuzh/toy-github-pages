@@ -3,7 +3,7 @@
 原来的方案（两人共用 `data-hz08.js`、备注里 `[署名]`）已停用，改成**每人自己的表、各自的 AI 会话**，
 两个会话永远不写同一个文件：
 
-- 水素：堪景 `data-hz08.js` / 拍摄 `data-shoot.js` / 短片筹备 `data-prep.js` / 日常 `data-daily.js` 等，她自己的会话维护
+- 水素：堪景 `data-hz08.js` / 拍摄 `data-shoot.js` / 日常 `data-daily.js` 等，她自己的会话维护
 - Lexie：拍摄 `data-shoot-lexie.js` / 短片筹备 `data-prep-lexie.js`，她自己的会话维护
 
 完整流程（水素要做的、Lexie 要做的、粘给 AI 的话）见 [`Lexie记账-上手说明.md`](./Lexie记账-上手说明.md)。
