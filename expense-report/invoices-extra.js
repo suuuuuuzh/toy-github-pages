@@ -2352,5 +2352,12 @@ const invoiceListExtra = [
   "merchant": "堪景加油_付款截图",
   "amount": 305.91,
   "kind": "付款截图"
+ },
+ {
+  "file": "invoices/extra/2026-06-17_0617_上海电影节午饭_3人_实付537.pdf",
+  "date": "2026-06-17",
+  "merchant": "上海奥磨稼餐饮管理有限公司",
+  "amount": null,
+  "kind": "发票"
  }
 ];
