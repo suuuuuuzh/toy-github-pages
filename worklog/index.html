@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工作日志</title>
+  <style>
+    :root {
+      --bg: #f8fafc; --panel: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+      --primary: #2563eb; --done: #16a34a; --ongoing: #d97706; --waiting: #9333ea; --late: #dc2626;
+      --c-sound: #7c3aed; --c-prod: #2563eb; --c-study: #059669;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --panel: #1e293b; --text: #e2e8f0; --muted: #94a3b8; --border: #334155;
+        --primary: #60a5fa; --done: #4ade80; --ongoing: #fbbf24; --waiting: #c084fc; --late: #f87171;
+        --c-sound: #a78bfa; --c-prod: #60a5fa; --c-study: #34d399;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.55;
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+    header { border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 16px; }
+    h1 { margin: 0 0 10px; font-size: 24px; }
+    .range { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); }
+    .range input { font: inherit; padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--panel); color: var(--text); }
+    button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 6px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--panel); color: var(--text); }
+    button.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 14px 0; }
+    .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+    .stat .n { font-size: 22px; font-weight: 600; }
+    .stat .l { font-size: 12px; color: var(--muted); }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 14px; }
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .day { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+    .day h3 { margin: 0; padding: 8px 12px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--muted); }
+    .row { display: flex; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .row:last-child { border-bottom: 0; }
+    .row .body { flex: 1; min-width: 0; }
+    .proj { font-weight: 600; }
+    .note { font-size: 12px; color: var(--muted); }
+    .tag { flex: none; font-size: 11px; padding: 1px 7px; border-radius: 999px; color: #fff; white-space: nowrap; margin-top: 2px; }
+    .tag.sound { background: var(--c-sound); } .tag.prod { background: var(--c-prod); } .tag.study { background: var(--c-study); }
+    .st { flex: none; font-size: 12px; white-space: nowrap; margin-top: 2px; }
+    .st.done { color: var(--done); } .st.ongoing { color: var(--ongoing); } .st.open { color: var(--primary); }
+    .st.waiting { color: var(--waiting); } .late { color: var(--late); font-weight: 600; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    .empty { color: var(--muted); font-size: 14px; padding: 10px 0; }
+    textarea { width: 100%; min-height: 420px; font: 14px/1.6 inherit; font-family: inherit; padding: 12px;
+      border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: var(--text); }
+    .report-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>工作日志</h1>
+      <div class="range">
+        <span>汇报周期</span>
+        <input type="date" id="from" /> <span>至</span> <input type="date" id="to" />
+        <button id="cur">最近两周</button>
+        <button id="prev">上一个两周</button>
+        <button id="all">全部</button>
+      </div>
+    </header>
+
+    <section class="stats" id="stats"></section>
+
+    <nav class="tabs">
+      <button data-tab="log" class="on">每日记录</button>
+      <button data-tab="todo">待办</button>
+      <button data-tab="report">双周汇报</button>
+    </nav>
+
+    <div class="filters" id="filters"></div>
+
+    <section id="tab-log"></section>
+    <section id="tab-todo" class="hidden"></section>
+    <section id="tab-report" class="hidden">
+      <div class="report-bar">
+        <button id="copy">复制汇报</button>
+        <label><input type="checkbox" id="with-dates" checked /> 带日期</label>
+        <span id="copy-status"></span>
+      </div>
+      <textarea id="report" spellcheck="false"></textarea>
+    </section>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const catName = Object.fromEntries(categories.map((c) => [c.key, c.name]));
+    const statusText = { done: "已完成", ongoing: "进行中", open: "待做", waiting: "等待中" };
+    const esc = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+    const iso = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    const addDays = (s, n) => { const d = new Date(s + "T00:00:00"); d.setDate(d.getDate() + n); return iso(d); };
+    const md = (s) => s ? Number(s.slice(5, 7)) + "/" + Number(s.slice(8, 10)) : "";
+    const dot = (s) => s.replace(/-/g, ".");
+    const today = iso(new Date());
+    const weekday = (s) => "日一二三四五六"[new Date(s + "T00:00:00").getDay()];
+
+    let cat = "all";
+    let tab = "log";
+
+    function setRange(from, to) { $("from").value = from; $("to").value = to; render(); }
+    $("cur").onclick = () => setRange(addDays(today, -13), today);
+    $("prev").onclick = () => setRange(addDays(today, -27), addDays(today, -14));
+    $("all").onclick = () => {
+      const ds = logs.map((l) => l.date).sort();
+      setRange(ds[0] || today, today);
+    };
+    $("from").onchange = $("to").onchange = render;
+    $("with-dates").onchange = render;
+
+    document.querySelectorAll(".tabs button").forEach((b) => (b.onclick = () => {
+      tab = b.dataset.tab;
+      document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("on", x === b));
+      ["log", "todo", "report"].forEach((t) => $("tab-" + t).classList.toggle("hidden", t !== tab));
+      $("filters").classList.toggle("hidden", tab === "report");
+    }));
+
+    function renderFilters() {
+      const opts = [{ key: "all", name: "全部" }].concat(categories);
+      $("filters").innerHTML = opts.map((c) => `<button data-cat="${c.key}" class="${c.key === cat ? "on" : ""}">${c.name}</button>`).join("");
+      $("filters").querySelectorAll("button").forEach((b) => (b.onclick = () => { cat = b.dataset.cat; render(); }));
+    }
+
+    function inRange() {
+      const f = $("from").value, t = $("to").value;
+      return logs.filter((l) => (!f || l.date >= f) && (!t || l.date <= t));
+    }
+
+    function renderStats(items) {
+      const days = new Set(items.map((l) => l.date)).size;
+      const openMine = todos.filter((t) => t.owner === "我" && t.status !== "done").length;
+      const sec = todos.filter((t) => t.owner !== "我" && t.status !== "done").length;
+      const cells = [[items.length, "本期记录"], [days, "有记录的天数"]]
+        .concat(categories.map((c) => [items.filter((l) => l.cat === c.key).length, c.name]))
+        .concat([[openMine, "我的待办"], [sec, "交给秘书"]]);
+      $("stats").innerHTML = cells.map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+    }
+
+    function renderLog(items) {
+      const list = items.filter((l) => cat === "all" || l.cat === cat);
+      if (!list.length) { $("tab-log").innerHTML = '<p class="empty">这个周期里还没有记录。</p>'; return; }
+      const byDate = {};
+      list.forEach((l) => (byDate[l.date] = byDate[l.date] || []).push(l));
+      $("tab-log").innerHTML = Object.keys(byDate).sort().reverse().map((d) =>
+        `<div class="day"><h3>${dot(d)}（周${weekday(d)}）· ${byDate[d].length} 项</h3>` +
+        byDate[d].map((l) => `<div class="row"><span class="tag ${l.cat}">${catName[l.cat]}</span>
+          <div class="body"><span class="proj">${esc(l.project)}</span>　${esc(l.text)}</div>
+          <span class="st ${l.status}">${statusText[l.status] || ""}</span></div>`).join("") + "</div>"
+      ).join("");
+    }
+
+    function todoRow(t) {
+      const late = t.status !== "done" && t.due && t.due < today;
+      const due = t.status === "done" ? (t.doneDate ? md(t.doneDate) + " 完成" : "")
+        : t.due ? `<span class="${late ? "late" : ""}">${md(t.due)} 前${late ? "（已过期）" : ""}</span>` : "";
+      return `<div class="row"><span class="tag ${t.cat}">${catName[t.cat]}</span>
+        <div class="body"><span class="proj">${esc(t.project)}</span>　${esc(t.text)}
+        ${t.note ? `<div class="note">${esc(t.note)}</div>` : ""}<div class="note">${due}</div></div>
+        <span class="st ${t.status}">${statusText[t.status]}</span></div>`;
+    }
+
+    function renderTodo() {
+      const list = todos.filter((t) => cat === "all" || t.cat === cat);
+      const order = { open: 0, waiting: 1, done: 2 };
+      const sorted = (arr) => arr.sort((a, b) => order[a.status] - order[b.status] || (a.due || "9").localeCompare(b.due || "9"));
+      const block = (title, arr) => `<h2>${title}（${arr.filter((t) => t.status !== "done").length} 项未完成）</h2>` +
+        (arr.length ? `<div class="day">${sorted(arr).map(todoRow).join("")}</div>` : '<p class="empty">暂无</p>');
+      $("tab-todo").innerHTML = block("我的待办", list.filter((t) => t.owner === "我")) +
+        block("交给秘书", list.filter((t) => t.owner !== "我"));
+    }
+
+    function renderReport(items) {
+      const withDates = $("with-dates").checked;
+      const f = $("from").value, t = $("to").value;
+      const cn = ["一", "二", "三", "四", "五", "六"];
+      const lines = [`工作汇报（${dot(f)} – ${dot(t)}）`, ""];
+      lines.push("【本期工作】");
+      categories.forEach((c, i) => {
+        lines.push("", `${cn[i]}、${c.name}`);
+        const mine = items.filter((l) => l.cat === c.key);
+        if (!mine.length) { lines.push("  本期无"); return; }
+        const byProj = {};
+        mine.forEach((l) => (byProj[l.project] = byProj[l.project] || []).push(l));
+        Object.keys(byProj).forEach((p) => {
+          lines.push(`  ${p}`);
+          byProj[p].sort((a, b) => a.date.localeCompare(b.date)).forEach((l) => {
+            const tail = (l.status === "ongoing" ? "（进行中）" : "") + (withDates ? `  ${md(l.date)}` : "");
+            lines.push(`   · ${l.text}${tail}`);
+          });
+        });
+      });
+      const next = todos.filter((x) => x.owner === "我" && x.status !== "done")
+        .sort((a, b) => (a.due || "9").localeCompare(b.due || "9"));
+      lines.push("", "【下两周计划】");
+      if (!next.length) lines.push("  暂无");
+      next.forEach((x) => lines.push(`  · [${catName[x.cat]}] ${x.project}：${x.text}${x.due ? `（${md(x.due)} 前）` : ""}`));
+      $("report").value = lines.join("\n");
+    }
+
+    $("copy").onclick = async () => {
+      try { await navigator.clipboard.writeText($("report").value); }
+      catch (e) { $("report").select(); document.execCommand("copy"); }
+      $("copy-status").textContent = "已复制";
+      setTimeout(() => ($("copy-status").textContent = ""), 2000);
+    };
+
+    function render() {
+      renderFilters();
+      const items = inRange();
+      renderStats(items);
+      renderLog(items);
+      renderTodo();
+      renderReport(items);
+    }
+
+    setRange(addDays(today, -13), today);
+  </script>
+</body>
+</html>
