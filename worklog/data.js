@@ -36,6 +36,8 @@ const logs = [
     text: "编写内藏班项目情况、策略及后续计划文件，发送给威姐" },
   { date: "2026-09-28", cat: "prod", project: "内藏班", status: "done",
     text: "内藏班预算更新" },
+  { date: "2026-09-28", cat: "sound", project: "Yamira", status: "done",
+    text: "查看 Yamira 的 note，并简单沟通" },
 ];
 
 // 待办：owner "我" 会进汇报的「下两周计划」；"秘书" 是交给秘书的事。
@@ -51,4 +53,6 @@ const todos = [
     text: "schedule：转到 MMS" },
   { id: 5, cat: "study", project: "Allan creative video", owner: "秘书", status: "waiting", created: "2026-09-28", due: "",
     text: "给 Allan 妈妈整理账单、报销费用", note: "等 Avis 结账以后再算" },
+  { id: 6, cat: "sound", project: "Yamira", owner: "我", status: "open", created: "2026-09-28", due: "2026-09-29",
+    text: "根据 Yamira 的 note 做准备", note: "9/29 早上 8:00–9:00" },
 ];
