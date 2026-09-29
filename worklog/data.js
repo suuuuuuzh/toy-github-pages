@@ -30,6 +30,12 @@ const logs = [
     text: "Kimi 图片解说写作" },
   { date: "2026-09-28", cat: "study", project: "留学 video 剪辑", status: "done",
     text: "和龚老师（留学 video 剪辑师）约会议时间，提前沟通会议内容" },
+  { date: "2026-09-28", cat: "sound", project: "Cargo 个人网站", status: "done",
+    text: "更新 Cargo 个人网站" },
+  { date: "2026-09-28", cat: "prod", project: "内藏班", status: "done",
+    text: "编写内藏班项目情况、策略及后续计划文件，发送给威姐" },
+  { date: "2026-09-28", cat: "prod", project: "内藏班", status: "done",
+    text: "内藏班预算更新" },
 ];
 
 // 待办：owner "我" 会进汇报的「下两周计划」；"秘书" 是交给秘书的事。
