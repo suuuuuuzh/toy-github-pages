@@ -5,6 +5,7 @@ const categories = [
   { key: "sound", name: "声音后期" },
   { key: "prod", name: "制片" },
   { key: "study", name: "留学" },
+  { key: "other", name: "其他" }, // 搬家、还车等杂务，不进汇报
 ];
 
 // 双周汇报只汇报这些分类（其他分类照常记录、在页面上查看，但不进汇报）
@@ -41,6 +42,20 @@ const logs = [
     text: "内藏班预算更新" },
   { date: "2026-09-28", cat: "sound", project: "Yamira", status: "done",
     text: "查看 Yamira 的 note，并简单沟通" },
+
+  // ---- 2026-09-30 ----
+  { date: "2026-09-30", cat: "study", project: "留学拍摄", status: "done",
+    text: "送 island 拍摄的留学项目同事去车站" },
+  { date: "2026-09-30", cat: "other", project: "搬家", status: "done",
+    text: "从纽约开车到波士顿搬家；整理物品、清理丢弃、装箱" },
+  { date: "2026-09-30", cat: "other", project: "搬家", status: "done",
+    text: "还车" },
+  { date: "2026-09-30", cat: "sound", project: "Yamira", status: "done",
+    text: "就 Yamira 的 notes 进行沟通" },
+  { date: "2026-09-30", cat: "sound", project: "Yamira", status: "done",
+    text: "请 Amelia 发送新的 Yamira pass" },
+  { date: "2026-09-30", cat: "study", project: "留学 video 剪辑", status: "done",
+    text: "与剪辑师沟通项目情况：后续几位学生的创意思路、拍摄进度及最终交付时间周期" },
 ];
 
 // 待办：owner "我" 会进汇报的「下两周计划」；"秘书" 是交给秘书的事。
@@ -58,4 +73,6 @@ const todos = [
     text: "给 Allan 妈妈整理账单、报销费用", note: "等 Avis 结账以后再算" },
   { id: 6, cat: "sound", project: "Yamira", owner: "我", status: "open", created: "2026-09-28", due: "2026-09-29",
     text: "根据 Yamira 的 note 做准备", note: "9/29 早上 8:00–9:00" },
+  { id: 7, cat: "sound", project: "Yamira", owner: "我", status: "waiting", created: "2026-09-30", due: "",
+    text: "收到新的 Yamira pass 后继续", note: "等 Amelia 发来" },
 ];
