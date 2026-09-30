@@ -7,6 +7,9 @@ const categories = [
   { key: "study", name: "留学" },
 ];
 
+// 双周汇报只汇报这些分类（其他分类照常记录、在页面上查看，但不进汇报）
+const reportCats = ["prod"];
+
 // 每日记录：一件事一行。status: "done" 已完成 / "ongoing" 进行中
 const logs = [
   // ---- 2026-09-28 ----
