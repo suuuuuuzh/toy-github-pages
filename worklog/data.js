@@ -8,10 +8,11 @@ const categories = [
   { key: "other", name: "其他" }, // 搬家、还车等杂务，不进汇报
 ];
 
-// 双周汇报只汇报这些分类（其他分类照常记录、在页面上查看，但不进汇报）
+// 双周汇报交给廿一（投资方）。神舟是承担制作方。
+// 只汇报和廿一有关的项目的制片 + 声音工作；无关的项目（如自己接的 WTRSO 副导演、Yamira、土星之环）不写。
 const reportCats = ["prod", "sound"];
-// 这些项目默认不进汇报（汇报页上也可以临时勾选/取消）
-const reportSkipProjects = ["Cargo 个人网站"];
+// 和廿一有关的项目（新项目和廿一有关时加进来）
+const reportProjects = ["廿一", "色珍", "内藏班", "TIFF", "竹林遗录"];
 
 // 每日记录：一件事一行。status: "done" 已完成 / "ongoing" 进行中
 const logs = [
