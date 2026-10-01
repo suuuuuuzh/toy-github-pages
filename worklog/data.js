@@ -9,7 +9,9 @@ const categories = [
 ];
 
 // 双周汇报只汇报这些分类（其他分类照常记录、在页面上查看，但不进汇报）
-const reportCats = ["prod"];
+const reportCats = ["prod", "sound"];
+// 这些项目默认不进汇报（汇报页上也可以临时勾选/取消）
+const reportSkipProjects = ["Cargo 个人网站"];
 
 // 每日记录：一件事一行。status: "done" 已完成 / "ongoing" 进行中
 const logs = [
@@ -85,8 +87,8 @@ const logs = [
     text: "做了制片时间线（timetable）skill，以后可复用" },
   { date: "2026-09-30", cat: "other", project: "Claude 工具", status: "ongoing", src: "claude",
     text: "设置 Fathom 接入 Google Meet 做会议记录（未完成）" },
-  { date: "2026-09-30", cat: "other", project: "Branding", status: "ongoing",
-    text: "和 Claude 确认 branding 的设计语言" },
+  { date: "2026-09-30", cat: "study", project: "supernova branding", status: "ongoing",
+    text: "和 Claude 确认 supernova 的 branding 设计语言" },
   { date: "2026-09-30", cat: "other", project: "个人事务", status: "done",
     text: "还 Bilt 和 Apple Card 信用卡" },
   { date: "2026-09-30", cat: "other", project: "个人事务", status: "done",

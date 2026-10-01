@@ -109,6 +109,7 @@
         <button id="copy">复制汇报</button>
         <span id="copy-status"></span>
       </div>
+      <div class="chips" id="report-projects"></div>
       <textarea id="report" spellcheck="false"></textarea>
     </section>
   </div>
@@ -240,10 +241,18 @@
     // ---- 双周汇报 ----
     $("with-dates").onchange = render;
     // 双周汇报只包含 reportCats 里的分类（在 data.js 里设置），目前只汇报制片
+    let skip = new Set(typeof reportSkipProjects !== "undefined" ? reportSkipProjects : []);
     function renderReport() {
       const cats = typeof reportCats !== "undefined" ? reportCats : categories.map((c) => c.key);
       const single = cats.length === 1;
-      const items = inRange(), withDates = $("with-dates").checked;
+      const all = inRange().filter((l) => cats.includes(l.cat));
+      const projs = [...new Set(all.map((l) => l.project))];
+      $("report-projects").innerHTML = projs.map((p) =>
+        `<button data-p="${esc(p)}" class="${skip.has(p) ? "" : "on"}">${skip.has(p) ? "" : "✓ "}${esc(p)}</button>`).join("");
+      $("report-projects").querySelectorAll("button").forEach((b) => (b.onclick = () => {
+        const p = b.dataset.p; skip.has(p) ? skip.delete(p) : skip.add(p); render();
+      }));
+      const items = all.filter((l) => !skip.has(l.project)), withDates = $("with-dates").checked;
       const f = $("from").value, t = $("to").value, cn = ["一", "二", "三", "四", "五", "六"];
       const title = single ? `${catName[cats[0]]}工作汇报` : "工作汇报";
       const lines = [`${title}（${dot(f)} – ${dot(t)}）`, "", "【本期工作】"];
@@ -259,7 +268,7 @@
             lines.push(`   · ${l.text}${l.status === "ongoing" ? "（进行中）" : ""}${withDates ? `  ${md(l.date)}` : ""}`));
         });
       });
-      const next = todos.filter((x) => x.owner === "我" && x.status !== "done" && cats.includes(x.cat))
+      const next = todos.filter((x) => x.owner === "我" && x.status !== "done" && cats.includes(x.cat) && !skip.has(x.project))
         .sort((a, b) => (a.due || "9").localeCompare(b.due || "9"));
       lines.push("", "【下两周计划】");
       if (!next.length) lines.push("  暂无");
