@@ -53,6 +53,7 @@
       border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: var(--text); }
     .report-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
     .hidden { display: none; }
+    .ai { font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; white-space: nowrap; }
     .chips { display: flex; gap: 6px; overflow-x: auto; padding: 10px 0 4px; }
     .chips button { flex: none; }
     h2.big { font-size: 18px; margin-top: 14px; }
@@ -147,7 +148,7 @@
     function logRow(l, n, withCat) {
       return `<div class="row"><span class="num">${n}.</span>
         ${withCat ? `<span class="tag ${l.cat}">${catName[l.cat]}</span>` : ""}
-        <div class="body"><span class="proj">${esc(l.project)}</span>　${esc(l.text)}</div>
+        <div class="body"><span class="proj">${esc(l.project)}</span>　${esc(l.text)}${l.src === "claude" ? ' <span class="ai">Claude 补充</span>' : ""}</div>
         <span class="st ${l.status}">${statusText[l.status] || ""}</span></div>`;
     }
     function todoRow(t, withCat = true) {
