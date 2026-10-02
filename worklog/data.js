@@ -98,6 +98,24 @@ const logs = [
     text: "健身：boxing" },
   { date: "2026-09-30", cat: "other", project: "个人事务", status: "done", src: "claude",
     text: "建立报税 write-off 记账表" },
+
+  // ---- 2026-10-01（Claude 补充，待用户补当天清单）----
+  { date: "2026-10-01", cat: "sound", project: "音效库", status: "done", src: "claude",
+    text: "SNDLIB_HZ 音效库查重：扫描重复文件，出查重报告和清理脚本" },
+  { date: "2026-10-01", cat: "sound", project: "混音邀约", status: "ongoing", src: "claude",
+    text: "起草 Sound Mix Inquiry 回复邮件（询问粗剪、片长、混音档期、交付和预算）" },
+  { date: "2026-10-01", cat: "sound", project: "机器人语音", status: "done", src: "claude",
+    text: "研究机器人语音和「廉价影院喇叭」效果的处理链，比较环绕声插件" },
+  { date: "2026-10-01", cat: "study", project: "Jason", status: "done", src: "claude",
+    text: "完善 Jason recording breakdown：6 段录像的精确时间码、重叠和缺失片段" },
+  { date: "2026-10-01", cat: "study", project: "报销", status: "done", src: "claude",
+    text: "按 Uber 记录修正 Amex 报销表里 21 处日期和类目" },
+  { date: "2026-10-01", cat: "study", project: "助理交接", status: "ongoing", src: "claude",
+    text: "更新助理岗位说明和交接档案" },
+  { date: "2026-10-01", cat: "other", project: "Claude 工具", status: "done", src: "claude",
+    text: "统一制片时间线模板（Cloudflare 和 Claude 两版同步）；更新待办看板（日期选择、今日聚焦）" },
+  { date: "2026-10-01", cat: "other", project: "个人事务", status: "done", src: "claude",
+    text: "租房方案分析" },
 ];
 
 // 待办：owner "我" 会进汇报的「下两周计划」；"秘书" 是交给秘书的事。
@@ -131,4 +149,10 @@ const todos = [
     text: "过 Jason 素材" },
   { id: 14, cat: "study", project: "报销", owner: "我", status: "open", created: "2026-09-30", plan: "2026-10-01", due: "",
     text: "确认 Amex 账单里 3 个待定项：9/17 的 $1 Uber、Airbnb 日期、非 Uber 餐费收据" },
+  { id: 15, cat: "sound", project: "混音邀约", owner: "我", status: "open", created: "2026-10-01", due: "",
+    text: "审阅并发出混音邀约回复邮件", note: "要补：deck 状态、Grace 的邮箱、10 月档期、预算问题" },
+  { id: 16, cat: "sound", project: "音效库", owner: "我", status: "open", created: "2026-10-01", due: "",
+    text: "决定是否清理音效库重复文件", note: "建议先移到 _DUPES_待删 文件夹，之后 Soundminer 重扫" },
+  { id: 17, cat: "study", project: "助理交接", owner: "我", status: "open", created: "2026-10-01", due: "",
+    text: "决定小助理的分工：留学排期 + 笔记，还是只做社媒" },
 ];
