@@ -116,6 +116,28 @@ const logs = [
     text: "统一制片时间线模板（Cloudflare 和 Claude 两版同步）；更新待办看板（日期选择、今日聚焦）" },
   { date: "2026-10-01", cat: "other", project: "个人事务", status: "done", src: "claude",
     text: "租房方案分析" },
+
+  // ---- 2026-10-02 ----
+  { date: "2026-10-02", cat: "sound", project: "土星之环", status: "ongoing",
+    text: "《土星之环》声音做到 cinema 2" },
+  { date: "2026-10-02", cat: "study", project: "Kate creative video", status: "done",
+    text: "Kate creative video brainstorm" },
+  { date: "2026-10-02", cat: "study", project: "Kate creative video", status: "done",
+    text: "整理 brainstorm 会议记录" },
+  { date: "2026-10-02", cat: "study", project: "助理交接", status: "done",
+    text: "和留学小助理开会，讨论小红书帖子怎么发" },
+  { date: "2026-10-02", cat: "study", project: "video essay 方法论", status: "done",
+    text: "总结 video essay 方法论" },
+  { date: "2026-10-02", cat: "sound", project: "机器人语音", status: "done", src: "claude",
+    text: "整理「廉价影院喇叭」效果处理链（滤波、EQ、失真、大厅混响、空间定位，加 worldizing 建议）" },
+  { date: "2026-10-02", cat: "sound", project: "Mottainai", status: "done", src: "claude",
+    text: "评估 Mottainai 项目合作：查 Kickstarter 进度和合作方背景，建议在 deal memo 里锁定修改版本数" },
+  { date: "2026-10-02", cat: "study", project: "Chelsea", status: "ongoing", src: "claude",
+    text: "整理 Chelsea 秋季课的排课信息" },
+  { date: "2026-10-02", cat: "other", project: "个人事务", status: "done", src: "claude",
+    text: "查 10/5 或 10/6 波士顿→纽约的 Amtrak 车次" },
+  { date: "2026-10-02", cat: "other", project: "个人事务", status: "ongoing", src: "claude",
+    text: "研究信用卡积分转航空里程方案" },
 ];
 
 // 待办：owner "我" 会进汇报的「下两周计划」；"秘书" 是交给秘书的事。
@@ -155,4 +177,10 @@ const todos = [
     text: "决定是否清理音效库重复文件", note: "建议先移到 _DUPES_待删 文件夹，之后 Soundminer 重扫" },
   { id: 17, cat: "study", project: "助理交接", owner: "我", status: "open", created: "2026-10-01", due: "",
     text: "决定小助理的分工：留学排期 + 笔记，还是只做社媒" },
+  { id: 18, cat: "study", project: "Chelsea", owner: "我", status: "open", created: "2026-10-02", due: "",
+    text: "约 Chelsea 秋季课：回复排课问题，审阅发给家长的约课消息" },
+  { id: 19, cat: "other", project: "个人事务", owner: "我", status: "open", created: "2026-10-02", due: "",
+    text: "确认 EdiLoad、Spill、Speakerphone 插件分别是为哪个项目买的（报税用）" },
+  { id: 20, cat: "other", project: "个人事务", owner: "我", status: "open", created: "2026-10-02", due: "",
+    text: "定目的地，判断积分转 Flying Blue 是否划算" },
 ];
