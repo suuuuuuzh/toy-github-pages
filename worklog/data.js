@@ -182,7 +182,7 @@ const logs = [
 // 个人/行政类（行程生活、公司行政、网站品牌、其他）不镜像到这里。
 const todos = [
   { id: "t540aef5e", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "", text: "renner 新 video short" },
-  { id: "t68be6a97", cat: "prod", project: "竹林遗录", owner: "我", status: "waiting", due: "2026-09-30", text: "9/30 23:59 HKT HAF IDP 2027 early bird（竹林遗录）" },
+  { id: "t68be6a97", cat: "prod", project: "竹林遗录", owner: "我", status: "open", due: "2026-10-30", text: "10/30 23:59 HKT HAF IDP 2027 常规截止（竹林遗录）" },
   { id: "t86d71a24", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "2026-10-04", text: "回 Yixin：Sound Mix Inquiry 给 rate" },
   { id: "t85417189", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "2026-10-04", text: "回复黄骥的消息" },
   { id: "tf6eaa192", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "留学公司介绍、服务介绍" },
