@@ -176,9 +176,7 @@ const logs = [
     text: "和 wxz 约见面时间" },
   { date: "2026-10-03", cat: "other", project: "个人事务", status: "done",
     text: "午饭外出；买鼻炎药" },
-
-  // ---- 2026-10-04 ----
-  { date: "2026-10-04", cat: "sound", project: "海景房", status: "ongoing",
+  { date: "2026-10-03", cat: "sound", project: "海景房", status: "ongoing",
     text: "沟通《海景房》混音时间" },
 ];
 
