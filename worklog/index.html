@@ -232,10 +232,12 @@
     function renderTodo() {
       const order = { open: 0, waiting: 1, done: 2 };
       const sorted = (arr) => arr.sort((a, b) => order[a.status] - order[b.status] || (a.due || "9").localeCompare(b.due || "9"));
-      const mine = todos.filter((t) => t.owner === "我"), sec = todos.filter((t) => t.owner !== "我");
-      $("view-todo").innerHTML =
-        box(`我的待办（${mine.filter((t) => t.status !== "done").length} 项未完成）`, sorted(mine).map((t) => todoRow(t)).join("")) +
-        box(`交给秘书（${sec.filter((t) => t.status !== "done").length} 项未完成）`, sorted(sec).map((t) => todoRow(t)).join(""));
+      let html = '<p class="note">待办以<a href="https://claude.ai/artifact/5fMqEWp9C1eQNVCMNXeMVZ" target="_blank" rel="noopener">水素的待办板</a>为准（打勾、改日期都在那里），这里是工作类待办的镜像，每天早上同步一次。</p>';
+      categories.forEach((c) => {
+        const arr = todos.filter((t) => t.cat === c.key && t.status !== "done");
+        if (arr.length) html += box(`${c.name}（${arr.length}）`, sorted(arr).map((t) => todoRow(t, false)).join(""));
+      });
+      $("view-todo").innerHTML = html;
     }
 
     // ---- 双周汇报 ----
@@ -270,7 +272,8 @@
             lines.push(`   · ${l.text}${l.status === "ongoing" ? "（进行中）" : ""}${withDates ? `  ${md(l.date)}` : ""}`));
         });
       });
-      const next = todos.filter((x) => x.owner === "我" && x.status !== "done" && cats.includes(x.cat) && !skip.has(x.project))
+      const next = todos.filter((x) => x.owner === "我" && x.status !== "done" && cats.includes(x.cat) && !skip.has(x.project)
+        && (!x.due || (x.due >= f && x.due <= addDays(t, 14))))
         .sort((a, b) => (a.due || "9").localeCompare(b.due || "9"));
       lines.push("", "【下两周计划】");
       if (!next.length) lines.push("  暂无");
