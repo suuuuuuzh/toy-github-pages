@@ -176,6 +176,10 @@ const logs = [
     text: "和 wxz 约见面时间" },
   { date: "2026-10-03", cat: "other", project: "个人事务", status: "done",
     text: "午饭外出；买鼻炎药" },
+
+  // ---- 2026-10-04 ----
+  { date: "2026-10-04", cat: "sound", project: "海景房", status: "ongoing",
+    text: "沟通《海景房》混音时间" },
 ];
 
 // 待办以「水素的待办板」为准（私密）。这里只是工作类待办的公开镜像，每天早上自动从待办板同步，不要手改。
@@ -215,4 +219,5 @@ const todos = [
   { id: "w14", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "确认 Amex 报销表 3 个待定项" },
   { id: "w18", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "约 Chelsea 秋季课：回复排课问题，审阅发给家长的约课消息" },
   { id: "w16", cat: "sound", project: "土星", owner: "我", status: "open", due: "", text: "决定是否清理 SNDLIB_HZ 音效库重复文件" },
+  { id: "w23", cat: "sound", project: "声音客户", owner: "我", status: "waiting", due: "", text: "确定《海景房》混音时间" },
 ];
