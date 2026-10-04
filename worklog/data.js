@@ -187,7 +187,7 @@ const todos = [
   { id: "t68be6a97", cat: "prod", project: "竹林遗录", owner: "我", status: "open", due: "2026-10-30", text: "10/30 23:59 HKT HAF IDP 2027 常规截止（竹林遗录）" },
   { id: "t86d71a24", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "2026-10-04", text: "回 Yixin：Sound Mix Inquiry 给 rate" },
   { id: "t85417189", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "2026-10-04", text: "回复黄骥的消息" },
-  { id: "tf6eaa192", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "留学公司介绍、服务介绍" },
+  { id: "tf6eaa192", cat: "study", project: "留学", owner: "我", status: "waiting", due: "", text: "留学公司介绍、服务介绍" },
   { id: "tfd407b9b", cat: "prod", project: "竹林遗录", owner: "我", status: "waiting", due: "2026-11-05", text: "11/5 16:00 CET TFL FeatureLab 2027 截止（竹林遗录）" },
   { id: "t545070f6", cat: "sound", project: "声音客户", owner: "我", status: "waiting", due: "", text: "弄 Rishabh 的东西" },
   { id: "ta114359f", cat: "study", project: "留学", owner: "我", status: "waiting", due: "", text: "先和剪辑师过一遍 Jason 的素材，定怎么剪" },
@@ -218,4 +218,6 @@ const todos = [
   { id: "w18", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "约 Chelsea 秋季课：回复排课问题，审阅发给家长的约课消息" },
   { id: "w16", cat: "sound", project: "土星", owner: "我", status: "open", due: "", text: "决定是否清理 SNDLIB_HZ 音效库重复文件" },
   { id: "w23", cat: "sound", project: "声音客户", owner: "我", status: "waiting", due: "", text: "确定《海景房》混音时间" },
+  { id: "bmutgjyvc18sj", cat: "study", project: "留学", owner: "我", status: "open", due: "2026-10-04", text: "allan账单发送" },
+  { id: "bmutgk4kmufb1", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "allan 时间线要发给家长" },
 ];
