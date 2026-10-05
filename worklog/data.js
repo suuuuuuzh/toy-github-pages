@@ -179,7 +179,7 @@ const logs = [
   { date: "2026-10-03", cat: "sound", project: "海景房", status: "ongoing",
     text: "沟通《海景房》混音时间" },
 
-  // ---- 2026-10-04（来自待办板和 Claude 会话，待用户补当天清单）----
+  // ---- 2026-10-04 ----
   { date: "2026-10-04", cat: "prod", project: "WTRSO", status: "done", src: "claude",
     text: "和 Yifei 沟通需求" },
   { date: "2026-10-04", cat: "prod", project: "内藏班", status: "done", src: "claude",
@@ -190,6 +190,16 @@ const logs = [
     text: "更新助理岗位说明和交接手册，整理「待水素决定」清单" },
   { date: "2026-10-04", cat: "other", project: "Claude 工具", status: "done", src: "claude",
     text: "搭「水素 OS」总览；调研可装的工具（apple-mail-mcp、urlwatch、OpenTimelineIO 等）" },
+  { date: "2026-10-04", cat: "sound", project: "土星之环", status: "ongoing",
+    text: "《土星之环》声音推进一部分" },
+  { date: "2026-10-04", cat: "sound", project: "AAF", status: "done",
+    text: "重新导出丢失文件的 AAF" },
+  { date: "2026-10-04", cat: "study", project: "Kate creative video", status: "done",
+    text: "收到 Kate 剧本反馈" },
+  { date: "2026-10-04", cat: "other", project: "璞识 brand guideline", status: "ongoing",
+    text: "联系璞识做 brand guideline 设计，设计师已回复" },
+  { date: "2026-10-04", cat: "other", project: "个人事务", status: "done",
+    text: "跟踪 Oura 换新包裹" },
 ];
 
 // 待办以「水素的待办板」为准（私密）。这里只是工作类待办的公开镜像，每天早上自动从待办板同步，不要手改。
@@ -213,7 +223,7 @@ const todos = [
   { id: "t9ab1e4b7", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "", text: "2027-02-10 IDFA Bertha Fund Classic（内藏班）" },
   { id: "t37793c69", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "", text: "ECHO / 内藏班：为 TFL Audience Design Fund 2027 找欧洲合拍方或销售代理" },
   { id: "bmup4wso57zxh", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "2026-10-04", text: "约和色珍的会议 聊 今年后面的计划" },
-  { id: "bmup508k7nmtw", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "缕jason思路 做script 分镜表格" },
+  { id: "bmup508k7nmtw", cat: "study", project: "留学", owner: "我", status: "open", due: "2026-10-05", text: "缕jason思路 做script 分镜表格" },
   { id: "bmup50zovpq9k", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "", text: "找人做plain background" },
   { id: "bmup50v52y3m0", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "", text: "找人帮我做scene marker" },
   { id: "t68be6a97", cat: "prod", project: "竹林遗录", owner: "我", status: "open", due: "2026-10-30", text: "10/30 23:59 HKT HAF IDP 2027 常规截止（竹林遗录）" },
@@ -232,4 +242,6 @@ const todos = [
   { id: "w18", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "约 Chelsea 秋季课：回复排课问题，审阅发给家长的约课消息" },
   { id: "w16", cat: "sound", project: "土星", owner: "我", status: "open", due: "", text: "音效库查重：决定 4 个特殊情况" },
   { id: "w23", cat: "sound", project: "声音客户", owner: "我", status: "waiting", due: "", text: "确定《海景房》混音时间" },
+  { id: "w25", cat: "study", project: "留学", owner: "我", status: "open", due: "2026-10-05", text: "Kate：按剧本反馈更新脚本和 shotlist（剪辑师用版本）" },
+  { id: "w26", cat: "study", project: "留学", owner: "我", status: "waiting", due: "2026-10-05", text: "Isabella 发带音符的素材" },
 ];
