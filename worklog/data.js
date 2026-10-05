@@ -258,4 +258,7 @@ const todos = [
   { id: "w16", cat: "sound", project: "土星", owner: "我", status: "open", due: "", text: "音效库查重：决定 4 个特殊情况" },
   { id: "w23", cat: "sound", project: "声音客户", owner: "我", status: "waiting", due: "", text: "确定《海景房》混音时间" },
   { id: "w26", cat: "study", project: "留学", owner: "我", status: "waiting", due: "2026-10-05", text: "Isabella 发单条素材（带音符）" },
+  { id: "w29", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 大计划表格（中文版）" },
+  { id: "w30", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 标记各部门内容" },
+  { id: "w31", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 顺场表（中英版本）" },
 ];
