@@ -194,6 +194,8 @@ const logs = [
     text: "《土星之环》声音推进一部分" },
   { date: "2026-10-04", cat: "sound", project: "土星之环", status: "done",
     text: "《土星之环》重新导出丢失文件的 AAF" },
+  { date: "2026-10-04", cat: "prod", project: "内藏班", status: "done",
+    text: "约好和色珍、Yige 的内藏班会议" },
   { date: "2026-10-04", cat: "study", project: "Kate creative video", status: "done",
     text: "收到 Kate 剧本反馈" },
   { date: "2026-10-04", cat: "study", project: "璞识 brand guideline", status: "ongoing",
@@ -216,6 +218,8 @@ const logs = [
     text: "约好和 Rebecca、James、Eric 见面的时间" },
   { date: "2026-10-05", cat: "other", project: "个人事务", status: "done",
     text: "发邮件和 Kevin 改约时间" },
+  { date: "2026-10-05", cat: "prod", project: "内藏班", status: "done",
+    text: "发出内藏班会议链接（色珍、Yige）" },
 ];
 
 // 待办以「水素的待办板」为准（私密）。这里只是工作类待办的公开镜像，每天早上自动从待办板同步，不要手改。
@@ -238,13 +242,11 @@ const todos = [
   { id: "tf6eaa192", cat: "study", project: "留学", owner: "我", status: "waiting", due: "", text: "留学公司介绍、服务介绍" },
   { id: "t9ab1e4b7", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "", text: "2027-02-10 IDFA Bertha Fund Classic（内藏班）" },
   { id: "t37793c69", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "", text: "ECHO / 内藏班：为 TFL Audience Design Fund 2027 找欧洲合拍方或销售代理" },
-  { id: "bmup4wso57zxh", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "2026-10-04", text: "约和色珍的会议 聊 今年后面的计划" },
   { id: "bmup50zovpq9k", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "", text: "找人做plain background" },
   { id: "bmup50v52y3m0", cat: "sound", project: "声音客户", owner: "我", status: "open", due: "", text: "找人帮我做scene marker" },
   { id: "t68be6a97", cat: "prod", project: "竹林遗录", owner: "我", status: "open", due: "2026-10-30", text: "10/30 23:59 HKT HAF IDP 2027 常规截止（竹林遗录）" },
   { id: "bmutgjyvc18sj", cat: "study", project: "留学", owner: "我", status: "open", due: "2026-10-04", text: "allan账单发送" },
   { id: "bmutgk4kmufb1", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "allan 时间线要发给家长" },
-  { id: "bmutwenfixxnc", cat: "prod", project: "内藏班", owner: "我", status: "open", due: "2026-10-05", text: "约了和yige的会议 周一晚上10pm est" },
   { id: "bmutf51eh1tir", cat: "study", project: "留学", owner: "我", status: "open", due: "", text: "给allan妈妈报账单" },
   { id: "w1", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "2026-10-12", text: "完成 WTRSO 使用说明" },
   { id: "w2", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "2026-10-12", text: "WTRSO schedule：确认演员细节" },
@@ -258,7 +260,7 @@ const todos = [
   { id: "w16", cat: "sound", project: "土星", owner: "我", status: "open", due: "", text: "音效库查重：决定 4 个特殊情况" },
   { id: "w23", cat: "sound", project: "声音客户", owner: "我", status: "waiting", due: "", text: "确定《海景房》混音时间" },
   { id: "w26", cat: "study", project: "留学", owner: "我", status: "waiting", due: "2026-10-05", text: "Isabella 发单条素材（带音符）" },
-  { id: "w29", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 大计划表格（中文版）" },
-  { id: "w30", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 标记各部门内容" },
+  { id: "w29", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 大计划表格（中英版本）" },
+  { id: "w30", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 标记各部门内容（中英版本）" },
   { id: "w31", cat: "prod", project: "WTRSO", owner: "我", status: "open", due: "", text: "WTRSO 顺场表（中英版本）" },
 ];
