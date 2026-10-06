@@ -1,3 +1,5 @@
+> **已停用（2026-10-06）**：工作日志和待办已合并到私密的「水素工作台」（https://claude.ai/artifact/5fMqEWp9C1eQNVCMNXeMVZ），这里不再更新，只作存档。
+
 # 工作日志 · 每日记录 + 双周汇报
 
 网址：https://suuuuuuzh.github.io/toy-github-pages/worklog/
