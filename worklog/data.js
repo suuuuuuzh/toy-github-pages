@@ -234,6 +234,27 @@ const logs = [
     text: "TIFF 收尾：色珍整理多伦多垫付费用，支票办理入账" },
   { date: "2026-10-05", cat: "prod", project: "DV 选集短片", status: "done",
     text: "讨论 DV 选集合作短片（主题「边界」，2027 年 1 月交片），色珍有兴趣、我可做声音/后期" },
+  // 以下为 10/5 待办板上勾掉的
+  { date: "2026-10-05", cat: "prod", project: "WTRSO", status: "done",
+    text: "把 schedule 相关工作分派给 Yifei" },
+  { date: "2026-10-05", cat: "prod", project: "黑豆", status: "done",
+    text: "下载 TIFF26 首映官方照片，存进《黑豆》素材文件夹" },
+  { date: "2026-10-05", cat: "prod", project: "黑豆", status: "done",
+    text: "处理 OMNI TV 采访请求" },
+  { date: "2026-10-05", cat: "prod", project: "黑豆", status: "done",
+    text: "确认《黑豆》IFFR 2027 参展对接" },
+  { date: "2026-10-05", cat: "sound", project: "音效库", status: "done",
+    text: "决定 SNDLIB_HZ 音效库查重的 4 个特殊情况" },
+  { date: "2026-10-05", cat: "study", project: "Allan creative video", status: "done",
+    text: "Allan 时间线发给家长；向 Yige 要回她那边的报销" },
+  { date: "2026-10-05", cat: "study", project: "报销", status: "done",
+    text: "确认 Amex 报销表的 3 个待定项" },
+  { date: "2026-10-05", cat: "study", project: "留学 video 剪辑", status: "done",
+    text: "整理会议记录并和龚老师同步所有内容" },
+  { date: "2026-10-05", cat: "study", project: "素材管理", status: "done",
+    text: "收到 Isabella 的单条素材" },
+  { date: "2026-10-05", cat: "study", project: "supernova", status: "done",
+    text: "整理留学公司介绍和服务介绍" },
 ];
 
 // 待办以「水素的待办板」为准（私密）。这里只是工作类待办的公开镜像，每天早上自动从待办板同步，不要手改。
