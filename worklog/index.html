@@ -135,8 +135,11 @@
       .concat([{ key: "todo", name: "待办" }, { key: "report", name: "廿一进展" }]);
     let tab = "day", group = "day";
 
+    // 每个标签有自己的网址（如 #report、#todo），可以单独收藏 / 加到程序坞
+    const HASH = { day: "day", "cat:sound": "sound", "cat:prod": "prod", "cat:study": "study", "cat:other": "other", todo: "todo", report: "report" };
     function show(t) {
       tab = t;
+      try { history.replaceState(null, "", "#" + (HASH[t] || t)); } catch (e) {}
       $("tabs").innerHTML = TABS.map((x) => `<button data-tab="${x.key}" class="${x.key === tab ? "on" : ""}">${x.name}</button>`).join("");
       $("tabs").querySelectorAll("button").forEach((b) => (b.onclick = () => show(b.dataset.tab)));
       const view = tab.startsWith("cat:") ? "cat" : tab;
@@ -275,7 +278,12 @@
     }
 
     $("from").value = addDays(today, -13); $("to").value = today; $("day").value = today;
-    show("day");
+    const fromHash = Object.keys(HASH).find((k) => "#" + HASH[k] === location.hash);
+    show(fromHash || "day");
+    window.addEventListener("hashchange", () => {
+      const k = Object.keys(HASH).find((k) => "#" + HASH[k] === location.hash);
+      if (k && k !== tab) show(k);
+    });
   </script>
 </body>
 </html>
