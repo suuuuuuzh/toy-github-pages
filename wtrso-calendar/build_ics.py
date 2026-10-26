@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Build wtrso-preproduction.ics from schedule.json (stdlib only).
+"""Build the .ics feeds from schedule.json (stdlib only).
 
 Usage: python3 build_ics.py
-Edit schedule.json (one entry per event; no "start" means all-day), re-run,
-then commit both files. Subscribed clients pick the change up on next refresh.
+Edit schedule.json (one entry per event; no "start" means all-day; "type" is
+"schedule" or "todo"), re-run, then commit the JSON and the .ics files. Each
+entry in "feeds" becomes one file: type null = everything, else only that type.
+Subscribed clients pick the change up on their next refresh.
 """
 import json
 from datetime import date, datetime, timedelta, timezone
@@ -11,9 +13,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SRC = HERE / "schedule.json"
-OUT = HERE / "wtrso-preproduction.ics"
 UID_DOMAIN = "hainazhou.com"
 ALARM_MINUTES = 30
+TODO_PREFIX = "☑️ "
 
 
 def esc(text):
@@ -41,8 +43,9 @@ def local(d, hhmm):
     return f"{d.strftime('%Y%m%d')}T{hhmm.replace(':', '')}00"
 
 
-def build(data):
+def build(data, feed):
     cal, tz = data["calendar"], data["calendar"]["timezone"]
+    events = [e for e in data["events"] if feed["type"] in (None, e["type"])]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     footer = ["", "Contact 联系: " + cal["contact"].split("<")[-1].rstrip(">")]
     lines = [
@@ -51,8 +54,8 @@ def build(data):
         "PRODID:-//hainazhou.com//When the River Split Open pre-production//EN",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
-        f"X-WR-CALNAME:{esc(cal['name'])}",
-        f"X-WR-CALDESC:{esc(chr(10).join(cal['description']))}",
+        f"X-WR-CALNAME:{esc(feed['name'])}",
+        f"X-WR-CALDESC:{esc(chr(10).join(feed['description']))}",
         f"X-WR-TIMEZONE:{tz}",
         "REFRESH-INTERVAL;VALUE=DURATION:PT1H",
         "X-PUBLISHED-TTL:PT1H",
@@ -66,7 +69,7 @@ def build(data):
         "END:STANDARD",
         "END:VTIMEZONE",
     ]
-    for ev in data["events"]:
+    for ev in events:
         d = date.fromisoformat(ev["date"])
         lines += ["BEGIN:VEVENT", f"UID:{ev['id']}@{UID_DOMAIN}", f"DTSTAMP:{stamp}",
                   f"LAST-MODIFIED:{stamp}"]
@@ -77,13 +80,14 @@ def build(data):
             lines += [f"DTSTART;VALUE=DATE:{d.strftime('%Y%m%d')}",
                       f"DTEND;VALUE=DATE:{(d + timedelta(days=1)).strftime('%Y%m%d')}",
                       "TRANSP:TRANSPARENT"]
-        lines.append(f"SUMMARY:{esc(ev['title'])}")
+        title = TODO_PREFIX + ev["title"] if ev["type"] == "todo" else ev["title"]
+        lines.append(f"SUMMARY:{esc(title)}")
         if ev.get("location"):
             lines.append(f"LOCATION:{esc(ev['location'])}")
         lines += [f"DESCRIPTION:{esc(chr(10).join(ev['description'] + footer))}",
                   f"CONTACT:{esc(cal['contact'])}", "STATUS:CONFIRMED"]
         if "start" in ev:
-            lines += ["BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:{esc(ev['title'])}",
+            lines += ["BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:{esc(title)}",
                       f"TRIGGER:-PT{ALARM_MINUTES}M", "END:VALARM"]
         lines.append("END:VEVENT")
     lines.append("END:VCALENDAR")
@@ -92,5 +96,7 @@ def build(data):
 
 if __name__ == "__main__":
     data = json.loads(SRC.read_text(encoding="utf-8"))
-    OUT.write_bytes(build(data).encode("utf-8"))
-    print(f"wrote {OUT.name}: {len(data['events'])} events")
+    for feed in data["feeds"]:
+        (HERE / feed["file"]).write_bytes(build(data, feed).encode("utf-8"))
+        n = sum(feed["type"] in (None, e["type"]) for e in data["events"])
+        print(f"wrote {feed['file']}: {n} events")

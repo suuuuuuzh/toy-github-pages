@@ -1,18 +1,45 @@
 {
   "calendar": {
-    "name": "When the River Split Open 当河流轻声撕裂 · Pre-production 筹备日程",
-    "description": [
-      "'When the River Split Open' pre-production schedule (bilingual EN / 中文). All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day events.",
-      "“当河流轻声撕裂”筹备日程（中英对照）。所有时间均为北京时间（UTC+8）。“TBC”事项以全天事件显示。",
-      "Contact 联系: contact@hainazhou.com"
-    ],
     "timezone": "Asia/Shanghai",
     "contact": "Haina Zhou <contact@hainazhou.com>"
   },
+  "feeds": [
+    {
+      "file": "wtrso-preproduction.ics",
+      "type": null,
+      "name": "When the River Split Open 当河流轻声撕裂 · Pre-production 筹备日程",
+      "description": [
+        "'When the River Split Open' pre-production schedule (bilingual EN / 中文). All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day events.",
+        "“当河流轻声撕裂”筹备日程（中英对照）。所有时间均为北京时间（UTC+8）。“TBC”事项以全天事件显示。",
+        "Contact 联系: contact@hainazhou.com"
+      ]
+    },
+    {
+      "file": "wtrso-schedule.ics",
+      "type": "schedule",
+      "name": "When the River Split Open · Schedule 日程",
+      "description": [
+        "'When the River Split Open' pre-production SCHEDULE: arrivals, meetings, location scouts (bilingual EN / 中文). All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day events.",
+        "“当河流轻声撕裂”筹备「日程」：到达、会议、堪景等有具体时间/地点的安排（中英对照）。所有时间均为北京时间（UTC+8）。“TBC”事项以全天事件显示。",
+        "Contact 联系: contact@hainazhou.com"
+      ]
+    },
+    {
+      "file": "wtrso-todo.ics",
+      "type": "todo",
+      "name": "When the River Split Open · To-do 待办",
+      "description": [
+        "'When the River Split Open' pre-production TO-DO: daily task lists and errands without a fixed time (bilingual EN / 中文).",
+        "“当河流轻声撕裂”筹备「待办」：没有固定时间的每日任务与事项（中英对照）。",
+        "Contact 联系: contact@hainazhou.com"
+      ]
+    }
+  ],
   "events": [
     {
       "id": "20261027-production-team",
       "date": "2026-10-27",
+      "type": "todo",
       "title": "Production Team: daily tasks / 制片组：每日筹备",
       "description": [
         "DAILY PRE-PRODUCTION SCHEDULE · Oct 27 (Tue)",
@@ -30,6 +57,7 @@
     {
       "id": "20261027-ad-team",
       "date": "2026-10-27",
+      "type": "todo",
       "title": "AD Team: daily tasks / AD组：每日筹备",
       "description": [
         "DAILY PRE-PRODUCTION SCHEDULE · Oct 27 (Tue)",
@@ -47,6 +75,7 @@
     {
       "id": "20261028-travel-poyang",
       "date": "2026-10-28",
+      "type": "schedule",
       "start": "17:00",
       "end": "18:30",
       "title": "✈️ Travel: arrive Poyang / 差旅：到达鄱阳县",
@@ -63,6 +92,7 @@
     {
       "id": "20261028-location-coordination",
       "date": "2026-10-28",
+      "type": "schedule",
       "start": "19:00",
       "end": "20:00",
       "title": "Coordinate with Location Manager services / 制片组对接当地外联",
@@ -79,6 +109,7 @@
     {
       "id": "20261029-location-scout",
       "date": "2026-10-29",
+      "type": "schedule",
       "title": "Location Scout (time TBC) / 堪景（时间待定）",
       "description": [
         "ADVANCE SCHEDULE · Oct 29 (Thur)",
@@ -93,6 +124,7 @@
     {
       "id": "20261029-hotel",
       "date": "2026-10-29",
+      "type": "todo",
       "title": "Hotel & accommodation / 对接酒店&安排住宿",
       "description": [
         "ADVANCE SCHEDULE · Oct 29 (Thur)",
@@ -107,6 +139,7 @@
     {
       "id": "20261029-ad-joins",
       "date": "2026-10-29",
+      "type": "schedule",
       "start": "19:00",
       "end": "20:00",
       "title": "AD joining the production / AD进组筹备",
@@ -123,6 +156,7 @@
     {
       "id": "20261029-costume-makeup-meeting",
       "date": "2026-10-29",
+      "type": "schedule",
       "start": "20:00",
       "end": "21:00",
       "title": "Costume/Makeup Dept meeting report / 造型组提报会议",
@@ -139,6 +173,7 @@
     {
       "id": "20261030-office-catering",
       "date": "2026-10-30",
+      "type": "todo",
       "title": "Office supplies & catering provider (time TBC) / 办公用品&餐饮供应商（时间待定）",
       "description": [
         "ADVANCE SCHEDULE · Oct 30 (Fri)",
@@ -153,6 +188,7 @@
     {
       "id": "20261030-location-scout",
       "date": "2026-10-30",
+      "type": "schedule",
       "title": "Location Scout (time TBC) / 堪景（时间待定）",
       "description": [
         "ADVANCE SCHEDULE · Oct 30 (Fri)",

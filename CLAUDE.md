@@ -5,28 +5,43 @@ Haina Zhou's GitHub Pages site (served from `main`). Claude commits straight to 
 
 ## WTRSO pre-production calendar (`wtrso-calendar/`)
 
-Subscribable ICS feed for "When the River Split Open / 当河流轻声撕裂". Subscribers (Google / Apple)
-pull `wtrso-calendar/wtrso-preproduction.ics` on their own schedule, so **every push to `main`
-is a published update** for everyone subscribed.
+Subscribable ICS feeds for "When the River Split Open / 当河流轻声撕裂". Subscribers (Google / Apple)
+pull the feeds on their own schedule, so **every push to `main` is a published update** for
+everyone subscribed. `schedule.json` is the single source; `build_ics.py` writes all feeds:
 
-- Feed: https://suuuuuuzh.github.io/toy-github-pages/wtrso-calendar/wtrso-preproduction.ics
-- Landing page with subscribe buttons: https://suuuuuuzh.github.io/toy-github-pages/wtrso-calendar/
+| Feed file | Contains |
+| --- | --- |
+| `wtrso-preproduction.ics` | everything (the original link, keep it working) |
+| `wtrso-schedule.ics` | `type: "schedule"` events only |
+| `wtrso-todo.ics` | `type: "todo"` events only (titles auto-prefixed ☑️) |
+
+- Base URL: https://suuuuuuzh.github.io/toy-github-pages/wtrso-calendar/ (landing page with subscribe
+  buttons at that URL; feeds are `<base>/<file>`)
 - Contact shown on the calendar: contact@hainazhou.com
 
 ### Standing instruction
 
-Whenever the user sends a schedule PDF (Daily Pre-production Schedule / Advance Schedule,
-每日筹备计划 / 预备通告), update the calendar without being asked again. If the file clearly isn't a
-WTRSO schedule, ask first.
+Whenever the user sends new schedule information, update the calendar without being asked again.
+That means a schedule PDF (Daily Pre-production Schedule / Advance Schedule, 每日筹备计划 / 预备通告)
+or plain text in chat such as "location scout is confirmed for 10:00" or "add X to Friday". If a
+file clearly isn't a WTRSO schedule, ask first.
 
-1. Read the PDF: `pdftotext -layout` plus `pdftoppm -r 60 -png` to eyeball every page for anything
+1. For a PDF: `pdftotext -layout` plus `pdftoppm -r 60 -png`, and look at every page for anything
    text extraction missed.
 2. Edit `wtrso-calendar/schedule.json`:
-   - The newest PDF is authoritative for every date it covers: replace all events on those dates,
-     keep events on dates it does not cover.
-   - Event `id` is `YYYYMMDD-slug` and becomes the UID. Keep the id of an event that carries over
-     from an earlier PDF so subscribers see an update, not a duplicate. New events get new ids;
-     events no longer in the PDF are removed.
+   - The newest information is authoritative. A new PDF replaces all events on the dates it
+     covers and keeps events on dates it does not cover. A chat message changes only what it
+     mentions.
+   - **Refine vague items in place.** When details arrive for an existing event (a TBC gets a real
+     time, people or a location get added, wording changes), edit that event and keep its `id`, so
+     subscribers see an update, not a duplicate. A TBC all-day event becomes timed by adding
+     `start`/`end`. Only add a new event for something genuinely new, and remove events that are
+     no longer in the latest schedule. Event `id` is `YYYYMMDD-slug` and becomes the UID.
+   - `type`: `schedule` = something happening at a set time or place, or people being somewhere
+     (travel/arrivals, meetings, location scouts, call times), even while the time is still TBC.
+     `todo` = a task or errand someone just has to get done, with no fixed time (daily task lists,
+     arranging the hotel, buying supplies). When in doubt, pick one and say so in the reply. If a
+     to-do gets a fixed time, switch it to `schedule`.
    - Title is `English / 中文`. Description is the PDF text verbatim in both languages, led by the
      PDF's date header (EN line, then 中文 line). Keep the PDF's wording (e.g. 堪景).
    - Timed items: `start`/`end` in 24h, Asia/Shanghai. "TBC" and "All Day" items: omit `start`
@@ -37,12 +52,12 @@ WTRSO schedule, ask first.
    - Names, spelled the same way every time: Jess (Director 导演), Zhao Xinyi 赵馨怡 (Producer
      制片人), Jiang Ruohong 江如鸿 (Line Producer 执行制片人), Ma Rong 马蓉 (Living Manager
      生活制片), Wang Zhonghua 王忠华 (Location Manager 外联制片), Shui Su 水素 (AD).
-3. Run `python3 wtrso-calendar/build_ics.py`, then sanity-check the output (parses, every line
-   <= 75 octets, CRLF endings, unique UIDs, expected event count).
+3. Run `python3 wtrso-calendar/build_ics.py`, then sanity-check every feed (parses, every line
+   <= 75 octets, CRLF endings, unique UIDs, expected event counts: all = schedule + todo).
 4. Commit `wtrso-calendar/` as `Publish: WTRSO schedule <dates>` and push to `main`.
-5. Tell the user what was added / changed / removed, and any assumption made. Mention that GitHub
-   Pages takes a minute or two to deploy and that Google refreshes subscribed calendars every
-   ~12-24 h (Apple's refresh interval is configurable).
+5. Tell the user what was added / changed / removed (and which feed each is in), and any
+   assumption made. Mention that GitHub Pages takes a minute or two to deploy and that Google
+   refreshes subscribed calendars every ~12-24 h (Apple's refresh interval is configurable).
 
 Do not write these events into the user's personal Google calendars through the Calendar
-connector: it cannot create calendars, and the feed is the single source of truth.
+connector: it cannot create calendars, and the feeds are the single source of truth.
