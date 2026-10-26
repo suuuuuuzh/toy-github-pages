@@ -1,0 +1,39 @@
+name: Sync WTRSO calendar to iCloud
+
+# Mirrors wtrso-calendar/schedule.json into the existing iCloud calendar over CalDAV.
+# Needs the repo secrets ICLOUD_APPLE_ID, ICLOUD_APP_PASSWORD (app-specific password)
+# and ICLOUD_CALENDAR_NAME; without them the job logs a notice and does nothing.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "wtrso-calendar/schedule.json"
+      - "wtrso-calendar/build_ics.py"
+      - "wtrso-calendar/sync_icloud.py"
+      - ".github/workflows/wtrso-icloud-sync.yml"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only report what would change"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wtrso-icloud-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync events to the iCloud calendar
+        env:
+          ICLOUD_APPLE_ID: ${{ secrets.ICLOUD_APPLE_ID }}
+          ICLOUD_APP_PASSWORD: ${{ secrets.ICLOUD_APP_PASSWORD }}
+          ICLOUD_CALENDAR_NAME: ${{ secrets.ICLOUD_CALENDAR_NAME }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: python3 wtrso-calendar/sync_icloud.py

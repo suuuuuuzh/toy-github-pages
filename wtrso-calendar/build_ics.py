@@ -44,7 +44,9 @@ def local(d, hhmm):
     return f"{d.strftime('%Y%m%d')}T{hhmm.replace(':', '')}00"
 
 
-def build(data):
+def build(data, caldav=False):
+    """The whole feed, or with caldav=True a clean object for a CalDAV server
+    (RFC 4791 forbids METHOD there; feed-level X-WR-* props mean nothing)."""
     cal, tz = data["calendar"], data["calendar"]["timezone"]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     footer = ["", "Contact 联系: " + cal["contact"].split("<")[-1].rstrip(">")]
@@ -53,12 +55,17 @@ def build(data):
         "VERSION:2.0",
         "PRODID:-//hainazhou.com//When the River Split Open pre-production//EN",
         "CALSCALE:GREGORIAN",
-        "METHOD:PUBLISH",
-        f"X-WR-CALNAME:{esc(cal['name'])}",
-        f"X-WR-CALDESC:{esc(chr(10).join(cal['description']))}",
-        f"X-WR-TIMEZONE:{tz}",
-        "REFRESH-INTERVAL;VALUE=DURATION:PT1H",
-        "X-PUBLISHED-TTL:PT1H",
+    ]
+    if not caldav:
+        lines += [
+            "METHOD:PUBLISH",
+            f"X-WR-CALNAME:{esc(cal['name'])}",
+            f"X-WR-CALDESC:{esc(chr(10).join(cal['description']))}",
+            f"X-WR-TIMEZONE:{tz}",
+            "REFRESH-INTERVAL;VALUE=DURATION:PT1H",
+            "X-PUBLISHED-TTL:PT1H",
+        ]
+    lines += [
         "BEGIN:VTIMEZONE",
         f"TZID:{tz}",
         "BEGIN:STANDARD",

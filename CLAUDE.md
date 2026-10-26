@@ -15,6 +15,16 @@ their own schedule, so **every push to `main` is a published update** for everyo
   subscribe buttons at that URL; feed is `<base>/wtrso-preproduction.ics`)
 - Contact shown on the calendar: contact@hainazhou.com
 - There is deliberately one calendar, not several. Don't split it into separate feeds.
+- **iCloud mirror.** The user also keeps the same events in their existing iCloud calendar
+  ("wtrso calendar", which they publish to the crew). The GitHub Action
+  `.github/workflows/wtrso-icloud-sync.yml` runs `wtrso-calendar/sync_icloud.py` on every push that
+  touches `schedule.json` or the scripts and mirrors the events there over CalDAV. It needs the
+  repo secrets `ICLOUD_APPLE_ID`, `ICLOUD_APP_PASSWORD` (app-specific password) and
+  `ICLOUD_CALENDAR_NAME`; without them it logs a notice and does nothing. It matches events by UID,
+  updates them in place, and only deletes events whose UID looks like
+  `YYYYMMDD-slug@hainazhou.com`, so keep the id format. Never ask the user to paste Apple
+  credentials in chat (they go in GitHub secrets), and never print account details in its log:
+  the Actions log of this public repo is public.
 
 ### Standing instruction
 
@@ -65,9 +75,14 @@ That means the daily pre-production notice PDF (Daily Pre-production Schedule / 
 4. Run `python3 wtrso-calendar/build_ics.py`, then sanity-check the feed (parses, every line
    <= 75 octets, CRLF endings, unique UIDs, expected event count).
 5. Commit `wtrso-calendar/` as `Publish: WTRSO schedule <dates>` and push to `main`.
-6. Tell the user what was added / changed / removed / skipped, and any assumption made. Mention
-   that GitHub Pages takes a minute or two to deploy and that Google refreshes subscribed calendars
-   every ~12-24 h (Apple's refresh interval is configurable).
+6. Check that the "Sync WTRSO calendar to iCloud" run for that push succeeded (`actions_list`
+   `list_workflow_runs` for `wtrso-icloud-sync.yml`; `get_job_logs` if it failed) and say so. A
+   "skipped: secrets not set" notice means the user has not finished the iCloud setup.
+7. Tell the user what was added / changed / removed / skipped, and any assumption made. Mention
+   that GitHub Pages takes a minute or two to deploy, that Google refreshes subscribed calendars
+   every ~12-24 h (Apple's refresh interval is configurable), and that the iCloud calendar is
+   updated by the Action.
 
 Do not write these events into the user's personal Google calendars through the Calendar
-connector: it cannot create calendars, and the feed is the single source of truth.
+connector: it cannot create calendars. The feed is the source of truth, and the only push into a
+personal calendar is the iCloud Action above.
