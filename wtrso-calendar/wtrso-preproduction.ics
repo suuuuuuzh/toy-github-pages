@@ -3,13 +3,16 @@ VERSION:2.0
 PRODID:-//hainazhou.com//When the River Split Open pre-production//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:When the River Split Open 当河流轻声撕裂 · Pre-product
- ion 筹备日程
-X-WR-CALDESC:'When the River Split Open' pre-production schedule (bilingual
-  EN / 中文). All times Asia/Shanghai (UTC+8). 'TBC' items are shown as a
- ll-day events.\n“当河流轻声撕裂”筹备日程（中英对照）
- 。所有时间均为北京时间（UTC+8）。“TBC”事项以全天事
- 件显示。\nContact 联系: contact@hainazhou.com
+X-WR-CALNAME:When the River Split Open · AD 日程 AD Schedule
+X-WR-CALDESC:AD-related schedule for 'When the River Split Open' pre-produc
+ tion: AD team tasks\, department meetings\, scouts and calls the AD attend
+ s (bilingual EN / 中文). ✅ = to-do\, 💻 = online meeting\, ✈️ = 
+ travel. All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day 
+ events.\n“当河流轻声撕裂”筹备期 AD 相关日程：AD组任
+ 务、各部门会议、AD参加的堪景和沟通（中英对照）。✅
+  = 待办，💻 = 线上会议，✈️ = 出行。所有时间均为北
+ 京时间（UTC+8）。“TBC”事项以全天事件显示。\nContact 
+ 联系: contact@hainazhou.com
 X-WR-TIMEZONE:Asia/Shanghai
 REFRESH-INTERVAL;VALUE=DURATION:PT1H
 X-PUBLISHED-TTL:PT1H
@@ -23,30 +26,13 @@ TZNAME:CST
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:20261027-production-team@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
-DTSTART;VALUE=DATE:20261027
-DTEND;VALUE=DATE:20261028
-TRANSP:TRANSPARENT
-SUMMARY:☑️ Production Team: daily tasks / 制片组：每日筹备
-DESCRIPTION:DAILY PRE-PRODUCTION SCHEDULE · Oct 27 (Tue)\n每日筹备计
- 划 · 10月27日（周二）\n\nProduction Team 制片组\n1. Collect per
- sonnel information and refine the personnel information sheet\n   收集
- 人员信息并细化人员信息表\n2. Arrange and allocate hotel rooms\
- n   安排分配酒店房间\n3. Contact the equipment supplier in Nanchan
- g\n   联系南昌器材供应商\n\nContact 联系: contact@hainazhou.com
-CONTACT:Haina Zhou <contact@hainazhou.com>
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
 UID:20261027-ad-team@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
+DTSTAMP:20261026T165521Z
+LAST-MODIFIED:20261026T165521Z
 DTSTART;VALUE=DATE:20261027
 DTEND;VALUE=DATE:20261028
 TRANSP:TRANSPARENT
-SUMMARY:☑️ AD Team: daily tasks / AD组：每日筹备
+SUMMARY:✅ AD Team: daily tasks / AD组：每日筹备
 DESCRIPTION:DAILY PRE-PRODUCTION SCHEDULE · Oct 27 (Tue)\n每日筹备计
  划 · 10月27日（周二）\n\nAD Team AD组\n1. Work with the director 
  to revise the script\n   与导演修改剧本\n2. Continue to develop the
@@ -57,86 +43,9 @@ CONTACT:Haina Zhou <contact@hainazhou.com>
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:20261028-travel-poyang@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
-DTSTART;TZID=Asia/Shanghai:20261028T170000
-DTEND;TZID=Asia/Shanghai:20261028T183000
-TRANSP:OPAQUE
-SUMMARY:✈️ Travel: arrive Poyang / 差旅：到达鄱阳县
-LOCATION:鄱阳县 Poyang County\, Jiangxi
-DESCRIPTION:ADVANCE SCHEDULE · Oct 28 (Wed)\n预备通告 · 10月28日（
- 周三）\n\n✈️ TRAVEL 差旅\nJess (Director) / Zhao Xinyi (Producer)
-  / Jiang Ruohong (Line Producer) / Ma Rong (Living Manager) arrives Poyang
- \n导演 Jess / 制片人 赵馨怡 / 执行制片人 江如鸿 / 生活
- 制片 马蓉 到达鄱阳县\n\nContact 联系: contact@hainazhou.com
-CONTACT:Haina Zhou <contact@hainazhou.com>
-STATUS:CONFIRMED
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:✈️ Travel: arrive Poyang / 差旅：到达鄱阳县
-TRIGGER:-PT30M
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:20261028-location-coordination@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
-DTSTART;TZID=Asia/Shanghai:20261028T190000
-DTEND;TZID=Asia/Shanghai:20261028T200000
-TRANSP:OPAQUE
-SUMMARY:Coordinate with Location Manager services / 制片组对接当地
- 外联
-DESCRIPTION:ADVANCE SCHEDULE · Oct 28 (Wed)\n预备通告 · 10月28日（
- 周三）\n\nProduction team: coordinated with Location Manager services t
- o arrange the subsequent shooting location plans\n制片组对接当地外
- 联，安排后续堪景计划\n\n(End time not given in the schedule\; 1 
- hour assumed. 通告未注明结束时间，暂按1小时。)\n\nContact 
- 联系: contact@hainazhou.com
-CONTACT:Haina Zhou <contact@hainazhou.com>
-STATUS:CONFIRMED
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:Coordinate with Location Manager services / 制片组对接当
- 地外联
-TRIGGER:-PT30M
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:20261029-location-scout@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
-DTSTART;VALUE=DATE:20261029
-DTEND;VALUE=DATE:20261030
-TRANSP:TRANSPARENT
-SUMMARY:Location Scout (time TBC) / 堪景（时间待定）
-DESCRIPTION:ADVANCE SCHEDULE · Oct 29 (Thur)\n预备通告 · 10月29日
- （周四）\n\nTBC · Location Scout\n堪景\n[ Jess (Director) / Zhao Xi
- nyi (Producer) / Jiang Ruohong (Line Producer) / Wang Zhonghua (Location M
- anager) ]\n【导演 Jess / 制片人 赵馨怡 / 执行制片人 江如
- 鸿 / 外联制片 王忠华】\n\nContact 联系: contact@hainazhou.com
-CONTACT:Haina Zhou <contact@hainazhou.com>
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:20261029-hotel@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
-DTSTART;VALUE=DATE:20261029
-DTEND;VALUE=DATE:20261030
-TRANSP:TRANSPARENT
-SUMMARY:☑️ Hotel & accommodation / 对接酒店&安排住宿
-DESCRIPTION:ADVANCE SCHEDULE · Oct 29 (Thur)\n预备通告 · 10月29日
- （周四）\n\nAll Day · Arrange accommodation and related matters with 
- the hotel\n对接酒店&安排住宿相关事宜\n[ Ma Rong (Living Manage
- r) ]\n【生活制片 马蓉】\n\nContact 联系: contact@hainazhou.com
-CONTACT:Haina Zhou <contact@hainazhou.com>
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
 UID:20261029-ad-joins@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
+DTSTAMP:20261026T165521Z
+LAST-MODIFIED:20261026T165521Z
 DTSTART;TZID=Asia/Shanghai:20261029T190000
 DTEND;TZID=Asia/Shanghai:20261029T200000
 TRANSP:OPAQUE
@@ -156,8 +65,8 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:20261029-costume-makeup-meeting@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
+DTSTAMP:20261026T165521Z
+LAST-MODIFIED:20261026T165521Z
 DTSTART;TZID=Asia/Shanghai:20261029T200000
 DTEND;TZID=Asia/Shanghai:20261029T210000
 TRANSP:OPAQUE
@@ -175,26 +84,9 @@ TRIGGER:-PT30M
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:20261030-office-catering@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
-DTSTART;VALUE=DATE:20261030
-DTEND;VALUE=DATE:20261031
-TRANSP:TRANSPARENT
-SUMMARY:☑️ Office supplies & catering provider (time TBC) / 办公用
- 品&餐饮供应商（时间待定）
-DESCRIPTION:ADVANCE SCHEDULE · Oct 30 (Fri)\n预备通告 · 10月30日（
- 周五）\n\nTBC · Prepare the necessary office supplies and look for a s
- uitable catering provider\n准备相关办公室用品&寻找合适餐饮
- 供应商\n[ Ma Rong (Living Manager) ]\n【生活制片 马蓉】\n\nCont
- act 联系: contact@hainazhou.com
-CONTACT:Haina Zhou <contact@hainazhou.com>
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
 UID:20261030-location-scout@hainazhou.com
-DTSTAMP:20261026T164230Z
-LAST-MODIFIED:20261026T164230Z
+DTSTAMP:20261026T165521Z
+LAST-MODIFIED:20261026T165521Z
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261031
 TRANSP:TRANSPARENT
