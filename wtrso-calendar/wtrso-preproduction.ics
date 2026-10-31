@@ -3,16 +3,16 @@ VERSION:2.0
 PRODID:-//hainazhou.com//When the River Split Open pre-production//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:When the River Split Open · AD 日程 AD Schedule
-X-WR-CALDESC:AD-related schedule for 'When the River Split Open' pre-produc
- tion: AD team tasks\, department meetings\, scouts and calls the AD attend
- s (bilingual EN / 中文). ✅ = to-do\, 💻 = online meeting\, ✈️ = 
- travel. All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day 
- events.\n“当河流轻声撕裂”筹备期 AD 相关日程：AD组任
- 务、各部门会议、AD参加的堪景和沟通（中英对照）。✅
-  = 待办，💻 = 线上会议，✈️ = 出行。所有时间均为北
- 京时间（UTC+8）。“TBC”事项以全天事件显示。\nContact 
- 联系: contact@hainazhou.com
+X-WR-CALNAME:When the River Split Open · AD & Director Schedule AD+导演
+ 日程
+X-WR-CALDESC:'When the River Split Open' pre-production schedule for the AD
+  team and the director (bilingual EN / 中文). ✅ = to-do\, 💻 = onlin
+ e meeting\, ✈️ = travel\, 🎬 = director's schedule. All times Asia/S
+ hanghai (UTC+8). 'TBC' items are shown as all-day events.\n“当河流轻
+ 声撕裂”筹备期 AD组与导演日程（中英对照）。✅ = 待
+ 办，💻 = 线上会议，✈️ = 出行，🎬 = 导演日程。所有
+ 时间均为北京时间（UTC+8）。“TBC”事项以全天事件显示
+ 。\nContact 联系: contact@hainazhou.com
 X-WR-TIMEZONE:Asia/Shanghai
 REFRESH-INTERVAL;VALUE=DURATION:PT1H
 X-PUBLISHED-TTL:PT1H
@@ -27,8 +27,8 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:20261027-ad-team@hainazhou.com
-DTSTAMP:20261026T165521Z
-LAST-MODIFIED:20261026T165521Z
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
 DTSTART;VALUE=DATE:20261027
 DTEND;VALUE=DATE:20261028
 TRANSP:TRANSPARENT
@@ -44,8 +44,8 @@ STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:20261029-ad-joins@hainazhou.com
-DTSTAMP:20261026T165521Z
-LAST-MODIFIED:20261026T165521Z
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
 DTSTART;TZID=Asia/Shanghai:20261029T190000
 DTEND;TZID=Asia/Shanghai:20261029T200000
 TRANSP:OPAQUE
@@ -65,8 +65,8 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:20261029-costume-makeup-meeting@hainazhou.com
-DTSTAMP:20261026T165521Z
-LAST-MODIFIED:20261026T165521Z
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
 DTSTART;TZID=Asia/Shanghai:20261029T200000
 DTEND;TZID=Asia/Shanghai:20261029T210000
 TRANSP:OPAQUE
@@ -85,8 +85,8 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:20261030-location-scout@hainazhou.com
-DTSTAMP:20261026T165521Z
-LAST-MODIFIED:20261026T165521Z
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261031
 TRANSP:TRANSPARENT
@@ -97,6 +97,369 @@ DESCRIPTION:ADVANCE SCHEDULE · Oct 30 (Fri)\n预备通告 · 10月30日（
  ger) / Shui Su (AD) ]\n【导演 Jess / 制片人 赵馨怡 / 执行制片
  人 江如鸿 / 外联制片 王忠华 / AD 水素】\n\nContact 联系: c
  ontact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261102-scout-meng-house@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261102
+DTEND;VALUE=DATE:20261103
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Location Scout: Meng's Bedroom House & Wedding Shop (w/ Teache
+ r Wang) · AM\, time TBC / 看景：梦的卧室房子 & 喜事店（王
+ 老师陪同）· 上午，时间待定
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 2 (Mon)\n导演日程 · 11月2日（
+ 周一）\n\nWith Sheldon\, Jess\, Haina and the producer\; Teacher Wang (
+ 王老师) to accompany. Visit the house for Meng's bedroom and the weddin
+ g shop (喜事店)\; confirm the shooting plan\, etc.\nMorning. Exact star
+ t time TBC (09:00–12:00 is a placeholder).\n\n原文：上午 看梦的
+ 卧室房子&喜事店，确认拍摄方案，需求王老师陪同\n\n(Ti
+ me not yet confirmed\, so shown as an all-day event. 时间尚未确定，
+ 暂显示为全天事件。)\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261102-hod-table-read@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;TZID=Asia/Shanghai:20261102T150000
+DTEND;TZID=Asia/Shanghai:20261102T200000
+TRANSP:OPAQUE
+SUMMARY:🎬 HOD Table Read + Shooting Schedule Session (~5h) / 主创剧
+ 本围读 + 前期拍摄大计划（预计5小时）
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 2 (Mon)\n导演日程 · 11月2日（
+ 周一）\n\n3pm: HOD table read (script read-through with the heads of de
+ partment).\nFollowed by the shooting schedule session.\nEstimated 5 hours\
+ , ending around 8pm.\n\n原文：主创剧本围读 3pm开始 + 前期拍
+ 摄大计划 - 8pm（预计5个小时）\n\nContact 联系: contact@hainaz
+ hou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:🎬 HOD Table Read + Shooting Schedule Session (~5h) / 主创
+ 剧本围读 + 前期拍摄大计划（预计5小时）
+TRIGGER:-PT30M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20261103-hod-tech-scout@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261103
+DTEND;VALUE=DATE:20261104
+TRANSP:TRANSPARENT
+SUMMARY:🎬 HOD Tech Scout · Lock Locations (all day) / 主创复景 · 
+ 确认场景（全天）
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 3 (Tue)\n导演日程 · 11月3日（
+ 周二）\n\nAll day: tech scout with the heads of department\; lock the l
+ ocations.\n\n原文：全天 主创复景，确认场景\n\nContact 联系
+ : contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261104-hod-tech-scout@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261104
+DTEND;VALUE=DATE:20261105
+TRANSP:TRANSPARENT
+SUMMARY:🎬 HOD Tech Scout (all day) + Schedule Session in the afternoon /
+  主创复景（全天）+ 下午回来大计划
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 4 (Wed)\n导演日程 · 11月4日（
+ 周三）\n\nAll day: HOD tech scout\; back in the afternoon for the shoot
+ ing schedule session (see the afternoon entry).\n\n原文：全天 主创
+ 复景 + 下午回来大计划\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261104-schedule-session-pm@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261104
+DTEND;VALUE=DATE:20261105
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Shooting Schedule Session (after the tech scout) · PM\, time 
+ TBC / 前期拍摄大计划（复景后回来）· 下午，时间待定
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 4 (Wed)\n导演日程 · 11月4日（
+ 周三）\n\nShooting schedule session after returning from the tech scout
+ .\nAfternoon. Exact start time TBC (14:00–18:00 is a placeholder).\n\n
+ 原文：下午回来大计划\n\n(Time not yet confirmed\, so shown as an
+  all-day event. 时间尚未确定，暂显示为全天事件。)\n\nConta
+ ct 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261105-day-player-casting@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Day Player Casting Session / 特约面试
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 5 (Thu)\n导演日程 · 11月5日（
+ 周四）\n\nCasting session for day players / featured extras. Time TBC.\
+ n\n原文：特约面试\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261105-chubu-rehearsal@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Rehearsal with Chubu / 和楚布 Rehearsal
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 5 (Thu)\n导演日程 · 11月5日（
+ 周四）\n\nRehearsal with Chubu (楚布). Time TBC.\n\n原文：和楚
+ 布 Rehearsal\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261106-chubu-rehearsal@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261107
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Rehearsal with Chubu / 和楚布 Rehearsal
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 6 (Fri)\n导演日程 · 11月6日（
+ 周五）\n\nRehearsal with Chubu (楚布). Time TBC.\n\n原文：和楚
+ 布 Rehearsal\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261107-shotlist-sheldon@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Shot List with Sheldon / 和 Sheldon 做 Shotlist
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 7 (Sat)\n导演日程 · 11月7日（
+ 周六）\n\nWork on the shot list with Sheldon. Time TBC.\n\n原文：和
+  Sheldon 做 Shotlist\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261108-shotlist-sheldon@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Shot List with Sheldon / 和 Sheldon 做 Shotlist
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 8 (Sun)\n导演日程 · 11月8日（
+ 周日）\n\nWork on the shot list with Sheldon. Time TBC.\n\n原文：和
+  Sheldon 做 Shotlist\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261109-cast-table-read@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;TZID=Asia/Shanghai:20261109T090000
+DTEND;TZID=Asia/Shanghai:20261109T140000
+TRANSP:OPAQUE
+SUMMARY:🎬 Cast Table Read / 演员围读
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 9 (Mon)\n导演日程 · 11月9日（
+ 周一）\n\nCast table read\, Mon Nov 9\, 09:00–14:00.\n\n原文：11/9
+ （周一）09:00–14:00 cast table read\n\nContact 联系: contact@haina
+ zhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:🎬 Cast Table Read / 演员围读
+TRIGGER:-PT30M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20261112-michelle-wardrobe-test@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Michelle · Wardrobe / Hair & Makeup Test · AM · director ma
+ y approve remotely / Michelle 定妆（上午）· 导演可线上确认
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 12 (Thu)\n导演日程 · 11月12日
+ （周四）\n\nMichelle's wardrobe\, hair & makeup test (定妆 / look te
+ st)\, morning of Nov 12 (09:00–12:00 is a placeholder).\nThe director do
+ es not need to be on set and can approve remotely. If the director needs t
+ o arrange their own work\, they may leave the hotel.\n\n原文：上午 Mi
+ chelle定妆（导演不用到现场，可以线上确认，导演如果
+ 需要安排自己的工作可以离开酒店）\n\n(Time not yet confirme
+ d\, so shown as an all-day event. 时间尚未确定，暂显示为全天
+ 事件。)\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261112-all-crew-production-meeting@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+TRANSP:TRANSPARENT
+SUMMARY:🎬 All Crew Production Meeting · Pro-pro Shoot · PM\, time TBC 
+ / 全组 Production Meeting · Pro-pro Shoot（下午）· 时间待定
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 12 (Thu)\n导演日程 · 11月12日
+ （周四）\n\nAll-crew production meeting for the pro-pro shoot.\nAftern
+ oon. Exact time TBC (14:00–17:00 is a placeholder).\n\n原文：下午 A
+ ll crew production meeting for Pro-pro shoot\n\n(Time not yet confirmed\, 
+ so shown as an all-day event. 时间尚未确定，暂显示为全天事
+ 件。)\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261112-chubu-wardrobe-test@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Chubu · Wardrobe / Hair & Makeup Test · Evening · director 
+ may approve remotely / 楚布 定妆（晚上）· 导演可线上确认
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 12 (Thu)\n导演日程 · 11月12日
+ （周四）\n\nChubu (楚布)'s wardrobe\, hair & makeup test (定妆 / l
+ ook test)\, evening of Nov 12 (19:00–21:00 is a placeholder).\nThe direc
+ tor does not need to be on set and can approve remotely. If the director n
+ eeds to arrange their own work\, they may leave the hotel.\n\n原文：晚
+ 上 楚布定妆（导演不用到现场，可以线上确认，导演如
+ 果需要安排自己的工作可以离开酒店）\n\n(Time not yet confi
+ rmed\, so shown as an all-day event. 时间尚未确定，暂显示为全
+ 天事件。)\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261113-restaurant-rehearsal-shoot@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261115
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Restaurant · Rehearsal + Shoot (all day\, Nov 13–14) / 餐
+ 厅 Rehearsal + 拍摄（全天，13–14 日）
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 13–14 (Fri–Sat)\n导演日程 · 1
+ 1月13–14日（周五–周六）\n\nNov 13–14\, all day: rehearsal an
+ d shoot at the restaurant location.\n\n原文：11.13-11.14 全天 餐厅r
+ ehearsal + 拍摄\n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261115-michelle-rehearsal-tbc@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Possible Rehearsal with Michelle (TBC) / 可和 Michelle Rehea
+ rsal（待定）
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 15 (Sun)\n导演日程 · 11月15日
+ （周日）\n\nRehearsal with Michelle is possible on this day. To be con
+ firmed.\n\n原文：可以和Michelle Rehearsal\n\nContact 联系: contact
+ @hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:20261116-lushan-shoot-day@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Lushan · Shoot Day (overnight at Lushan) / 庐山拍摄（全
+ 天，晚上住庐山）
+LOCATION:Lushan 庐山
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 16 (Mon)\n导演日程 · 11月16日
+ （周一）\n\nAll-day shoot at Lushan (庐山). Company stays overnight 
+ at Lushan.\n\n原文：全天 庐山拍摄（晚上住庐山）\n\nContact
+  联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261117-lushan-am-shoot@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Lushan · AM Shoot · wrap & travel back ~2pm (TBC) / 庐山
+ 拍摄（上午）· 暂定 2pm 回程
+LOCATION:Lushan 庐山
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 17 (Tue)\n导演日程 · 11月17日
+ （周二）\n\nMorning shoot at Lushan (庐山). Wrap and travel back\, t
+ entatively at 2pm. Start time is a placeholder.\n\n原文：上午 庐山
+ 拍摄 暂定2pm回程\n\n(Time not yet confirmed\, so shown as an all-day
+  event. 时间尚未确定，暂显示为全天事件。)\n\nContact 联
+ 系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261117-rehearsal-underwater-pm@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Director's Rehearsal / Camera Dept Underwater Shoot · PM\, ti
+ me TBC / 导演 Rehearsal / 摄影 Underwater Shoot（下午）· 时间
+ 待定
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 17 (Tue)\n导演日程 · 11月17日
+ （周二）\n\nAfternoon\, after travelling back: director's rehearsal\; 
+ camera department underwater shoot.\nExact time TBC (15:00–18:00 is a pl
+ aceholder).\n\n原文：下午 导演rehearsal / 摄影underwater shoot\n\
+ n(Time not yet confirmed\, so shown as an all-day event. 时间尚未确
+ 定，暂显示为全天事件。)\n\nContact 联系: contact@hainazhou.co
+ m
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261118-rehearsals-michelle-chubu@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261118
+DTEND;VALUE=DATE:20261120
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Rehearsals w/ Michelle & Chubu (all day\, Nov 18–19) / 和 M
+ ichelle & 楚布 Rehearsal（全天，18–19 日）
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 18–19 (Wed–Thu)\n导演日程 · 1
+ 1月18–19日（周三–周四）\n\nNov 18–19\, all day: rehearsals w
+ ith Michelle and Chubu (楚布).\n\n原文：11.18-11.19 全天 Rehearsal\
+ n\nContact 联系: contact@hainazhou.com
+CONTACT:Haina Zhou <contact@hainazhou.com>
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:20261120-day-1-principal-photography@hainazhou.com
+DTSTAMP:20261031T073005Z
+LAST-MODIFIED:20261031T073005Z
+DTSTART;VALUE=DATE:20261120
+DTEND;VALUE=DATE:20261121
+TRANSP:TRANSPARENT
+SUMMARY:🎬 Day 1 · First Day of Principal Photography / 正式开机
+DESCRIPTION:DIRECTOR SCHEDULE · Nov 20 (Fri)\n导演日程 · 11月20日
+ （周五）\n\nNov 20: Day 1 of principal photography.\n\n原文：11.20 
+ 正式开机\n\nContact 联系: contact@hainazhou.com
 CONTACT:Haina Zhou <contact@hainazhou.com>
 STATUS:CONFIRMED
 END:VEVENT

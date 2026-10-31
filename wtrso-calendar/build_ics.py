@@ -2,9 +2,11 @@
 """Build wtrso-preproduction.ics from schedule.json (stdlib only).
 
 Usage: python3 build_ics.py
-Edit schedule.json (one entry per event; no "start" means all-day; "type" is
-"schedule" or "todo"; "online": true marks an online meeting), re-run, then
-commit both files. Subscribed clients pick the change up on their next refresh.
+Edit schedule.json (one entry per event; no "start" means all-day, and an all-day
+event can span days with "end_date", the inclusive last day; "type" is "schedule"
+or "todo"; "director": true marks the director's schedule; "online": true marks
+an online meeting; "tentative": true marks an unconfirmed one), re-run, then commit both files. Subscribed clients pick the
+change up on their next refresh.
 """
 import json
 from datetime import date, datetime, timedelta, timezone
@@ -15,6 +17,7 @@ SRC = HERE / "schedule.json"
 OUT = HERE / "wtrso-preproduction.ics"
 UID_DOMAIN = "hainazhou.com"
 ALARM_MINUTES = 30
+DIRECTOR_PREFIX = "🎬 "
 TODO_PREFIX = "✅ "
 ONLINE_PREFIX = "💻 "
 
@@ -84,16 +87,19 @@ def build(data, caldav=False):
             lines += [f"DTSTART;TZID={tz}:{local(d, ev['start'])}",
                       f"DTEND;TZID={tz}:{local(d, ev['end'])}", "TRANSP:OPAQUE"]
         else:
+            last = date.fromisoformat(ev.get("end_date", ev["date"]))
             lines += [f"DTSTART;VALUE=DATE:{d.strftime('%Y%m%d')}",
-                      f"DTEND;VALUE=DATE:{(d + timedelta(days=1)).strftime('%Y%m%d')}",
+                      f"DTEND;VALUE=DATE:{(last + timedelta(days=1)).strftime('%Y%m%d')}",
                       "TRANSP:TRANSPARENT"]
-        title = (TODO_PREFIX if ev["type"] == "todo" else "") \
+        title = (DIRECTOR_PREFIX if ev.get("director") else "") \
+            + (TODO_PREFIX if ev["type"] == "todo" else "") \
             + (ONLINE_PREFIX if ev.get("online") else "") + ev["title"]
         lines.append(f"SUMMARY:{esc(title)}")
         if ev.get("location"):
             lines.append(f"LOCATION:{esc(ev['location'])}")
         lines += [f"DESCRIPTION:{esc(chr(10).join(ev['description'] + footer))}",
-                  f"CONTACT:{esc(cal['contact'])}", "STATUS:CONFIRMED"]
+                  f"CONTACT:{esc(cal['contact'])}",
+                  "STATUS:TENTATIVE" if ev.get("tentative") else "STATUS:CONFIRMED"]
         if "start" in ev:
             lines += ["BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:{esc(title)}",
                       f"TRIGGER:-PT{ALARM_MINUTES}M", "END:VALARM"]

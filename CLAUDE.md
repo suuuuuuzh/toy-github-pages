@@ -5,8 +5,9 @@ Haina Zhou's GitHub Pages site (served from `main`). Claude commits straight to 
 
 ## WTRSO AD calendar (`wtrso-calendar/`)
 
-One subscribable ICS calendar for "When the River Split Open / 当河流轻声撕裂", covering only what
-is relevant to the **AD (assistant director) team**. Subscribers (Google / Apple) pull the feed on
+One subscribable ICS calendar for "When the River Split Open / 当河流轻声撕裂", covering what is
+relevant to the **AD (assistant director) team** plus the **director's schedule** in full (see
+below). Subscribers (Google / Apple) pull the feed on
 their own schedule, so **every push to `main` is a published update** for everyone subscribed.
 
 - `schedule.json` is the single source; `build_ics.py` writes `wtrso-preproduction.ics` from it.
@@ -25,6 +26,18 @@ their own schedule, so **every push to `main` is a published update** for everyo
   `YYYYMMDD-slug@hainazhou.com`, so keep the id format. Never ask the user to paste Apple
   credentials in chat (they go in GitHub secrets), and never print account details in its log:
   the Actions log of this public repo is public.
+- **Director schedule.** The director's pre-production schedule (from Nov 2, 2026) is mirrored in
+  full, whether or not the AD is named. Every such item has `"director": true` (automatic 🎬
+  prefix) and a description led by `DIRECTOR SCHEDULE · <date>` / `导演日程 · <date>`. Its source
+  is the user's Google Calendar `wtrso - director` (find the id with the Google Calendar
+  connector's `list_calendars`; keep the id out of this public repo) and the claude.ai artifact
+  "WTRSO Director Schedule" (it holds the Chinese titles). The user keeps editing it in another
+  session, so when they say the director schedule changed, re-read that calendar with
+  `list_events` (and the artifact for wording), then refresh the `director` items in
+  `schedule.json`: match by date and meaning, keep the ids, edit in place, remove what is gone.
+  A time the source calls a placeholder (title says "time TBC", description says "placeholder")
+  is shown all-day per the TBC rule; confirmed times stay timed. Multi-day all-day items are one
+  event with `end_date` (inclusive last day); `"tentative": true` for "possible / TBC" items.
 
 ### Standing instruction
 
@@ -35,7 +48,8 @@ That means the daily pre-production notice PDF (Daily Pre-production Schedule / 
 
 1. For a PDF: `pdftotext -layout` plus `pdftoppm -r 60 -png`, and look at every page for anything
    text extraction missed.
-2. **Pull out only the AD-related items** and edit `wtrso-calendar/schedule.json`.
+2. **Pull out only the AD-related items** from the daily notice (the director's schedule is the
+   exception, see above) and edit `wtrso-calendar/schedule.json`.
    - Include: the AD team's own tasks; anything that names the AD (currently Shui Su 水素) or "AD";
      every department meeting that has a time (ADs attend most of them: costume/makeup, art,
      camera, etc.); scouts, rehearsals, readings, shoots, calls and travel the AD takes part in.
@@ -60,7 +74,7 @@ That means the daily pre-production notice PDF (Daily Pre-production Schedule / 
      titles get a ✅ automatically. When in doubt, pick one and say so in the reply. If a to-do gets
      a fixed time, switch it to `schedule`.
    - Markers: ✅ to-do (automatic from `type`), 💻 online meeting (set `"online": true`; automatic
-     prefix), ✈️ travel (write it at the start of the title and use `✈️ TRAVEL 差旅` in the
+     prefix), 🎬 director's schedule (set `"director": true`; automatic prefix), ✈️ travel (write it at the start of the title and use `✈️ TRAVEL 差旅` in the
      description). Mark a meeting online only when the notice or the user says so (线上, online,
      视频, Zoom, 腾讯会议, 飞书 ...), never assume. Put any meeting link they give in the description.
    - Title is `English / 中文`. Description is the PDF text verbatim in both languages, led by the

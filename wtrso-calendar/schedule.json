@@ -1,9 +1,9 @@
 {
   "calendar": {
-    "name": "When the River Split Open · AD 日程 AD Schedule",
+    "name": "When the River Split Open · AD & Director Schedule AD+导演日程",
     "description": [
-      "AD-related schedule for 'When the River Split Open' pre-production: AD team tasks, department meetings, scouts and calls the AD attends (bilingual EN / 中文). ✅ = to-do, 💻 = online meeting, ✈️ = travel. All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day events.",
-      "“当河流轻声撕裂”筹备期 AD 相关日程：AD组任务、各部门会议、AD参加的堪景和沟通（中英对照）。✅ = 待办，💻 = 线上会议，✈️ = 出行。所有时间均为北京时间（UTC+8）。“TBC”事项以全天事件显示。",
+      "'When the River Split Open' pre-production schedule for the AD team and the director (bilingual EN / 中文). ✅ = to-do, 💻 = online meeting, ✈️ = travel, 🎬 = director's schedule. All times Asia/Shanghai (UTC+8). 'TBC' items are shown as all-day events.",
+      "“当河流轻声撕裂”筹备期 AD组与导演日程（中英对照）。✅ = 待办，💻 = 线上会议，✈️ = 出行，🎬 = 导演日程。所有时间均为北京时间（UTC+8）。“TBC”事项以全天事件显示。",
       "Contact 联系: contact@hainazhou.com"
     ],
     "timezone": "Asia/Shanghai",
@@ -75,6 +75,352 @@
         "堪景",
         "[ Jess (Director) / Zhao Xinyi (Producer) / Jiang Ruohong (Line Producer) / Wang Zhonghua (Location Manager) / Shui Su (AD) ]",
         "【导演 Jess / 制片人 赵馨怡 / 执行制片人 江如鸿 / 外联制片 王忠华 / AD 水素】"
+      ]
+    },
+    {
+      "id": "20261102-scout-meng-house",
+      "date": "2026-11-02",
+      "type": "schedule",
+      "director": true,
+      "title": "Location Scout: Meng's Bedroom House & Wedding Shop (w/ Teacher Wang) · AM, time TBC / 看景：梦的卧室房子 & 喜事店（王老师陪同）· 上午，时间待定",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 2 (Mon)",
+        "导演日程 · 11月2日（周一）",
+        "",
+        "With Sheldon, Jess, Haina and the producer; Teacher Wang (王老师) to accompany. Visit the house for Meng's bedroom and the wedding shop (喜事店); confirm the shooting plan, etc.",
+        "Morning. Exact start time TBC (09:00–12:00 is a placeholder).",
+        "",
+        "原文：上午 看梦的卧室房子&喜事店，确认拍摄方案，需求王老师陪同",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261102-hod-table-read",
+      "date": "2026-11-02",
+      "type": "schedule",
+      "director": true,
+      "start": "15:00",
+      "end": "20:00",
+      "title": "HOD Table Read + Shooting Schedule Session (~5h) / 主创剧本围读 + 前期拍摄大计划（预计5小时）",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 2 (Mon)",
+        "导演日程 · 11月2日（周一）",
+        "",
+        "3pm: HOD table read (script read-through with the heads of department).",
+        "Followed by the shooting schedule session.",
+        "Estimated 5 hours, ending around 8pm.",
+        "",
+        "原文：主创剧本围读 3pm开始 + 前期拍摄大计划 - 8pm（预计5个小时）"
+      ]
+    },
+    {
+      "id": "20261103-hod-tech-scout",
+      "date": "2026-11-03",
+      "type": "schedule",
+      "director": true,
+      "title": "HOD Tech Scout · Lock Locations (all day) / 主创复景 · 确认场景（全天）",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 3 (Tue)",
+        "导演日程 · 11月3日（周二）",
+        "",
+        "All day: tech scout with the heads of department; lock the locations.",
+        "",
+        "原文：全天 主创复景，确认场景"
+      ]
+    },
+    {
+      "id": "20261104-hod-tech-scout",
+      "date": "2026-11-04",
+      "type": "schedule",
+      "director": true,
+      "title": "HOD Tech Scout (all day) + Schedule Session in the afternoon / 主创复景（全天）+ 下午回来大计划",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 4 (Wed)",
+        "导演日程 · 11月4日（周三）",
+        "",
+        "All day: HOD tech scout; back in the afternoon for the shooting schedule session (see the afternoon entry).",
+        "",
+        "原文：全天 主创复景 + 下午回来大计划"
+      ]
+    },
+    {
+      "id": "20261104-schedule-session-pm",
+      "date": "2026-11-04",
+      "type": "schedule",
+      "director": true,
+      "title": "Shooting Schedule Session (after the tech scout) · PM, time TBC / 前期拍摄大计划（复景后回来）· 下午，时间待定",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 4 (Wed)",
+        "导演日程 · 11月4日（周三）",
+        "",
+        "Shooting schedule session after returning from the tech scout.",
+        "Afternoon. Exact start time TBC (14:00–18:00 is a placeholder).",
+        "",
+        "原文：下午回来大计划",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261105-day-player-casting",
+      "date": "2026-11-05",
+      "type": "schedule",
+      "director": true,
+      "title": "Day Player Casting Session / 特约面试",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 5 (Thu)",
+        "导演日程 · 11月5日（周四）",
+        "",
+        "Casting session for day players / featured extras. Time TBC.",
+        "",
+        "原文：特约面试"
+      ]
+    },
+    {
+      "id": "20261105-chubu-rehearsal",
+      "date": "2026-11-05",
+      "type": "schedule",
+      "director": true,
+      "title": "Rehearsal with Chubu / 和楚布 Rehearsal",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 5 (Thu)",
+        "导演日程 · 11月5日（周四）",
+        "",
+        "Rehearsal with Chubu (楚布). Time TBC.",
+        "",
+        "原文：和楚布 Rehearsal"
+      ]
+    },
+    {
+      "id": "20261106-chubu-rehearsal",
+      "date": "2026-11-06",
+      "type": "schedule",
+      "director": true,
+      "title": "Rehearsal with Chubu / 和楚布 Rehearsal",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 6 (Fri)",
+        "导演日程 · 11月6日（周五）",
+        "",
+        "Rehearsal with Chubu (楚布). Time TBC.",
+        "",
+        "原文：和楚布 Rehearsal"
+      ]
+    },
+    {
+      "id": "20261107-shotlist-sheldon",
+      "date": "2026-11-07",
+      "type": "schedule",
+      "director": true,
+      "title": "Shot List with Sheldon / 和 Sheldon 做 Shotlist",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 7 (Sat)",
+        "导演日程 · 11月7日（周六）",
+        "",
+        "Work on the shot list with Sheldon. Time TBC.",
+        "",
+        "原文：和 Sheldon 做 Shotlist"
+      ]
+    },
+    {
+      "id": "20261108-shotlist-sheldon",
+      "date": "2026-11-08",
+      "type": "schedule",
+      "director": true,
+      "title": "Shot List with Sheldon / 和 Sheldon 做 Shotlist",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 8 (Sun)",
+        "导演日程 · 11月8日（周日）",
+        "",
+        "Work on the shot list with Sheldon. Time TBC.",
+        "",
+        "原文：和 Sheldon 做 Shotlist"
+      ]
+    },
+    {
+      "id": "20261109-cast-table-read",
+      "date": "2026-11-09",
+      "type": "schedule",
+      "director": true,
+      "start": "09:00",
+      "end": "14:00",
+      "title": "Cast Table Read / 演员围读",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 9 (Mon)",
+        "导演日程 · 11月9日（周一）",
+        "",
+        "Cast table read, Mon Nov 9, 09:00–14:00.",
+        "",
+        "原文：11/9（周一）09:00–14:00 cast table read"
+      ]
+    },
+    {
+      "id": "20261112-michelle-wardrobe-test",
+      "date": "2026-11-12",
+      "type": "schedule",
+      "director": true,
+      "title": "Michelle · Wardrobe / Hair & Makeup Test · AM · director may approve remotely / Michelle 定妆（上午）· 导演可线上确认",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 12 (Thu)",
+        "导演日程 · 11月12日（周四）",
+        "",
+        "Michelle's wardrobe, hair & makeup test (定妆 / look test), morning of Nov 12 (09:00–12:00 is a placeholder).",
+        "The director does not need to be on set and can approve remotely. If the director needs to arrange their own work, they may leave the hotel.",
+        "",
+        "原文：上午 Michelle定妆（导演不用到现场，可以线上确认，导演如果需要安排自己的工作可以离开酒店）",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261112-all-crew-production-meeting",
+      "date": "2026-11-12",
+      "type": "schedule",
+      "director": true,
+      "title": "All Crew Production Meeting · Pro-pro Shoot · PM, time TBC / 全组 Production Meeting · Pro-pro Shoot（下午）· 时间待定",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 12 (Thu)",
+        "导演日程 · 11月12日（周四）",
+        "",
+        "All-crew production meeting for the pro-pro shoot.",
+        "Afternoon. Exact time TBC (14:00–17:00 is a placeholder).",
+        "",
+        "原文：下午 All crew production meeting for Pro-pro shoot",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261112-chubu-wardrobe-test",
+      "date": "2026-11-12",
+      "type": "schedule",
+      "director": true,
+      "title": "Chubu · Wardrobe / Hair & Makeup Test · Evening · director may approve remotely / 楚布 定妆（晚上）· 导演可线上确认",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 12 (Thu)",
+        "导演日程 · 11月12日（周四）",
+        "",
+        "Chubu (楚布)'s wardrobe, hair & makeup test (定妆 / look test), evening of Nov 12 (19:00–21:00 is a placeholder).",
+        "The director does not need to be on set and can approve remotely. If the director needs to arrange their own work, they may leave the hotel.",
+        "",
+        "原文：晚上 楚布定妆（导演不用到现场，可以线上确认，导演如果需要安排自己的工作可以离开酒店）",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261113-restaurant-rehearsal-shoot",
+      "date": "2026-11-13",
+      "end_date": "2026-11-14",
+      "type": "schedule",
+      "director": true,
+      "title": "Restaurant · Rehearsal + Shoot (all day, Nov 13–14) / 餐厅 Rehearsal + 拍摄（全天，13–14 日）",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 13–14 (Fri–Sat)",
+        "导演日程 · 11月13–14日（周五–周六）",
+        "",
+        "Nov 13–14, all day: rehearsal and shoot at the restaurant location.",
+        "",
+        "原文：11.13-11.14 全天 餐厅rehearsal + 拍摄"
+      ]
+    },
+    {
+      "id": "20261115-michelle-rehearsal-tbc",
+      "date": "2026-11-15",
+      "type": "schedule",
+      "director": true,
+      "title": "Possible Rehearsal with Michelle (TBC) / 可和 Michelle Rehearsal（待定）",
+      "tentative": true,
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 15 (Sun)",
+        "导演日程 · 11月15日（周日）",
+        "",
+        "Rehearsal with Michelle is possible on this day. To be confirmed.",
+        "",
+        "原文：可以和Michelle Rehearsal"
+      ]
+    },
+    {
+      "id": "20261116-lushan-shoot-day",
+      "date": "2026-11-16",
+      "type": "schedule",
+      "director": true,
+      "title": "Lushan · Shoot Day (overnight at Lushan) / 庐山拍摄（全天，晚上住庐山）",
+      "location": "Lushan 庐山",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 16 (Mon)",
+        "导演日程 · 11月16日（周一）",
+        "",
+        "All-day shoot at Lushan (庐山). Company stays overnight at Lushan.",
+        "",
+        "原文：全天 庐山拍摄（晚上住庐山）"
+      ]
+    },
+    {
+      "id": "20261117-lushan-am-shoot",
+      "date": "2026-11-17",
+      "type": "schedule",
+      "director": true,
+      "title": "Lushan · AM Shoot · wrap & travel back ~2pm (TBC) / 庐山拍摄（上午）· 暂定 2pm 回程",
+      "location": "Lushan 庐山",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 17 (Tue)",
+        "导演日程 · 11月17日（周二）",
+        "",
+        "Morning shoot at Lushan (庐山). Wrap and travel back, tentatively at 2pm. Start time is a placeholder.",
+        "",
+        "原文：上午 庐山拍摄 暂定2pm回程",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261117-rehearsal-underwater-pm",
+      "date": "2026-11-17",
+      "type": "schedule",
+      "director": true,
+      "title": "Director's Rehearsal / Camera Dept Underwater Shoot · PM, time TBC / 导演 Rehearsal / 摄影 Underwater Shoot（下午）· 时间待定",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 17 (Tue)",
+        "导演日程 · 11月17日（周二）",
+        "",
+        "Afternoon, after travelling back: director's rehearsal; camera department underwater shoot.",
+        "Exact time TBC (15:00–18:00 is a placeholder).",
+        "",
+        "原文：下午 导演rehearsal / 摄影underwater shoot",
+        "",
+        "(Time not yet confirmed, so shown as an all-day event. 时间尚未确定，暂显示为全天事件。)"
+      ]
+    },
+    {
+      "id": "20261118-rehearsals-michelle-chubu",
+      "date": "2026-11-18",
+      "end_date": "2026-11-19",
+      "type": "schedule",
+      "director": true,
+      "title": "Rehearsals w/ Michelle & Chubu (all day, Nov 18–19) / 和 Michelle & 楚布 Rehearsal（全天，18–19 日）",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 18–19 (Wed–Thu)",
+        "导演日程 · 11月18–19日（周三–周四）",
+        "",
+        "Nov 18–19, all day: rehearsals with Michelle and Chubu (楚布).",
+        "",
+        "原文：11.18-11.19 全天 Rehearsal"
+      ]
+    },
+    {
+      "id": "20261120-day-1-principal-photography",
+      "date": "2026-11-20",
+      "type": "schedule",
+      "director": true,
+      "title": "Day 1 · First Day of Principal Photography / 正式开机",
+      "description": [
+        "DIRECTOR SCHEDULE · Nov 20 (Fri)",
+        "导演日程 · 11月20日（周五）",
+        "",
+        "Nov 20: Day 1 of principal photography.",
+        "",
+        "原文：11.20 正式开机"
       ]
     }
   ]
